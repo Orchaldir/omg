@@ -1,6 +1,5 @@
+use crate::data::input::Input;
 use crate::data::math::interpolation::Interpolate;
-use num_traits::int::PrimInt;
-use num_traits::AsPrimitive;
 use thiserror::Error;
 
 #[derive(Error, Debug, PartialEq)]
@@ -11,11 +10,6 @@ pub enum VectorInterpolatorError {
     #[error("The vector is not sorted!")]
     NotSorted,
 }
-
-pub trait Threshold: PrimInt + AsPrimitive<f32> + Clone + Copy {}
-
-impl Threshold for u8 {}
-impl Threshold for u32 {}
 
 #[svgbobdoc::transform]
 /// Interpolates multiple values based on their thresholds.
@@ -37,12 +31,12 @@ impl Threshold for u32 {}
 ///           first             last
 /// ```
 #[derive(Debug, PartialEq, Eq, Clone)]
-pub struct VectorInterpolator<T: Threshold, V: Interpolate> {
+pub struct VectorInterpolator<T: Input, V: Interpolate> {
     vector: Vec<InterpolationEntry<T, V>>,
 }
 
-impl<T: Threshold, V: Interpolate> VectorInterpolator<T, V> {
-    /// Returns an interpolator, if the input is valid. It needs 2 or more values:
+impl<T: Input, V: Interpolate> VectorInterpolator<T, V> {
+    /// Returns an interpolator, if the vector is valid. It needs 2 or more values:
     ///
     /// ```
     ///# use omg::data::math::interpolation::vector::VectorInterpolator;
@@ -118,12 +112,12 @@ impl<T: Threshold, V: Interpolate> VectorInterpolator<T, V> {
 
 /// Stores the values & thresholds for [`VectorInterpolator`].
 #[derive(Debug, PartialEq, Eq, Clone)]
-struct InterpolationEntry<T: Threshold, V: Interpolate> {
+struct InterpolationEntry<T: Input, V: Interpolate> {
     threshold: T,
     value: V,
 }
 
-impl<T: Threshold, V: Interpolate> InterpolationEntry<T, V> {
+impl<T: Input, V: Interpolate> InterpolationEntry<T, V> {
     /// Interpolates between the values of 2 consecutive [`InterpolationEntry`] based on the input.
     pub fn interpolate(entry0: &Self, entry1: &Self, input: T) -> V {
         let factor_in_interval =
