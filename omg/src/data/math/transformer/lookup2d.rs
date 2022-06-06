@@ -86,13 +86,7 @@ impl LookupTable2d {
         let y = input1 as u32 / self.cell_size.height();
         let index = self.size.to_index_risky(x, y);
 
-        *self.values.get(index).unwrap_or_else(|| {
-            panic!(
-                "Index {} is too large for {} cells!",
-                index,
-                self.values.len()
-            )
-        })
+        self.values[index]
     }
 }
 
