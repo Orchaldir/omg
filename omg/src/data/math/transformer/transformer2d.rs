@@ -16,8 +16,8 @@ impl From<LookupTable2dError> for Transformer2dError {
 /// Transforms 2 inputs into an output.
 #[derive(Debug)]
 pub enum Transformer2d {
-    /// Determine a cluster id from both inputs. E.g. biome from rainfall & temperature.
-    Clusterer(LookupTable2d),
+    /// Uses both inputs to lookup av alue. E.g. biome from rainfall & temperature.
+    Lookup2d(LookupTable2d),
     /// Returns a const value.
     Const(u8),
     /// Overwrites the input, if it is above a threshold.
@@ -38,7 +38,7 @@ impl Transformer2d {
     /// Transforms 2 inputs into an output.
     pub fn transform(&self, input0: u8, input1: u8) -> u8 {
         match self {
-            Clusterer(clusterer) => clusterer.cluster(input0, input1),
+            Lookup2d(table) => table.lookup(input0, input1),
             Const(value) => *value,
             OverwriteIfAbove(data) => data.overwrite_output_if_above(input0, input1),
             OverwriteIfBelow(data) => data.overwrite_output_if_below(input0, input1),

@@ -72,16 +72,16 @@ impl LookupTable2d {
     /// ```
     ///# use omg::data::math::size2d::Size2d;
     ///# use omg::data::math::transformer::lookup2d::LookupTable2d;
-    /// let clusterer = LookupTable2d::new(Size2d::new(3, 2), vec![10, 20, 30, 40, 50, 60]).unwrap();
+    /// let table = LookupTable2d::new(Size2d::new(3, 2), vec![10, 20, 30, 40, 50, 60]).unwrap();
     ///
-    /// assert_eq!(clusterer.cluster(  0,   0), 10);
-    /// assert_eq!(clusterer.cluster(100,  60), 20);
-    /// assert_eq!(clusterer.cluster(200, 100), 30);
-    /// assert_eq!(clusterer.cluster( 60, 170), 40);
-    /// assert_eq!(clusterer.cluster(170, 200), 50);
-    /// assert_eq!(clusterer.cluster(255, 255), 60);
+    /// assert_eq!(table.lookup(  0,   0), 10);
+    /// assert_eq!(table.lookup(100,  60), 20);
+    /// assert_eq!(table.lookup(200, 100), 30);
+    /// assert_eq!(table.lookup( 60, 170), 40);
+    /// assert_eq!(table.lookup(170, 200), 50);
+    /// assert_eq!(table.lookup(255, 255), 60);
     /// ```
-    pub fn cluster(&self, input0: u8, input1: u8) -> u8 {
+    pub fn lookup(&self, input0: u8, input1: u8) -> u8 {
         let x = input0 as u32 / self.cell_size.width();
         let y = input1 as u32 / self.cell_size.height();
         let index = self.size.to_index_risky(x, y);
