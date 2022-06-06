@@ -9,12 +9,12 @@ pub struct Color {
 }
 
 impl Color {
-    /// Returns a new color
+    /// Returns a new color.
     pub const fn new(r: u8, g: u8, b: u8) -> Color {
         Color { r, g, b }
     }
 
-    /// Returns a new gray color
+    /// Returns a new gray color.
     ///
     /// ```
     ///# use omg::data::color::Color;
@@ -28,7 +28,7 @@ impl Color {
         }
     }
 
-    /// Returns the red component
+    /// Returns the red component.
     ///
     /// ```
     ///# use omg::data::color::Color;
@@ -38,7 +38,7 @@ impl Color {
         self.r
     }
 
-    /// Returns the green component
+    /// Returns the green component.
     ///
     /// ```
     ///# use omg::data::color::Color;
@@ -48,7 +48,7 @@ impl Color {
         self.g
     }
 
-    /// Returns the blue component
+    /// Returns the blue component.
     ///
     /// ```
     ///# use omg::data::color::Color;
