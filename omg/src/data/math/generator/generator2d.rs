@@ -1,10 +1,9 @@
 use crate::data::math::distance::calculate_distance;
 use crate::data::math::generator::generator1d::Generator1d;
-use crate::data::math::size2d::Size2d;
 use Generator2d::*;
 
 #[svgbobdoc::transform]
-/// Generate values for 2d points.
+/// Generate values for a 2d input.
 /// Used for the procedural generation of 2d maps.
 pub enum Generator2d {
     /// Feeds the x values to a [`Generator1d`].
@@ -61,20 +60,6 @@ pub enum Generator2d {
         center_x: u32,
         center_y: u32,
     },
-    /// Generates the index of each 2d point.
-    ///
-    /// ```
-    ///# use omg::data::math::generator::generator2d::Generator2d;
-    /// let generator = Generator2d::new_index(2, 3);
-    ///
-    /// assert_eq!(generator.generate(0, 0), 0);
-    /// assert_eq!(generator.generate(1, 0), 1);
-    /// assert_eq!(generator.generate(0, 1), 2);
-    /// assert_eq!(generator.generate(1, 1), 3);
-    /// assert_eq!(generator.generate(0, 2), 4);
-    /// assert_eq!(generator.generate(1, 2), 5);
-    /// ```
-    IndexGenerator(Size2d),
 }
 
 impl Generator2d {
@@ -94,10 +79,6 @@ impl Generator2d {
         }
     }
 
-    pub fn new_index(width: u32, height: u32) -> Generator2d {
-        IndexGenerator(Size2d::new(width, height))
-    }
-
     /// Generates a value for a 2d point (x,y).
     pub fn generate(&self, x: u32, y: u32) -> u8 {
         match self {
@@ -111,7 +92,6 @@ impl Generator2d {
                 let distance = calculate_distance(*center_x, *center_y, x, y);
                 generator.generate(distance)
             }
-            IndexGenerator(size) => size.saturating_to_index(x, y) as u8,
         }
     }
 }

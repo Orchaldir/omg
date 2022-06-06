@@ -21,7 +21,7 @@ pub enum Generator1d {
     ///    end |----*       *----
     ///        |
     ///        +----*-------*---> input
-    ///        -length     +length
+    ///         -length    +length
     /// ```
     ///
     /// # Example
@@ -41,7 +41,7 @@ pub enum Generator1d {
     /// assert_eq!(generator.generate(179),   1);
     /// assert_eq!(generator.generate(180),   0);
     /// assert_eq!(generator.generate(181),   0);
-    /// assert_eq!(generator.generate(200),   0);
+    /// assert_eq!(generator.generate(u32::MAX), 0);
     /// ```
     AbsoluteGradient(Gradient),
     /// Generates a linear gradient between a start and an end value.
@@ -82,7 +82,7 @@ pub enum Generator1d {
     /// assert_eq!(generator.generate(1200), 200);
     ///```
     Gradient(Gradient),
-    /// Returns the input as output.
+    /// Returns the input as output until it reaches the maximum.
     ///
     /// # Example
     ///
@@ -92,6 +92,8 @@ pub enum Generator1d {
     /// assert_eq!(InputAsOutput.generate(0), 0);
     /// assert_eq!(InputAsOutput.generate(1), 1);
     /// assert_eq!(InputAsOutput.generate(2), 2);
+    /// assert_eq!(InputAsOutput.generate(300), 255);
+    /// assert_eq!(InputAsOutput.generate(u32::MAX), 255);
     ///```
     InputAsOutput,
     /// Interpolates multiple elements.
@@ -132,7 +134,13 @@ impl Generator1d {
         match self {
             AbsoluteGradient(gradient) => gradient.generate_absolute(input),
             Gradient(gradient) => gradient.generate(input),
-            InputAsOutput => input as u8,
+            InputAsOutput => {
+                if input > u8::MAX as u32 {
+                    return u8::MAX;
+                }
+
+                input as u8
+            }
             InterpolateVector(interpolator) => interpolator.interpolate(input),
         }
     }
