@@ -1,17 +1,18 @@
+use crate::data::input::IntInput;
 use crate::data::math::interpolation::vector::{VectorInterpolator, VectorInterpolatorError};
 use crate::data::math::interpolation::Interpolate;
 use std::collections::HashMap;
 
-/// Selects an object of type T based on the input.
+/// Selects a value based on the input.
 #[derive(Debug)]
-pub enum Selector<T: Interpolate> {
+pub enum Selector<I: IntInput, V: Interpolate> {
     /// Returns a specific element.
     ///
     /// ```
     ///# use omg::data::math::selector::Selector;
     /// assert_eq!(Selector::Const(99).get(128), 99);
     /// ```
-    Const(T),
+    Const(V),
     /// Interpolates 2 elements.
     ///
     /// ```
@@ -20,7 +21,7 @@ pub enum Selector<T: Interpolate> {
     ///
     /// assert_eq!(selector.get(128), 150);
     /// ```
-    InterpolatePair { first: T, second: T },
+    InterpolatePair { first: V, second: V },
     /// Interpolates multiple elements.
     ///
     /// ```
@@ -29,7 +30,7 @@ pub enum Selector<T: Interpolate> {
     ///
     /// assert_eq!(interpolator.get(125), 175);
     /// ```
-    InterpolateVector(VectorInterpolator<u8, T>),
+    InterpolateVector(VectorInterpolator<I, V>),
     /// Looks the input up in a hashmap or returns the default value.
     ///
     /// ```
@@ -43,37 +44,36 @@ pub enum Selector<T: Interpolate> {
     /// assert_eq!(selector.get(3), 100);
     /// assert_eq!(selector.get(4), 1);
     /// ```
-    Lookup { lookup: HashMap<u8, T>, default: T },
+    Lookup { lookup: HashMap<I, V>, default: V },
 }
 
-impl<T: Interpolate> Selector<T> {
-    pub fn new_interpolate_pair(first: T, second: T) -> Selector<T> {
+impl<I: IntInput, T: Interpolate> Selector<I, T> {
+    pub fn new_interpolate_pair(first: T, second: T) -> Selector<I, T> {
         Selector::InterpolatePair { first, second }
     }
 
     pub fn new_interpolate_vector(
-        vector: Vec<(u8, T)>,
-    ) -> Result<Selector<T>, VectorInterpolatorError> {
+        vector: Vec<(I, T)>,
+    ) -> Result<Selector<I, T>, VectorInterpolatorError> {
         let interpolation = VectorInterpolator::new(vector)?;
 
         Ok(Selector::InterpolateVector(interpolation))
     }
 
-    pub fn new_lookup(lookup: HashMap<u8, T>, default: T) -> Selector<T> {
+    pub fn new_lookup(lookup: HashMap<I, T>, default: T) -> Selector<I, T> {
         Selector::Lookup { lookup, default }
     }
 
-    /// Selects an object of type T based on the input.
-    pub fn get(&self, input: u8) -> T {
+    /// Selects a value based on the input.
+    pub fn get(&self, input: I) -> T {
         match self {
             Selector::Const(value) => value.clone(),
-            Selector::InterpolatePair { first, second } => {
-                first.lerp(second, input as f32 / 255.0)
-            }
+            Selector::InterpolatePair { first, second } => first.lerp(second, input.as_() / 255.0),
             Selector::InterpolateVector(interpolation) => interpolation.interpolate(input),
-            Selector::Lookup { lookup, default } => {
-                lookup.get(&input).cloned().unwrap_or_else(|| default.clone())
-            }
+            Selector::Lookup { lookup, default } => lookup
+                .get(&input)
+                .cloned()
+                .unwrap_or_else(|| default.clone()),
         }
     }
 }
