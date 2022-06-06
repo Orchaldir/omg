@@ -8,4 +8,5 @@ edition = "2021"
 
 [dependencies]
 derive-new = "0.5"
+num-traits = "0.2"
 svgbobdoc = "0.2"
