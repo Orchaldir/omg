@@ -7,7 +7,7 @@ pub trait Threshold: PrimInt + AsPrimitive<f32> + Clone + Copy {}
 impl Threshold for u8 {}
 impl Threshold for u32 {}
 
-/// A helper struct for [`VectorInterpolator`].
+/// Stores the values & thresholds for [`VectorInterpolator`].
 #[derive(Debug, PartialEq, Eq, Clone)]
 struct InterpolationEntry<T: Threshold, V: Interpolate> {
     threshold: T,
@@ -24,7 +24,7 @@ impl<T: Threshold, V: Interpolate> InterpolationEntry<T, V> {
 }
 
 #[svgbobdoc::transform]
-/// Interpolates multiple values.
+/// Interpolates multiple values based on their thresholds.
 ///
 /// # Diagram
 ///
@@ -48,7 +48,7 @@ pub struct VectorInterpolator<T: Threshold, V: Interpolate> {
 }
 
 impl<T: Threshold, V: Interpolate> VectorInterpolator<T, V> {
-    /// Returns a interpolator, if the input is valid. It needs 2 or more values:
+    /// Returns an interpolator, if the input is valid. It needs 2 or more values:
     ///
     /// ```
     ///# use omg::data::math::interpolation::vector::VectorInterpolator;
