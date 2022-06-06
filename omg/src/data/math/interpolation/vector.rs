@@ -1,27 +1,21 @@
 use crate::data::math::interpolation::Interpolate;
 use num_traits::int::PrimInt;
 use num_traits::AsPrimitive;
+use thiserror::Error;
+
+#[derive(Error, Debug, PartialEq)]
+/// The different errors for [`VectorInterpolator`].
+pub enum VectorInterpolatorError {
+    #[error("The vector needs at least 2 elements!")]
+    NotEnoughElements,
+    #[error("The vector is not sorted!")]
+    NotSorted,
+}
 
 pub trait Threshold: PrimInt + AsPrimitive<f32> + Clone + Copy {}
 
 impl Threshold for u8 {}
 impl Threshold for u32 {}
-
-/// Stores the values & thresholds for [`VectorInterpolator`].
-#[derive(Debug, PartialEq, Eq, Clone)]
-struct InterpolationEntry<T: Threshold, V: Interpolate> {
-    threshold: T,
-    value: V,
-}
-
-impl<T: Threshold, V: Interpolate> InterpolationEntry<T, V> {
-    /// Interpolates between the values of 2 consecutive [`InterpolationEntry`] based on the input.
-    pub fn interpolate(entry0: &Self, entry1: &Self, input: T) -> V {
-        let factor_in_interval =
-            (input - entry0.threshold).as_() / (entry1.threshold - entry0.threshold).as_();
-        entry0.value.lerp(&entry1.value, factor_in_interval)
-    }
-}
 
 #[svgbobdoc::transform]
 /// Interpolates multiple values based on their thresholds.
@@ -52,27 +46,29 @@ impl<T: Threshold, V: Interpolate> VectorInterpolator<T, V> {
     ///
     /// ```
     ///# use omg::data::math::interpolation::vector::VectorInterpolator;
-    /// assert!(VectorInterpolator::new(vec![(0u32,50)]).is_err());
+    ///# use omg::data::math::interpolation::vector::VectorInterpolatorError::NotEnoughElements;
+    /// assert_eq!(VectorInterpolator::new(vec![(0u32,50)]), Err(NotEnoughElements));
     /// ```
     ///
     /// The values must be ordered based in their threshold:
     ///
     /// ```
     ///# use omg::data::math::interpolation::vector::VectorInterpolator;
-    /// assert!(VectorInterpolator::new(vec![(50u32,50),(0,200)]).is_err());
+    ///# use omg::data::math::interpolation::vector::VectorInterpolatorError::NotSorted;
+    /// assert_eq!(VectorInterpolator::new(vec![(50u32,50),(0,200)]), Err(NotSorted));
     /// ```
-    pub fn new(vector: Vec<(T, V)>) -> Result<VectorInterpolator<T, V>, &'static str> {
+    pub fn new(vector: Vec<(T, V)>) -> Result<VectorInterpolator<T, V>, VectorInterpolatorError> {
         if vector.len() < 2 {
-            return Err("The vector needs at least 2 elements!");
+            return Err(VectorInterpolatorError::NotEnoughElements);
         }
 
-        let mut last_value = T::zero();
+        let mut last_threshold = T::zero();
 
-        for (value, _) in &vector {
-            if *value < last_value {
-                return Err("The elements of vector are not ordered!");
+        for (threshold, _) in &vector {
+            if *threshold < last_threshold {
+                return Err(VectorInterpolatorError::NotSorted);
             }
-            last_value = *value;
+            last_threshold = *threshold;
         }
 
         Ok(VectorInterpolator {
@@ -117,5 +113,21 @@ impl<T: Threshold, V: Interpolate> VectorInterpolator<T, V> {
         }
 
         last_entry.value.clone()
+    }
+}
+
+/// Stores the values & thresholds for [`VectorInterpolator`].
+#[derive(Debug, PartialEq, Eq, Clone)]
+struct InterpolationEntry<T: Threshold, V: Interpolate> {
+    threshold: T,
+    value: V,
+}
+
+impl<T: Threshold, V: Interpolate> InterpolationEntry<T, V> {
+    /// Interpolates between the values of 2 consecutive [`InterpolationEntry`] based on the input.
+    pub fn interpolate(entry0: &Self, entry1: &Self, input: T) -> V {
+        let factor_in_interval =
+            (input - entry0.threshold).as_() / (entry1.threshold - entry0.threshold).as_();
+        entry0.value.lerp(&entry1.value, factor_in_interval)
     }
 }
