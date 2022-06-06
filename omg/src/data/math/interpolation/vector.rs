@@ -8,11 +8,21 @@ impl Threshold for u8 {}
 impl Threshold for u32 {}
 
 #[derive(Debug, PartialEq, Eq, Clone)]
-pub struct InterpolationEntry<T: Threshold, V: Interpolate> {
+struct InterpolationEntry<T: Threshold, V: Interpolate> {
     threshold: T,
     value: V,
 }
 
+impl<T: Threshold, V: Interpolate> InterpolationEntry<T, V> {
+    /// Interpolates between the values of 2 consecutive [`InterpolationEntry`] based on the input.
+    pub fn interpolate(entry0: &Self, entry1: &Self, input: T) -> V {
+        let factor_in_interval =
+            (input - entry0.threshold).as_() / (entry1.threshold - entry0.threshold).as_();
+        entry0.value.lerp(&entry1.value, factor_in_interval)
+    }
+}
+
+///
 #[derive(Debug, PartialEq, Eq, Clone)]
 pub struct VectorInterpolation<T: Threshold, V: Interpolate> {
     vector: Vec<InterpolationEntry<T, V>>,
@@ -81,9 +91,7 @@ impl<T: Threshold, V: Interpolate> VectorInterpolation<T, V> {
 
         for entry in &self.vector[1..] {
             if input <= entry.threshold {
-                let factor_in_interval = (input - last_entry.threshold).as_()
-                    / (entry.threshold - last_entry.threshold).as_();
-                return last_entry.value.lerp(&entry.value, factor_in_interval);
+                return InterpolationEntry::interpolate(last_entry, entry, input);
             }
 
             last_entry = entry;
