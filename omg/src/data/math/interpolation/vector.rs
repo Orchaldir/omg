@@ -80,16 +80,11 @@ impl<T: Input, V: Interpolate> VectorInterpolator<T, V> {
     ///
     /// ```
     ///# use omg::data::math::interpolation::vector::VectorInterpolator;
-    /// let interpolator = VectorInterpolator::new(vec![(100u32,150), (150,200), (200, 100)]).unwrap();
+    /// let interpolator = VectorInterpolator::new(vec![(100u32,150), (150,200)]).unwrap();
     ///
-    /// assert_eq!(interpolator.interpolate(  0), 150);
-    /// assert_eq!(interpolator.interpolate( 50), 150);
     /// assert_eq!(interpolator.interpolate(100), 150);
     /// assert_eq!(interpolator.interpolate(125), 175);
     /// assert_eq!(interpolator.interpolate(150), 200);
-    /// assert_eq!(interpolator.interpolate(175), 150);
-    /// assert_eq!(interpolator.interpolate(200), 100);
-    /// assert_eq!(interpolator.interpolate(255), 100);
     /// ```
     pub fn interpolate(&self, input: T) -> V {
         let mut last_entry = self.vector.get(0).unwrap();
@@ -123,5 +118,41 @@ impl<T: Input, V: Interpolate> InterpolationEntry<T, V> {
         let factor_in_interval =
             (input - entry0.threshold).as_() / (entry1.threshold - entry0.threshold).as_();
         entry0.value.lerp(&entry1.value, factor_in_interval)
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn test_before_the_first_element() {
+        let interpolator = VectorInterpolator::new(vec![(100u32, 150), (150, 200)]).unwrap();
+
+        assert_eq!(interpolator.interpolate(0), 150);
+        assert_eq!(interpolator.interpolate(50), 150);
+    }
+
+    #[test]
+    fn test_after_the_last_element() {
+        let interpolator = VectorInterpolator::new(vec![(100u32, 150), (150, 200)]).unwrap();
+
+        assert_eq!(interpolator.interpolate(200), 200);
+        assert_eq!(interpolator.interpolate(250), 200);
+    }
+
+    #[test]
+    fn test_with_float() {
+        let interpolator =
+            VectorInterpolator::new(vec![(100.0f32, 150), (150.0, 200), (200.0, 100)]).unwrap();
+
+        assert_eq!(interpolator.interpolate(0.0), 150);
+        assert_eq!(interpolator.interpolate(50.0), 150);
+        assert_eq!(interpolator.interpolate(100.0), 150);
+        assert_eq!(interpolator.interpolate(125.0), 175);
+        assert_eq!(interpolator.interpolate(150.0), 200);
+        assert_eq!(interpolator.interpolate(175.0), 150);
+        assert_eq!(interpolator.interpolate(200.0), 100);
+        assert_eq!(interpolator.interpolate(255.0), 100);
     }
 }

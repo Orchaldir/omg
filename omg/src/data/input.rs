@@ -1,7 +1,7 @@
-use num_traits::int::PrimInt;
-use num_traits::AsPrimitive;
+use num_traits::{AsPrimitive, Num};
 
-pub trait Input: PrimInt + AsPrimitive<f32> + Clone + Copy {}
+pub trait Input: Num + AsPrimitive<f32> + PartialOrd + Clone + Copy {}
 
 impl Input for u8 {}
 impl Input for u32 {}
+impl Input for f32 {}
