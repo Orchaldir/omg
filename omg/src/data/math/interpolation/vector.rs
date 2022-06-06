@@ -7,6 +7,7 @@ pub trait Threshold: PrimInt + AsPrimitive<f32> + Clone + Copy {}
 impl Threshold for u8 {}
 impl Threshold for u32 {}
 
+/// A helper struct for [`VectorInterpolator`].
 #[derive(Debug, PartialEq, Eq, Clone)]
 struct InterpolationEntry<T: Threshold, V: Interpolate> {
     threshold: T,
@@ -22,27 +23,45 @@ impl<T: Threshold, V: Interpolate> InterpolationEntry<T, V> {
     }
 }
 
+#[svgbobdoc::transform]
+/// Interpolates multiple values.
 ///
+/// # Diagram
+///
+/// ```svgbob
+///      value
+///        ^
+///        |                   *
+///        |                  / \
+///        |        *        /   \
+///        |       / \      /     *--
+///        |      /   *----*
+///        |     /
+///        |----*
+///        |
+///        +----*-----------------*--> threshold
+///           first             last
+/// ```
 #[derive(Debug, PartialEq, Eq, Clone)]
-pub struct VectorInterpolation<T: Threshold, V: Interpolate> {
+pub struct VectorInterpolator<T: Threshold, V: Interpolate> {
     vector: Vec<InterpolationEntry<T, V>>,
 }
 
-impl<T: Threshold, V: Interpolate> VectorInterpolation<T, V> {
-    /// Returns a VectorInterpolation, if the input is valid. It needs 2 or more elements:
+impl<T: Threshold, V: Interpolate> VectorInterpolator<T, V> {
+    /// Returns a interpolator, if the input is valid. It needs 2 or more values:
     ///
     /// ```
-    ///# use omg::data::math::interpolation::vector::VectorInterpolation;
-    /// assert!(VectorInterpolation::new(vec![(0u32,50)]).is_err());
+    ///# use omg::data::math::interpolation::vector::VectorInterpolator;
+    /// assert!(VectorInterpolator::new(vec![(0u32,50)]).is_err());
     /// ```
     ///
-    /// The elements must be ordered based in their position:
+    /// The values must be ordered based in their threshold:
     ///
     /// ```
-    ///# use omg::data::math::interpolation::vector::VectorInterpolation;
-    /// assert!(VectorInterpolation::new(vec![(50u32,50),(0,200)]).is_err());
+    ///# use omg::data::math::interpolation::vector::VectorInterpolator;
+    /// assert!(VectorInterpolator::new(vec![(50u32,50),(0,200)]).is_err());
     /// ```
-    pub fn new(vector: Vec<(T, V)>) -> Result<VectorInterpolation<T, V>, &'static str> {
+    pub fn new(vector: Vec<(T, V)>) -> Result<VectorInterpolator<T, V>, &'static str> {
         if vector.len() < 2 {
             return Err("The vector needs at least 2 elements!");
         }
@@ -56,7 +75,7 @@ impl<T: Threshold, V: Interpolate> VectorInterpolation<T, V> {
             last_value = *value;
         }
 
-        Ok(VectorInterpolation {
+        Ok(VectorInterpolator {
             vector: vector
                 .into_iter()
                 .map(|e| InterpolationEntry {
@@ -67,11 +86,11 @@ impl<T: Threshold, V: Interpolate> VectorInterpolation<T, V> {
         })
     }
 
-    /// Interpolates between the values of a vector of [`InterpolationEntry`] based on the input and their thresholds.
+    /// Interpolates the values based on the input.
     ///
     /// ```
-    ///# use omg::data::math::interpolation::vector::VectorInterpolation;
-    /// let interpolator = VectorInterpolation::new(vec![(100u32,150), (150,200), (200, 100)]).unwrap();
+    ///# use omg::data::math::interpolation::vector::VectorInterpolator;
+    /// let interpolator = VectorInterpolator::new(vec![(100u32,150), (150,200), (200, 100)]).unwrap();
     ///
     /// assert_eq!(interpolator.interpolate(  0), 150);
     /// assert_eq!(interpolator.interpolate( 50), 150);
