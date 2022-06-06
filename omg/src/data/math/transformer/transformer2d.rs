@@ -1,14 +1,14 @@
-use crate::data::math::transformer::clusterer2d::{Clusterer2d, Clusterer2dError};
+use crate::data::math::transformer::lookup2d::{LookupTable2d, LookupTable2dError};
 use crate::data::math::transformer::threshold::OverwriteWithThreshold;
 use Transformer2d::*;
 
 #[derive(Debug, Eq, PartialEq)]
 pub enum Transformer2dError {
-    Clusterer(Clusterer2dError),
+    Clusterer(LookupTable2dError),
 }
 
-impl From<Clusterer2dError> for Transformer2dError {
-    fn from(error: Clusterer2dError) -> Self {
+impl From<LookupTable2dError> for Transformer2dError {
+    fn from(error: LookupTable2dError) -> Self {
         Transformer2dError::Clusterer(error)
     }
 }
@@ -17,7 +17,7 @@ impl From<Clusterer2dError> for Transformer2dError {
 #[derive(Debug)]
 pub enum Transformer2d {
     /// Determine a cluster id from both inputs. E.g. biome from rainfall & temperature.
-    Clusterer(Clusterer2d),
+    Clusterer(LookupTable2d),
     /// Returns a const value.
     Const(u8),
     /// Overwrites the input, if it is above a threshold.
