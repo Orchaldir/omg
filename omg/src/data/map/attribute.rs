@@ -1,4 +1,5 @@
 use crate::data::math::size2d::Size2d;
+use std::ops::{Index, IndexMut};
 
 /// Represents a value with a specific meaning for each cell of a map.
 ///
@@ -57,60 +58,6 @@ impl Attribute {
         &self.size
     }
 
-    /// Returns the value at the index.
-    ///
-    /// ```
-    ///# use omg::data::map::attribute::Attribute;
-    ///# use omg::data::math::size2d::Size2d;
-    /// let attribute = Attribute::default_value("elevation", Size2d::new(1, 2), 42);
-    ///
-    /// assert_eq!(attribute.get(0), 42);
-    /// assert_eq!(attribute.get(1), 42);
-    /// ```
-    ///
-    /// # Panics
-    ///
-    /// Panics if the index is outside the map.
-    ///
-    /// ```should_panic
-    ///# use omg::data::map::attribute::Attribute;
-    ///# use omg::data::math::size2d::Size2d;
-    /// let attribute = Attribute::default_value("elevation", Size2d::new(1, 2), 42);
-    ///
-    /// attribute.get(2);
-    /// ```
-    pub fn get(&self, index: usize) -> u8 {
-        self.values[index]
-    }
-
-    /// Returns the mutable value at the index.
-    ///
-    /// ```
-    ///# use omg::data::map::attribute::Attribute;
-    ///# use omg::data::math::size2d::Size2d;
-    /// let mut attribute = Attribute::default_value("elevation", Size2d::new(1, 2), 42);
-    ///
-    /// *attribute.get_mut(0) += 4;
-    ///
-    /// assert_eq!(attribute.get(0), 46);
-    /// assert_eq!(attribute.get(1), 42);
-    /// ```
-    ///
-    /// # Panics
-    ///
-    /// Panics if the index is outside the map.
-    ///
-    /// ```should_panic
-    ///# use omg::data::map::attribute::Attribute;
-    ///# use omg::data::math::size2d::Size2d;
-    /// let mut attribute = Attribute::default_value("elevation", Size2d::new(1, 2), 42);
-    ///
-    /// attribute.get_mut(2);
-    /// ```
-    pub fn get_mut(&mut self, index: usize) -> &mut u8 {
-        self.values.get_mut(index).expect("Index is outside map!")
-    }
-
     /// Returns a reference to the values.
     ///
     /// ```
@@ -133,8 +80,7 @@ impl Attribute {
     ///
     /// attribute.replace_all(vec![3, 4]);
     ///
-    /// assert_eq!(attribute.get(0), 3);
-    /// assert_eq!(attribute.get(1), 4);
+    /// assert_eq!(attribute.get_all(), &vec![3, 4]);
     /// ```
     ///
     /// # Panics
@@ -184,5 +130,64 @@ impl Attribute {
         for index in indices.iter() {
             self.values[*index] = value;
         }
+    }
+}
+
+/// Returns the value at the index.
+///
+/// ```
+///# use omg::data::map::attribute::Attribute;
+///# use omg::data::math::size2d::Size2d;
+/// let attribute = Attribute::new("elevation", Size2d::new(1, 2), vec![6, 7]);
+///
+/// assert_eq!(attribute[0], 6);
+/// assert_eq!(attribute[1], 7);
+/// ```
+///
+/// # Panics
+///
+/// Panics if the index is outside the map.
+///
+/// ```should_panic
+///# use omg::data::map::attribute::Attribute;
+///# use omg::data::math::size2d::Size2d;
+/// let attribute = Attribute::default_value("elevation", Size2d::new(1, 2), 42);
+///
+/// attribute[2];
+/// ```
+impl Index<usize> for Attribute {
+    type Output = u8;
+
+    fn index(&self, index: usize) -> &Self::Output {
+        &self.values[index]
+    }
+}
+
+/// Returns the mutable value at the index.
+///
+/// ```
+///# use omg::data::map::attribute::Attribute;
+///# use omg::data::math::size2d::Size2d;
+/// let mut attribute = Attribute::default_value("elevation", Size2d::new(1, 2), 42);
+///
+/// attribute[0] += 4;
+///
+/// assert_eq!(attribute.get_all(), &vec![46, 42]);
+/// ```
+///
+/// # Panics
+///
+/// Panics if the index is outside the map.
+///
+/// ```should_panic
+///# use omg::data::map::attribute::Attribute;
+///# use omg::data::math::size2d::Size2d;
+/// let mut attribute = Attribute::default_value("elevation", Size2d::new(1, 2), 42);
+///
+/// attribute[2] = 99;
+/// ```
+impl IndexMut<usize> for Attribute {
+    fn index_mut(&mut self, index: usize) -> &mut u8 {
+        &mut self.values[index]
     }
 }
