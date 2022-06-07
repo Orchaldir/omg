@@ -177,7 +177,7 @@ impl Index<usize> for Attribute {
 ///
 /// # Panics
 ///
-/// Panics if the index is outside the map.
+/// Panics if the index is outside the .
 ///
 /// ```should_panic
 ///# use omg::data::map::attribute::Attribute;
