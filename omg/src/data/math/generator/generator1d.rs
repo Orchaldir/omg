@@ -92,8 +92,6 @@ pub enum Generator1d {
     /// assert_eq!(InputAsOutput.generate(0), 0);
     /// assert_eq!(InputAsOutput.generate(1), 1);
     /// assert_eq!(InputAsOutput.generate(2), 2);
-    /// assert_eq!(InputAsOutput.generate(300), 255);
-    /// assert_eq!(InputAsOutput.generate(u32::MAX), 255);
     ///```
     InputAsOutput,
     /// Interpolates multiple elements.
@@ -143,5 +141,16 @@ impl Generator1d {
             }
             InterpolateVector(interpolator) => interpolator.interpolate(input),
         }
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn test_input_bigger_than_max_output() {
+        assert_eq!(InputAsOutput.generate(300), 255);
+        assert_eq!(InputAsOutput.generate(u32::MAX), 255);
     }
 }
