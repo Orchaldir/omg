@@ -45,7 +45,6 @@ impl Size2d {
     /// ```
     ///# use omg::data::math::size2d::Size2d;
     ///# use omg::data::math::size2d::Size2dError::{HeightIsZero, WidthIsZero};
-    /// let size = Size2d::new(2, 3).unwrap();
     /// assert_eq!(Size2d::new(2, 3), Ok(Size2d::unchecked(2, 3)));
     /// assert_eq!(Size2d::new(0, 3), Err(WidthIsZero));
     /// assert_eq!(Size2d::new(2, 0), Err(HeightIsZero));
