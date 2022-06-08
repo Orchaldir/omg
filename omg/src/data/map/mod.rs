@@ -1,5 +1,6 @@
 use crate::data::map::attribute::Attribute;
 use crate::data::math::size2d::Size2d;
+use anyhow::{bail, Result};
 use std::collections::HashMap;
 
 pub mod attribute;
@@ -53,8 +54,8 @@ impl Map2d {
     ///# use omg::data::math::size2d::Size2d;
     /// let mut map = Map2d::new(Size2d::unchecked(2, 3));
     ///
-    /// assert_eq!(map.create_attribute("elevation", 42), Some(0));
-    /// assert_eq!(map.create_attribute("rainfall", 100), Some(1));
+    /// assert_eq!(map.create_attribute("elevation", 42).unwrap(), 0);
+    /// assert_eq!(map.create_attribute("rainfall", 100).unwrap(), 1);
     /// ```
     ///
     /// Fails if the map already contains an [`Attribute`] with the same name.
@@ -64,11 +65,11 @@ impl Map2d {
     ///# use omg::data::math::size2d::Size2d;
     /// let mut map = Map2d::new(Size2d::unchecked(2, 3));
     ///
-    /// assert_eq!(map.create_attribute("elevation", 42), Some(0));
-    /// assert_eq!(map.create_attribute("elevation", 100), None);
+    /// assert_eq!(map.create_attribute("elevation", 42).unwrap(), 0);
+    /// assert!(map.create_attribute("elevation", 100).is_err());
     /// ```
-    pub fn create_attribute<S: Into<String>>(&mut self, name: S, default: u8) -> Option<usize> {
-        self.add_attribute(Attribute::default_value(name, self.size, default))
+    pub fn create_attribute<S: Into<String>>(&mut self, name: S, default: u8) -> Result<usize> {
+        self.add_attribute(Attribute::default_value(name, self.size, default)?)
     }
 
     /// Adds a new [`Attribute`] with the supplied values to the map and returns its id.
@@ -76,21 +77,21 @@ impl Map2d {
         &mut self,
         name: S,
         values: Vec<u8>,
-    ) -> Option<usize> {
-        self.add_attribute(Attribute::new(name, self.size, values))
+    ) -> Result<usize> {
+        self.add_attribute(Attribute::new(name, self.size, values)?)
     }
 
-    fn add_attribute(&mut self, attribute: Attribute) -> Option<usize> {
+    fn add_attribute(&mut self, attribute: Attribute) -> Result<usize> {
         let id = self.attributes.len();
 
         if self.attribute_lookup.contains_key(attribute.name()) {
-            return None;
+            bail!("Attribute '{}' already exists!", attribute.name());
         }
 
         self.attribute_lookup
             .insert(attribute.name().to_string(), id);
         self.attributes.push(attribute);
-        Some(id)
+        Ok(id)
     }
 
     /// Returns the id of the [`Attribute`] with the matching name.

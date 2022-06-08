@@ -39,6 +39,7 @@ impl CreateAttribute {
     pub fn run(&self, map: &mut Map2d) {
         info!("Create attribute '{}' of map '{}'", self.name, map.name());
 
-        map.create_attribute(self.name.clone(), self.default);
+        map.create_attribute(self.name.clone(), self.default)
+            .expect("Failed to create the attribute!");
     }
 }
