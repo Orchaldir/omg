@@ -1,4 +1,6 @@
 use crate::data::map::Map2d;
+use crate::data::name::validate_name;
+use anyhow::{Context, Result};
 
 /// Create a new [`Attribute`] in the [`Map2d`].
 #[derive(Debug, PartialEq, Eq, Clone)]
@@ -8,11 +10,17 @@ pub struct CreateAttribute {
 }
 
 impl CreateAttribute {
-    pub fn new<S: Into<String>>(name: S, default: u8) -> CreateAttribute {
-        CreateAttribute {
-            name: name.into(),
-            default,
-        }
+    /// Creates the step, but returns an error if the name is invalid:
+    ///
+    /// ```
+    ///# use omg::generation::attributes::create::CreateAttribute;
+    /// assert!(CreateAttribute::new("", 9).is_err());
+    /// assert!(CreateAttribute::new("   ", 42).is_err());
+    /// ```
+    pub fn new<S: Into<String>>(name: S, default: u8) -> Result<CreateAttribute> {
+        let name = validate_name(name).context("Failed to create a CreateAttribute step!")?;
+
+        Ok(CreateAttribute { name, default })
     }
 
     pub fn get_attribute(&self) -> &str {
@@ -27,7 +35,7 @@ impl CreateAttribute {
     ///# use omg::generation::attributes::create::CreateAttribute;
     /// let size = Size2d::unchecked(2, 3);
     /// let mut map = Map2d::new(size);
-    /// let step = CreateAttribute::new("test0", 9);
+    /// let step = CreateAttribute::new("test0", 9).unwrap();
     ///
     /// step.run(&mut map);
     ///
