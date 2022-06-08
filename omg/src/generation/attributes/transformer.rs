@@ -19,7 +19,7 @@ impl TransformAttribute2d {
     ///# use omg::data::math::size2d::Size2d;
     ///# use omg::data::math::transformer::transformer2d::Transformer2d;
     ///# use omg::generation::attributes::transformer::TransformAttribute2d;
-    /// let mut map = Map2d::new(Size2d::new(3, 2));
+    /// let mut map = Map2d::new(Size2d::unchecked(3, 2));
     /// map.create_attribute_from("input0", vec![  0,   1,  99, 100, 101, 255]);
     /// map.create_attribute_from("input1", vec![200, 199, 198, 197, 196, 195]);
     /// map.create_attribute("target", 10);

@@ -23,7 +23,7 @@ impl Map2d {
     /// ```
     ///# use omg::data::map::Map2d;
     ///# use omg::data::math::size2d::Size2d;
-    /// let size = Size2d::new(2, 3);
+    /// let size = Size2d::unchecked(2, 3);
     /// let mut map = Map2d::with_name("world", size);
     ///
     /// assert_eq!(map.name(), "world");
@@ -51,7 +51,7 @@ impl Map2d {
     /// ```
     ///# use omg::data::map::Map2d;
     ///# use omg::data::math::size2d::Size2d;
-    /// let mut map = Map2d::new(Size2d::new(2, 3));
+    /// let mut map = Map2d::new(Size2d::unchecked(2, 3));
     ///
     /// assert_eq!(map.create_attribute("elevation", 42), Some(0));
     /// assert_eq!(map.create_attribute("rainfall", 100), Some(1));
@@ -62,7 +62,7 @@ impl Map2d {
     /// ```
     ///# use omg::data::map::Map2d;
     ///# use omg::data::math::size2d::Size2d;
-    /// let mut map = Map2d::new(Size2d::new(2, 3));
+    /// let mut map = Map2d::new(Size2d::unchecked(2, 3));
     ///
     /// assert_eq!(map.create_attribute("elevation", 42), Some(0));
     /// assert_eq!(map.create_attribute("elevation", 100), None);
@@ -98,7 +98,7 @@ impl Map2d {
     /// ```
     ///# use omg::data::map::Map2d;
     ///# use omg::data::math::size2d::Size2d;
-    /// let mut map = Map2d::new(Size2d::new(2, 3));
+    /// let mut map = Map2d::new(Size2d::unchecked(2, 3));
     /// map.create_attribute("elevation", 42);
     /// map.create_attribute("rainfall", 100);
     ///
@@ -115,7 +115,7 @@ impl Map2d {
     /// ```
     ///# use omg::data::map::Map2d;
     ///# use omg::data::math::size2d::Size2d;
-    /// let mut map = Map2d::new(Size2d::new(2, 3));
+    /// let mut map = Map2d::new(Size2d::unchecked(2, 3));
     /// map.create_attribute("elevation", 42);
     /// map.create_attribute("rainfall", 100);
     ///
@@ -130,7 +130,7 @@ impl Map2d {
     /// ```should_panic
     ///# use omg::data::map::Map2d;
     ///# use omg::data::math::size2d::Size2d;
-    /// let mut map = Map2d::new(Size2d::new(2, 3));
+    /// let mut map = Map2d::new(Size2d::unchecked(2, 3));
     ///
     /// map.get_attribute(0);
     /// ```
@@ -144,7 +144,7 @@ impl Map2d {
     ///# use omg::data::map::attribute::Attribute;
     ///# use omg::data::map::Map2d;
     ///# use omg::data::math::size2d::Size2d;
-    /// let mut map = Map2d::new(Size2d::new(2, 3));
+    /// let mut map = Map2d::new(Size2d::unchecked(2, 3));
     /// map.create_attribute("elevation", 42);
     /// map.create_attribute("rainfall", 100);
     ///
@@ -159,7 +159,7 @@ impl Map2d {
     /// ```should_panic
     ///# use omg::data::map::Map2d;
     ///# use omg::data::math::size2d::Size2d;
-    /// let mut map = Map2d::new(Size2d::new(2, 3));
+    /// let mut map = Map2d::new(Size2d::unchecked(2, 3));
     ///
     /// map.get_attribute_mut(0);
     /// ```

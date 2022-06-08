@@ -43,9 +43,9 @@ impl LookupTable2d {
     ///# use omg::data::math::size2d::Size2d;
     ///# use omg::data::math::transformer::lookup2d::LookupTable2d;
     ///# use omg::data::math::transformer::lookup2d::LookupTable2dError::{TooFewValues, SizeMismatch};
-    /// assert_eq!(LookupTable2d::new(Size2d::new(2,  2), vec![10, 20]), Err(SizeMismatch(4, 2)));
-    /// assert_eq!(LookupTable2d::new(Size2d::new(0,  0), vec![10, 20]), Err(SizeMismatch(0, 2)));
-    /// assert_eq!(LookupTable2d::new(Size2d::new(0,  0), vec![]), Err(TooFewValues));
+    /// assert_eq!(LookupTable2d::new(Size2d::unchecked(2,  2), vec![10, 20]), Err(SizeMismatch(4, 2)));
+    /// assert_eq!(LookupTable2d::new(Size2d::unchecked(0,  0), vec![10, 20]), Err(SizeMismatch(0, 2)));
+    /// assert_eq!(LookupTable2d::new(Size2d::unchecked(0,  0), vec![]), Err(TooFewValues));
     /// ```
     pub fn new(size: Size2d, values: Vec<u8>) -> Result<LookupTable2d, LookupTable2dError> {
         if size.get_area() != values.len() {
@@ -62,7 +62,7 @@ impl LookupTable2d {
 
         Ok(LookupTable2d {
             size,
-            cell_size: Size2d::new(width, height),
+            cell_size: Size2d::unchecked(width, height),
             values,
         })
     }
@@ -72,7 +72,7 @@ impl LookupTable2d {
     /// ```
     ///# use omg::data::math::size2d::Size2d;
     ///# use omg::data::math::transformer::lookup2d::LookupTable2d;
-    /// let table = LookupTable2d::new(Size2d::new(3, 2), vec![10, 20, 30, 40, 50, 60]).unwrap();
+    /// let table = LookupTable2d::new(Size2d::unchecked(3, 2), vec![10, 20, 30, 40, 50, 60]).unwrap();
     ///
     /// assert_eq!(table.lookup(  0,   0), 10);
     /// assert_eq!(table.lookup(100,  60), 20);

@@ -9,7 +9,7 @@ pub struct Size2dSerde {
 
 impl From<Size2dSerde> for Size2d {
     fn from(value: Size2dSerde) -> Self {
-        Size2d::new(value.width, value.height)
+        Size2d::unchecked(value.width, value.height)
     }
 }
 
@@ -29,7 +29,7 @@ mod tests {
 
     #[test]
     fn test_conversion() {
-        let start = Size2d::new(1, 2);
+        let start = Size2d::unchecked(1, 2);
         let serde: Size2dSerde = start.into();
         let result: Size2d = serde.into();
 

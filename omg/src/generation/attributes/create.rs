@@ -25,7 +25,7 @@ impl CreateAttribute {
     ///# use omg::data::map::Map2d;
     ///# use omg::data::math::size2d::Size2d;
     ///# use omg::generation::attributes::create::CreateAttribute;
-    /// let size = Size2d::new(2, 3);
+    /// let size = Size2d::unchecked(2, 3);
     /// let mut map = Map2d::new(size);
     /// let step = CreateAttribute::new("test0", 9);
     ///

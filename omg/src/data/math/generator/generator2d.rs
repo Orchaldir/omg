@@ -95,7 +95,7 @@ impl Generator2d {
     }
 
     pub fn new_index(width: u32, height: u32) -> Generator2d {
-        IndexGenerator(Size2d::new(width, height))
+        IndexGenerator(Size2d::unchecked(width, height))
     }
 
     /// Generates a value for a 2d point (x,y).

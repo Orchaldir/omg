@@ -17,7 +17,7 @@ impl Distortion1d {
     ///# use omg::data::math::generator::generator1d::Generator1d::InputAsOutput;
     ///# use omg::data::math::size2d::Size2d;
     ///# use omg::generation::attributes::distortion1d::Distortion1d;
-    /// let size = Size2d::new(3, 3);
+    /// let size = Size2d::unchecked(3, 3);
     /// let mut map = Map2d::new(size);
     /// let values = vec![1, 2, 3, 4, 5, 6, 7, 8, 9];
     /// let attribute_id = map.create_attribute_from("test", values).unwrap();
@@ -48,7 +48,7 @@ impl Distortion1d {
     ///# use omg::data::math::generator::generator1d::Generator1d::InputAsOutput;
     ///# use omg::data::math::size2d::Size2d;
     ///# use omg::generation::attributes::distortion1d::Distortion1d;
-    /// let size = Size2d::new(3, 3);
+    /// let size = Size2d::unchecked(3, 3);
     /// let mut map = Map2d::new(size);
     /// let values = vec![1, 2, 3, 4, 5, 6, 7, 8, 9];
     /// let attribute_id = map.create_attribute_from("test", values).unwrap();

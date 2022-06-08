@@ -29,7 +29,7 @@ impl GeneratorStep {
     ///# use omg::data::math::size2d::Size2d;
     ///# use omg::generation::attributes::generator::GeneratorStep;
     ///# use omg::generation::step::GenerationStep;
-    /// let size = Size2d::new(2, 3);
+    /// let size = Size2d::unchecked(2, 3);
     /// let mut map = Map2d::new(size);
     /// let attribute_id = map.create_attribute("elevation", 40).unwrap();
     /// let generator = IndexGenerator(size);
@@ -70,7 +70,7 @@ impl GeneratorStep {
     ///# use omg::data::math::size2d::Size2d;
     ///# use omg::generation::attributes::generator::GeneratorStep;
     ///# use omg::generation::step::GenerationStep;
-    /// let size = Size2d::new(2, 3);
+    /// let size = Size2d::unchecked(2, 3);
     /// let mut map = Map2d::new(size);
     /// let attribute_id = map.create_attribute("elevation", 40).unwrap();
     /// let generator = IndexGenerator(size);
