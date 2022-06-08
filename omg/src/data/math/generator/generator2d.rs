@@ -64,8 +64,9 @@ pub enum Generator2d {
     /// Generates the index of each 2d point.
     ///
     /// ```
-    ///# use omg::data::math::generator::generator2d::Generator2d;
-    /// let generator = Generator2d::new_index(2, 3);
+    ///# use omg::data::math::generator::generator2d::Generator2d::IndexGenerator;
+    ///# use omg::data::math::size2d::Size2d;
+    /// let generator = IndexGenerator(Size2d::unchecked(2, 3));
     ///
     /// assert_eq!(generator.generate(0, 0), 0);
     /// assert_eq!(generator.generate(1, 0), 1);
@@ -92,10 +93,6 @@ impl Generator2d {
             center_x: x,
             center_y: y,
         }
-    }
-
-    pub fn new_index(width: u32, height: u32) -> Generator2d {
-        IndexGenerator(Size2d::unchecked(width, height))
     }
 
     /// Generates a value for a 2d point (x,y).

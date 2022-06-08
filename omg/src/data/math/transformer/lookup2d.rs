@@ -62,7 +62,7 @@ impl LookupTable2d {
 
         Ok(LookupTable2d {
             size,
-            cell_size: Size2d::unchecked(width, height),
+            cell_size: Size2d::new(width, height).expect("Cell size is invalid"),
             values,
         })
     }
