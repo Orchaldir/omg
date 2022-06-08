@@ -1,5 +1,5 @@
-use serde::{Deserialize, Serialize};
 use omg::data::color::Color;
+use serde::{Deserialize, Serialize};
 
 #[derive(Serialize, Deserialize)]
 pub struct ColorSerde {
@@ -26,8 +26,8 @@ impl From<Color> for ColorSerde {
 
 #[cfg(test)]
 mod tests {
-    use omg::data::color::ORANGE;
     use super::*;
+    use omg::data::color::ORANGE;
 
     #[test]
     fn test_conversion() {
