@@ -1,6 +1,6 @@
 use crate::data::map::attribute::Attribute;
 use crate::data::math::size2d::Size2d;
-use anyhow::{bail, Result};
+use anyhow::{bail, Context, Result};
 use std::collections::HashMap;
 
 pub mod attribute;
@@ -69,7 +69,7 @@ impl Map2d {
     /// assert!(map.create_attribute("elevation", 100).is_err());
     /// ```
     pub fn create_attribute<S: Into<String>>(&mut self, name: S, default: u8) -> Result<usize> {
-        self.add_attribute(Attribute::default_value(name, self.size, default)?)
+        self.add_attribute(Attribute::default_value(name, self.size, default))
     }
 
     /// Adds a new [`Attribute`] with the supplied values to the map and returns its id.
@@ -78,16 +78,22 @@ impl Map2d {
         name: S,
         values: Vec<u8>,
     ) -> Result<usize> {
-        self.add_attribute(Attribute::new(name, self.size, values)?)
+        self.add_attribute(Attribute::new(name, self.size, values))
     }
 
-    fn add_attribute(&mut self, attribute: Attribute) -> Result<usize> {
-        let id = self.attributes.len();
+    fn add_attribute(&mut self, attribute: Result<Attribute>) -> Result<usize> {
+        let attribute = attribute
+            .with_context(|| format!("Failed to create attribute for map '{}'!", self.name))?;
 
         if self.attribute_lookup.contains_key(attribute.name()) {
-            bail!("Attribute '{}' already exists!", attribute.name());
+            bail!(
+                "Map '{}' already has an attribute '{}'!",
+                self.name,
+                attribute.name()
+            );
         }
 
+        let id = self.attributes.len();
         self.attribute_lookup
             .insert(attribute.name().to_string(), id);
         self.attributes.push(attribute);

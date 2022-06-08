@@ -1,4 +1,5 @@
 use crate::data::math::size2d::Size2d;
+use crate::data::name::validate_name;
 use anyhow::{bail, Result};
 use std::ops::{Index, IndexMut};
 
@@ -49,18 +50,9 @@ impl Attribute {
             );
         }
 
-        let name = name.into();
-        let trimmed = name.trim();
+        let name = validate_name(name)?;
 
-        if trimmed.is_empty() {
-            bail!("The attribute name '{}' is invalid!", name);
-        }
-
-        Ok(Attribute {
-            name: trimmed.to_string(),
-            size,
-            values,
-        })
+        Ok(Attribute { name, size, values })
     }
 
     /// Returns the name of the attribute.
