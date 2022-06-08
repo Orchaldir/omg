@@ -1,15 +1,5 @@
-use crate::data::math::size2d::Size2dError::{HeightIsZero, WidthIsZero};
+use anyhow::{bail, Result};
 use std::ops::{Add, Mul};
-use thiserror::Error;
-
-#[derive(Error, Debug, PartialEq)]
-/// The different errors for [`Size2d`].
-pub enum Size2dError {
-    #[error("The width is 0!")]
-    WidthIsZero,
-    #[error("The height is 0!")]
-    HeightIsZero,
-}
 
 #[svgbobdoc::transform]
 /// Defines the size of something (e.g. a map) in 2 dimensions.
@@ -44,16 +34,15 @@ impl Size2d {
     ///
     /// ```
     ///# use omg::data::math::size2d::Size2d;
-    ///# use omg::data::math::size2d::Size2dError::{HeightIsZero, WidthIsZero};
-    /// assert_eq!(Size2d::new(2, 3), Ok(Size2d::unchecked(2, 3)));
-    /// assert_eq!(Size2d::new(0, 3), Err(WidthIsZero));
-    /// assert_eq!(Size2d::new(2, 0), Err(HeightIsZero));
+    /// assert_eq!(Size2d::new(2, 3).unwrap(), Size2d::unchecked(2, 3));
+    /// assert!(Size2d::new(0, 3).is_err());
+    /// assert!(Size2d::new(2, 0).is_err());
     /// ```
-    pub fn new(width: u32, height: u32) -> Result<Self, Size2dError> {
+    pub fn new(width: u32, height: u32) -> Result<Self> {
         if width == 0 {
-            return Err(WidthIsZero);
+            bail!("The width is 0!");
         } else if height == 0 {
-            return Err(HeightIsZero);
+            bail!("The height is 0!");
         }
 
         Ok(Size2d::unchecked(width, height))

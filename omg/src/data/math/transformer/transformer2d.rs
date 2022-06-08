@@ -1,17 +1,6 @@
-use crate::data::math::transformer::lookup2d::{LookupTable2d, LookupTable2dError};
+use crate::data::math::transformer::lookup2d::LookupTable2d;
 use crate::data::math::transformer::threshold::OverwriteWithThreshold;
 use Transformer2d::*;
-
-#[derive(Debug, Eq, PartialEq)]
-pub enum Transformer2dError {
-    Clusterer(LookupTable2dError),
-}
-
-impl From<LookupTable2dError> for Transformer2dError {
-    fn from(error: LookupTable2dError) -> Self {
-        Transformer2dError::Clusterer(error)
-    }
-}
 
 /// Transforms 2 inputs into an output.
 #[derive(Debug)]

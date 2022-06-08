@@ -1,6 +1,7 @@
 use crate::data::input::IntInput;
-use crate::data::math::interpolation::vector::{VectorInterpolator, VectorInterpolatorError};
+use crate::data::math::interpolation::vector::VectorInterpolator;
 use crate::data::math::interpolation::Interpolate;
+use anyhow::Result;
 use std::collections::HashMap;
 
 /// Selects a value based on the input.
@@ -52,9 +53,7 @@ impl<I: IntInput, T: Interpolate> Selector<I, T> {
         Selector::InterpolatePair { first, second }
     }
 
-    pub fn new_interpolate_vector(
-        vector: Vec<(I, T)>,
-    ) -> Result<Selector<I, T>, VectorInterpolatorError> {
+    pub fn new_interpolate_vector(vector: Vec<(I, T)>) -> Result<Selector<I, T>> {
         let interpolation = VectorInterpolator::new(vector)?;
 
         Ok(Selector::InterpolateVector(interpolation))

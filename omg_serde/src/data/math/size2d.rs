@@ -1,4 +1,5 @@
-use omg::data::math::size2d::{Size2d, Size2dError};
+use anyhow::Result;
+use omg::data::math::size2d::Size2d;
 use serde::{Deserialize, Serialize};
 
 #[derive(Serialize, Deserialize)]
@@ -7,11 +8,9 @@ pub struct Size2dSerde {
     height: u32,
 }
 
-impl TryFrom<Size2dSerde> for Size2d {
-    type Error = Size2dError;
-
-    fn try_from(value: Size2dSerde) -> Result<Self, Self::Error> {
-        Size2d::new(value.width, value.height)
+impl Size2dSerde {
+    pub fn try_convert(&self) -> Result<Size2d> {
+        Size2d::new(self.width, self.height)
     }
 }
 
@@ -28,14 +27,13 @@ impl From<Size2d> for Size2dSerde {
 mod tests {
     use super::*;
     use omg::data::math::size2d::Size2d;
-    use omg::data::math::size2d::Size2dError::WidthIsZero;
 
     #[test]
     fn test_conversion() {
         let start = Size2d::unchecked(1, 2);
         let serde: Size2dSerde = start.into();
 
-        assert_eq!(Size2d::try_from(serde), Ok(start))
+        assert_eq!(serde.try_convert().unwrap(), start)
     }
 
     #[test]
@@ -45,6 +43,6 @@ mod tests {
             height: 1,
         };
 
-        assert_eq!(Size2d::try_from(serde), Err(WidthIsZero))
+        assert!(serde.try_convert().is_err())
     }
 }
