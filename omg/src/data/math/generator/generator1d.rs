@@ -4,6 +4,7 @@ use Generator1d::*;
 
 #[svgbobdoc::transform]
 /// Generates values for a 1d input.
+#[derive(Debug, PartialEq, Eq, Clone)]
 pub enum Generator1d {
     /// Generates a linear gradient between a center and both sides.
     ///

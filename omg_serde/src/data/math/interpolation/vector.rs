@@ -3,7 +3,9 @@ use omg::data::input::Input;
 use omg::data::math::interpolation::vector::VectorInterpolator;
 use omg::data::math::interpolation::Interpolate;
 
-#[derive(Debug, PartialEq, Eq, Clone)]
+use serde::{Deserialize, Serialize};
+
+#[derive(Debug, PartialEq, Eq, Clone, Deserialize, Serialize)]
 struct EntrySerde<T: Input, V: Interpolate> {
     threshold: T,
     value: V,
@@ -15,7 +17,7 @@ impl<T: Input, V: Interpolate> EntrySerde<T, V> {
     }
 }
 
-#[derive(Debug, PartialEq, Eq, Clone)]
+#[derive(Debug, PartialEq, Eq, Clone, Deserialize, Serialize)]
 pub struct VectorInterpolatorSerde<T: Input, V: Interpolate> {
     vector: Vec<EntrySerde<T, V>>,
 }
@@ -31,8 +33,8 @@ impl<T: Input, V: Interpolate> VectorInterpolatorSerde<T, V> {
     }
 }
 
-impl<T: Input, V: Interpolate> From<VectorInterpolator<T, V>> for VectorInterpolatorSerde<T, V> {
-    fn from(interpolator: VectorInterpolator<T, V>) -> Self {
+impl<T: Input, V: Interpolate> From<&VectorInterpolator<T, V>> for VectorInterpolatorSerde<T, V> {
+    fn from(interpolator: &VectorInterpolator<T, V>) -> Self {
         VectorInterpolatorSerde {
             vector: interpolator
                 .get_all()
@@ -53,7 +55,7 @@ mod tests {
     #[test]
     fn test_conversion() {
         let start = VectorInterpolator::new(vec![(100u32, 150), (150, 200)]).unwrap();
-        let serde: VectorInterpolatorSerde<u32, u8> = start.clone().into();
+        let serde: VectorInterpolatorSerde<u32, u8> = (&start).into();
 
         assert_eq!(serde.try_convert().unwrap(), start)
     }

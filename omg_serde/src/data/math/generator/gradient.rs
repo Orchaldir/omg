@@ -16,8 +16,8 @@ impl GradientSerde {
     }
 }
 
-impl From<Gradient> for GradientSerde {
-    fn from(gradient: Gradient) -> Self {
+impl From<&Gradient> for GradientSerde {
+    fn from(gradient: &Gradient) -> Self {
         GradientSerde {
             start: gradient.start(),
             length: gradient.length(),
@@ -35,7 +35,7 @@ mod tests {
     #[test]
     fn test_conversion() {
         let start = Gradient::new(1000, 100, 100, 200).unwrap();
-        let serde: GradientSerde = start.into();
+        let serde: GradientSerde = (&start).into();
 
         assert_eq!(serde.try_convert().unwrap(), start)
     }
