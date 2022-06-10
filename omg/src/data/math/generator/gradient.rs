@@ -38,6 +38,22 @@ impl Gradient {
         })
     }
 
+    pub fn start(&self) -> u32 {
+        self.start
+    }
+
+    pub fn length(&self) -> u32 {
+        self.length
+    }
+
+    pub fn value_start(&self) -> u8 {
+        self.value_start
+    }
+
+    pub fn value_end(&self) -> u8 {
+        self.value_end
+    }
+
     /// Generates the gradient.
     pub fn generate(&self, input: u32) -> u8 {
         if input <= self.start {
