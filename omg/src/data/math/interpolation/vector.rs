@@ -65,6 +65,10 @@ impl<T: Input, V: Interpolate> VectorInterpolator<T, V> {
         })
     }
 
+    pub fn get_all(&self) -> &[InterpolationEntry<T, V>] {
+        &self.vector
+    }
+
     /// Interpolates the values based on the input.
     ///
     /// ```
@@ -96,12 +100,20 @@ impl<T: Input, V: Interpolate> VectorInterpolator<T, V> {
 
 /// Stores the values & thresholds for [`VectorInterpolator`].
 #[derive(Debug, PartialEq, Eq, Clone)]
-struct InterpolationEntry<T: Input, V: Interpolate> {
+pub struct InterpolationEntry<T: Input, V: Interpolate> {
     threshold: T,
     value: V,
 }
 
 impl<T: Input, V: Interpolate> InterpolationEntry<T, V> {
+    pub fn threshold(&self) -> T {
+        self.threshold
+    }
+
+    pub fn value(&self) -> V {
+        self.value.clone()
+    }
+
     /// Interpolates between the values of 2 consecutive [`InterpolationEntry`] based on the input.
     pub fn interpolate(entry0: &Self, entry1: &Self, input: T) -> V {
         let factor_in_interval =
