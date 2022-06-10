@@ -1,6 +1,6 @@
 use crate::data::math::generator::gradient::GradientSerde;
 use crate::data::math::interpolation::vector::VectorInterpolatorSerde;
-use anyhow::Result;
+use anyhow::{Context, Result};
 use omg::data::math::generator::generator1d::Generator1d;
 use serde::{Deserialize, Serialize};
 
@@ -18,11 +18,24 @@ type R = Generator1d;
 impl Generator1dSerde {
     pub fn try_convert(self) -> Result<Generator1d> {
         match self {
-            S::AbsoluteGradient(gradient) => Ok(R::AbsoluteGradient(gradient.try_convert()?)),
-            S::Gradient(gradient) => Ok(R::Gradient(gradient.try_convert()?)),
+            S::AbsoluteGradient(gradient) => {
+                let gradient = gradient
+                    .try_convert()
+                    .context("Failed to convert to Generator1d::AbsoluteGradient!")?;
+                Ok(R::AbsoluteGradient(gradient))
+            }
+            S::Gradient(gradient) => {
+                let gradient = gradient
+                    .try_convert()
+                    .context("Failed to convert to Generator1d::Gradient!")?;
+                Ok(R::Gradient(gradient))
+            }
             S::InputAsOutput => Ok(R::InputAsOutput),
             S::InterpolateVector(interpolator) => {
-                Ok(R::InterpolateVector(interpolator.try_convert()?))
+                let interpolator = interpolator
+                    .try_convert()
+                    .context("Failed to convert to Generator1d::InterpolateVector!")?;
+                Ok(R::InterpolateVector(interpolator))
             }
         }
     }

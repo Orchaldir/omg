@@ -1,6 +1,6 @@
 use crate::data::math::generator::generator1d::Generator1dSerde;
 use crate::data::math::size2d::Size2dSerde;
-use anyhow::Result;
+use anyhow::{Context, Result};
 use omg::data::math::generator::generator1d::Generator1d;
 use omg::data::math::generator::generator2d::Generator2d;
 use serde::{Deserialize, Serialize};
@@ -23,19 +23,36 @@ type R = Generator2d;
 impl Generator2dSerde {
     pub fn try_convert(self) -> Result<Generator2d> {
         match self {
-            S::ApplyToX(data) => Ok(R::ApplyToX(data.try_convert()?)),
-            S::ApplyToY(data) => Ok(R::ApplyToY(data.try_convert()?)),
+            S::ApplyToX(data) => {
+                let generator = data
+                    .try_convert()
+                    .context("Failed to convert to Generator2d::ApplyToX!")?;
+                Ok(R::ApplyToX(generator))
+            }
+            S::ApplyToY(data) => {
+                let generator = data
+                    .try_convert()
+                    .context("Failed to convert to Generator2d::ApplyToY!")?;
+                Ok(R::ApplyToY(generator))
+            }
             S::ApplyToDistance {
                 generator,
                 center_x,
                 center_y,
             } => {
-                let generator: Generator1d = generator.try_convert()?;
+                let generator: Generator1d = generator
+                    .try_convert()
+                    .context("Failed to convert to Generator2d::ApplyToDistance!")?;
                 Ok(Generator2d::new_apply_to_distance(
                     generator, center_x, center_y,
                 ))
             }
-            S::IndexGenerator(size) => Ok(R::IndexGenerator(size.try_convert()?)),
+            S::IndexGenerator(size) => {
+                let size = size
+                    .try_convert()
+                    .context("Failed to convert to Generator2d::IndexGenerator!")?;
+                Ok(R::IndexGenerator(size))
+            }
         }
     }
 }
