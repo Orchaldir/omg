@@ -43,11 +43,29 @@ impl From<&Generator1d> for Generator1dSerde {
 mod tests {
     use super::*;
     use omg::data::math::generator::gradient::Gradient;
+    use omg::data::math::interpolation::vector::VectorInterpolator;
 
     #[test]
     fn test_convert_gradient() {
         let gradient = Gradient::new(1000, 500, 0, 255).unwrap();
-        let start = R::AbsoluteGradient(gradient);
+
+        assert_eq(R::AbsoluteGradient(gradient));
+        assert_eq(R::Gradient(gradient));
+    }
+
+    #[test]
+    fn test_convert_input_as_output() {
+        assert_eq(R::InputAsOutput);
+    }
+
+    #[test]
+    fn test_convert_interpolate_vector() {
+        let interpolator =
+            VectorInterpolator::new(vec![(100, 150), (150, 200), (200, 100)]).unwrap();
+        assert_eq(R::InterpolateVector(interpolator));
+    }
+
+    fn assert_eq(start: Generator1d) {
         let serde: Generator1dSerde = (&start).into();
 
         assert_eq!(serde.try_convert().unwrap(), start)

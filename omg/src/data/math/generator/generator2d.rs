@@ -6,6 +6,7 @@ use Generator2d::*;
 #[svgbobdoc::transform]
 /// Generate values for a 2d input.
 /// Used for the procedural generation of 2d maps.
+#[derive(Debug, PartialEq, Eq, Clone)]
 pub enum Generator2d {
     /// Feeds the x values to a [`Generator1d`].
     ///
