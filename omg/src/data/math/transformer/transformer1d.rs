@@ -1,9 +1,10 @@
 use crate::data::input::IntInput;
 use crate::data::math::transformer::threshold::OverwriteWithThreshold;
+use anyhow::{bail, Result};
 use std::collections::HashMap;
 
 /// Transforms the input into an output of the same type.
-#[derive(Debug)]
+#[derive(Debug, PartialEq, Eq, Clone)]
 pub enum Transformer1d<T: IntInput> {
     /// Overwrites the input, if it is above a threshold.
     OverwriteIfAbove(OverwriteWithThreshold<T>),
@@ -32,6 +33,20 @@ impl<T: IntInput> Transformer1d<T> {
 
     pub fn new_overwrite_if_below(value: T, threshold: T) -> Transformer1d<T> {
         Transformer1d::OverwriteIfBelow(OverwriteWithThreshold::new(value, threshold))
+    }
+
+    /// Create a OverwriteWithMap, if valid:
+    ///
+    /// ```
+    ///# use std::collections::HashMap;
+    ///# use omg::data::math::transformer::transformer1d::Transformer1d;
+    /// assert!(Transformer1d::<u8>::with_map(HashMap::new()).is_err());
+    /// ```
+    pub fn with_map(hashmap: HashMap<T, T>) -> Result<Self> {
+        if hashmap.is_empty() {
+            bail!("OverwriteWithMap with empty map is invalid!");
+        }
+        Ok(Self::OverwriteWithMap(hashmap))
     }
 
     /// Selects an object of type T based on the input.
