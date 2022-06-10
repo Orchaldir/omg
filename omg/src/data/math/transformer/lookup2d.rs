@@ -58,6 +58,14 @@ impl LookupTable2d {
         })
     }
 
+    pub fn size(&self) -> &Size2d {
+        &self.size
+    }
+
+    pub fn values(&self) -> &[u8] {
+        &self.values
+    }
+
     /// Returns the value of the cell for the input values.
     ///
     /// ```
