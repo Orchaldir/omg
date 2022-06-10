@@ -27,7 +27,7 @@ pub struct VectorInterpolator<T: Input, V: Interpolate> {
 }
 
 impl<T: Input, V: Interpolate> VectorInterpolator<T, V> {
-    /// Returns an interpolator, if the vector is valid. It needs 2 or more values:
+    /// Creates an interpolator, if the vector is valid. It needs 2 or more values:
     ///
     /// ```
     ///# use omg::data::math::interpolation::vector::VectorInterpolator;

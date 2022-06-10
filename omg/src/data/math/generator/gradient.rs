@@ -1,14 +1,43 @@
 use crate::data::math::interpolation::lerp;
+use anyhow::{bail, Result};
 
-#[derive(new, Debug, PartialEq, Eq, Clone, Copy)]
+#[derive(Debug, PartialEq, Eq, Clone, Copy)]
 pub struct Gradient {
-    value_start: u8,
-    value_end: u8,
     start: u32,
     length: u32,
+    value_start: u8,
+    value_end: u8,
 }
 
 impl Gradient {
+    /// Creates a gradient unless the length is 0:
+    ///
+    /// ```
+    ///# use omg::data::math::generator::gradient::Gradient;
+    /// assert!(Gradient::new(1000, 0, 200, 100).is_err());
+    /// ```
+    ///
+    /// The values must be ordered based in their threshold:
+    ///
+    /// ```
+    ///# use omg::data::math::generator::gradient::Gradient;
+    /// assert!(Gradient::new(1000, 300, 200, 200).is_err());
+    /// ```
+    pub fn new(start: u32, length: u32, value_start: u8, value_end: u8) -> Result<Gradient> {
+        if length == 0 {
+            bail!("The length of the gradient is 0!");
+        } else if value_start == value_end {
+            bail!("The start & end value of the gradient are equal!");
+        }
+
+        Ok(Gradient {
+            start,
+            length,
+            value_start,
+            value_end,
+        })
+    }
+
     /// Generates the gradient.
     pub fn generate(&self, input: u32) -> u8 {
         if input <= self.start {
