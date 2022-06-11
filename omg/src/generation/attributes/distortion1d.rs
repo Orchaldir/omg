@@ -3,25 +3,33 @@ use crate::data::map::Map2d;
 use crate::data::math::generator::generator1d::Generator1d;
 
 /// Shifts each column or row of an [`Attribute`] based on a [`Generator1d`].
-#[derive(new)]
-pub struct Distortion1d {
+#[derive(new, Debug, PartialEq, Eq, Clone)]
+pub struct Distortion1dStep {
     attribute_id: usize,
     generator: Generator1d,
 }
 
-impl Distortion1d {
+impl Distortion1dStep {
+    pub fn attribute_id(&self) -> usize {
+        self.attribute_id
+    }
+
+    pub fn generator(&self) -> &Generator1d {
+        &self.generator
+    }
+
     /// Shifts each each row along the x-axis based on a [`Generator1d`].
     ///
     /// ```
     ///# use omg::data::map::Map2d;
     ///# use omg::data::math::generator::generator1d::Generator1d::InputAsOutput;
     ///# use omg::data::math::size2d::Size2d;
-    ///# use omg::generation::attributes::distortion1d::Distortion1d;
-    /// let size = Size2d::new(3, 3);
+    ///# use omg::generation::attributes::distortion1d::Distortion1dStep;
+    /// let size = Size2d::unchecked(3, 3);
     /// let mut map = Map2d::new(size);
     /// let values = vec![1, 2, 3, 4, 5, 6, 7, 8, 9];
     /// let attribute_id = map.create_attribute_from("test", values).unwrap();
-    /// let step = Distortion1d::new(attribute_id, InputAsOutput);
+    /// let step = Distortion1dStep::new(attribute_id, InputAsOutput);
     ///
     /// step.distort_along_x(&mut map);
     ///
@@ -47,12 +55,12 @@ impl Distortion1d {
     ///# use omg::data::map::Map2d;
     ///# use omg::data::math::generator::generator1d::Generator1d::InputAsOutput;
     ///# use omg::data::math::size2d::Size2d;
-    ///# use omg::generation::attributes::distortion1d::Distortion1d;
-    /// let size = Size2d::new(3, 3);
+    ///# use omg::generation::attributes::distortion1d::Distortion1dStep;
+    /// let size = Size2d::unchecked(3, 3);
     /// let mut map = Map2d::new(size);
     /// let values = vec![1, 2, 3, 4, 5, 6, 7, 8, 9];
     /// let attribute_id = map.create_attribute_from("test", values).unwrap();
-    /// let step = Distortion1d::new(attribute_id, InputAsOutput);
+    /// let step = Distortion1dStep::new(attribute_id, InputAsOutput);
     ///
     /// step.distort_along_y(&mut map);
     ///

@@ -1,3 +1,4 @@
+use anyhow::{bail, Result};
 use std::ops::{Add, Mul};
 
 #[svgbobdoc::transform]
@@ -22,18 +23,42 @@ use std::ops::{Add, Mul};
 ///
 /// A size with width 2 & height 3.
 /// The number inside each cell is its index.
-#[derive(new, Copy, Clone, Debug, Default, Eq, PartialEq)]
+#[derive(Copy, Clone, Debug, Default, Eq, PartialEq)]
 pub struct Size2d {
     width: u32,
     height: u32,
 }
 
 impl Size2d {
+    /// Returns a valid size or an error.
+    ///
+    /// ```
+    ///# use omg::data::math::size2d::Size2d;
+    /// assert_eq!(Size2d::new(2, 3).unwrap(), Size2d::unchecked(2, 3));
+    /// assert!(Size2d::new(0, 3).is_err());
+    /// assert!(Size2d::new(2, 0).is_err());
+    /// ```
+    pub fn new(width: u32, height: u32) -> Result<Self> {
+        if width == 0 {
+            bail!("The width is 0!");
+        } else if height == 0 {
+            bail!("The height is 0!");
+        }
+
+        Ok(Size2d::unchecked(width, height))
+    }
+
+    /// Returns a new size without checking if width & height are greater than 0.
+    /// This should only be used for simplifying tests.
+    pub fn unchecked(width: u32, height: u32) -> Self {
+        Self { width, height }
+    }
+
     /// Returns the area covered by this size.
     ///
     /// ```
     ///# use omg::data::math::size2d::Size2d;
-    /// let size = Size2d::new(2, 3);
+    /// let size = Size2d::unchecked(2, 3);
     /// assert_eq!(size.get_area(), 6);
     /// ```
     pub fn get_area(&self) -> usize {
@@ -44,7 +69,7 @@ impl Size2d {
     ///
     /// ```
     ///# use omg::data::math::size2d::Size2d;
-    /// let size = Size2d::new(2, 3);
+    /// let size = Size2d::unchecked(2, 3);
     /// assert_eq!(size.width(), 2);
     /// ```
     pub fn width(&self) -> u32 {
@@ -55,7 +80,7 @@ impl Size2d {
     ///
     /// ```
     ///# use omg::data::math::size2d::Size2d;
-    /// let size = Size2d::new(2, 3);
+    /// let size = Size2d::unchecked(2, 3);
     /// assert_eq!(size.height(), 3);
     /// ```
     pub fn height(&self) -> u32 {
@@ -66,7 +91,7 @@ impl Size2d {
     ///
     /// ```
     ///# use omg::data::math::size2d::Size2d;
-    /// let size = Size2d::new(2, 3);
+    /// let size = Size2d::unchecked(2, 3);
     /// assert!(size.is_inside(0, 0));
     /// assert!(size.is_inside(1, 0));
     /// assert!(!size.is_inside(2, 0));
@@ -83,7 +108,7 @@ impl Size2d {
     ///
     /// ```
     ///# use omg::data::math::size2d::Size2d;
-    /// let size = Size2d::new(2, 3);
+    /// let size = Size2d::unchecked(2, 3);
     /// assert_eq!(size.to_x(5), 1);
     /// ```
     pub fn to_x(&self, index: usize) -> u32 {
@@ -94,7 +119,7 @@ impl Size2d {
     ///
     /// ```
     ///# use omg::data::math::size2d::Size2d;
-    /// let size = Size2d::new(2, 3);
+    /// let size = Size2d::unchecked(2, 3);
     /// assert_eq!(size.to_y(5), 2);
     /// ```
     pub fn to_y(&self, index: usize) -> u32 {
@@ -105,7 +130,7 @@ impl Size2d {
     ///
     /// ```
     ///# use omg::data::math::size2d::Size2d;
-    /// let size = Size2d::new(2, 3);
+    /// let size = Size2d::unchecked(2, 3);
     /// assert_eq!(size.to_x_and_y(5), [1,2]);
     /// ```
     pub fn to_x_and_y(&self, index: usize) -> [u32; 2] {
@@ -116,7 +141,7 @@ impl Size2d {
     ///
     /// ```
     ///# use omg::data::math::size2d::Size2d;
-    /// let size = Size2d::new(2, 3);
+    /// let size = Size2d::unchecked(2, 3);
     /// assert_eq!(size.to_index(1, 2), Some(5));
     /// assert_eq!(size.to_index(2, 0), None);
     /// assert_eq!(size.to_index(0, 3), None);
@@ -134,7 +159,7 @@ impl Size2d {
     ///
     /// ```
     ///# use omg::data::math::size2d::Size2d;
-    /// let size = Size2d::new(2, 3);
+    /// let size = Size2d::unchecked(2, 3);
     /// assert_eq!(size.to_index_risky(1, 2), 5);
     /// ```
     pub fn to_index_risky(&self, x: u32, y: u32) -> usize {
@@ -145,7 +170,7 @@ impl Size2d {
     ///
     /// ```
     ///# use omg::data::math::size2d::Size2d;
-    /// let size = Size2d::new(2, 3);
+    /// let size = Size2d::unchecked(2, 3);
     /// assert_eq!(size.saturating_to_index(1, 2), 5);
     /// ```
     ///
@@ -153,7 +178,7 @@ impl Size2d {
     ///
     /// ```
     ///# use omg::data::math::size2d::Size2d;
-    /// let size = Size2d::new(2, 3);
+    /// let size = Size2d::unchecked(2, 3);
     ///
     /// assert_eq!(size.saturating_to_index(2, 2), 5);
     /// assert_eq!(size.saturating_to_index(3, 2), 5);
@@ -171,9 +196,9 @@ impl Size2d {
 ///
 /// ```
 ///# use omg::data::math::size2d::Size2d;
-/// let a = Size2d::new(2, 3);
-/// let b = Size2d::new(10, 40);
-/// assert_eq!(a + b, Size2d::new(12, 43));
+/// let a = Size2d::unchecked(2, 3);
+/// let b = Size2d::unchecked(10, 40);
+/// assert_eq!(a + b, Size2d::unchecked(12, 43));
 /// ```
 impl Add for Size2d {
     type Output = Self;
@@ -190,9 +215,9 @@ impl Add for Size2d {
 ///
 /// ```
 ///# use omg::data::math::size2d::Size2d;
-/// let a = Size2d::new(2, 3);
-/// let b = Size2d::new(10, 40);
-/// assert_eq!(a * b, Size2d::new(20, 120));
+/// let a = Size2d::unchecked(2, 3);
+/// let b = Size2d::unchecked(10, 40);
+/// assert_eq!(a * b, Size2d::unchecked(20, 120));
 /// ```
 impl Mul for Size2d {
     type Output = Self;

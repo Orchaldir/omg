@@ -8,6 +8,14 @@ pub struct OverwriteWithThreshold<T: IntInput> {
 }
 
 impl<T: IntInput> OverwriteWithThreshold<T> {
+    pub fn value(&self) -> T {
+        self.value
+    }
+
+    pub fn threshold(&self) -> T {
+        self.threshold
+    }
+
     /// Overwrites the input if equal or above a threshold.
     ///
     /// ```

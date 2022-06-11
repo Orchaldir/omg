@@ -2,14 +2,26 @@ use crate::data::map::Map2d;
 use crate::data::math::generator::generator2d::Generator2d;
 
 /// Distorts an [`Attribute`] along 2 dimensions.
-#[derive(new)]
-pub struct Distortion2d {
+#[derive(new, Debug, PartialEq, Eq, Clone)]
+pub struct Distortion2dStep {
     attribute_id: usize,
     generator_x: Generator2d,
     generator_y: Generator2d,
 }
 
-impl Distortion2d {
+impl Distortion2dStep {
+    pub fn attribute_id(&self) -> usize {
+        self.attribute_id
+    }
+
+    pub fn generator_x(&self) -> &Generator2d {
+        &self.generator_x
+    }
+
+    pub fn generator_y(&self) -> &Generator2d {
+        &self.generator_y
+    }
+
     // Runs the step.
     pub fn run(&self, map: &mut Map2d) {
         info!(

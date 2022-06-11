@@ -1,22 +1,37 @@
 use crate::data::map::Map2d;
+use crate::data::name::validate_name;
+use anyhow::Result;
 
 /// Create a new [`Attribute`] in the [`Map2d`].
 #[derive(Debug, PartialEq, Eq, Clone)]
-pub struct CreateAttribute {
-    name: String,
+pub struct CreateAttributeStep {
+    attribute: String,
     default: u8,
 }
 
-impl CreateAttribute {
-    pub fn new<S: Into<String>>(name: S, default: u8) -> CreateAttribute {
-        CreateAttribute {
-            name: name.into(),
+impl CreateAttributeStep {
+    /// Creates the step, but returns an error if the name is invalid:
+    ///
+    /// ```
+    ///# use omg::generation::attributes::create::CreateAttributeStep;
+    /// assert!(CreateAttributeStep::new("", 9).is_err());
+    /// assert!(CreateAttributeStep::new("   ", 42).is_err());
+    /// ```
+    pub fn new<S: Into<String>>(attribute: S, default: u8) -> Result<CreateAttributeStep> {
+        let name = validate_name(attribute)?;
+
+        Ok(CreateAttributeStep {
+            attribute: name,
             default,
-        }
+        })
     }
 
-    pub fn get_attribute(&self) -> &str {
-        &self.name
+    pub fn attribute(&self) -> &str {
+        &self.attribute
+    }
+
+    pub fn default(&self) -> u8 {
+        self.default
     }
 
     /// Runs the step.
@@ -24,10 +39,10 @@ impl CreateAttribute {
     /// ```
     ///# use omg::data::map::Map2d;
     ///# use omg::data::math::size2d::Size2d;
-    ///# use omg::generation::attributes::create::CreateAttribute;
-    /// let size = Size2d::new(2, 3);
+    ///# use omg::generation::attributes::create::CreateAttributeStep;
+    /// let size = Size2d::unchecked(2, 3);
     /// let mut map = Map2d::new(size);
-    /// let step = CreateAttribute::new("test0", 9);
+    /// let step = CreateAttributeStep::new("test0", 9).unwrap();
     ///
     /// step.run(&mut map);
     ///
@@ -37,8 +52,13 @@ impl CreateAttribute {
     /// assert_eq!(attribute.get_all(), &vec![9u8, 9, 9, 9, 9, 9]);
     /// ```
     pub fn run(&self, map: &mut Map2d) {
-        info!("Create attribute '{}' of map '{}'", self.name, map.name());
+        info!(
+            "Create attribute '{}' of map '{}'",
+            self.attribute,
+            map.name()
+        );
 
-        map.create_attribute(self.name.clone(), self.default);
+        map.create_attribute(self.attribute.clone(), self.default)
+            .expect("Failed to create the attribute!");
     }
 }

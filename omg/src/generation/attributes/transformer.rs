@@ -1,9 +1,11 @@
 use crate::data::map::Map2d;
 use crate::data::math::transformer::transformer2d::Transformer2d;
+use crate::data::name::validate_name;
+use anyhow::{bail, Result};
 
 /// Transforms 2 [`Attribute`]s and writes into another.
-#[derive(new)]
-pub struct TransformAttribute2d {
+#[derive(Debug, PartialEq, Eq, Clone)]
+pub struct TransformAttribute2dStep {
     name: String,
     source_id0: usize,
     source_id1: usize,
@@ -11,20 +13,62 @@ pub struct TransformAttribute2d {
     transformer: Transformer2d,
 }
 
-impl TransformAttribute2d {
+impl TransformAttribute2dStep {
+    pub fn new<S: Into<String>>(
+        name: S,
+        source_id0: usize,
+        source_id1: usize,
+        target_id: usize,
+        transformer: Transformer2d,
+    ) -> Result<TransformAttribute2dStep> {
+        let name = validate_name(name)?;
+
+        if source_id0 == source_id1 {
+            bail!("Both source ids are {}!", source_id0);
+        }
+
+        Ok(TransformAttribute2dStep {
+            name,
+            source_id0,
+            source_id1,
+            target_id,
+            transformer,
+        })
+    }
+
+    pub fn name(&self) -> &str {
+        &self.name
+    }
+
+    pub fn source_id0(&self) -> usize {
+        self.source_id0
+    }
+
+    pub fn source_id1(&self) -> usize {
+        self.source_id1
+    }
+
+    pub fn target_id(&self) -> usize {
+        self.target_id
+    }
+
+    pub fn transformer(&self) -> &Transformer2d {
+        &self.transformer
+    }
+
     // Runs the step.
     ///
     /// ```
     ///# use omg::data::map::Map2d;
     ///# use omg::data::math::size2d::Size2d;
     ///# use omg::data::math::transformer::transformer2d::Transformer2d;
-    ///# use omg::generation::attributes::transformer::TransformAttribute2d;
-    /// let mut map = Map2d::new(Size2d::new(3, 2));
+    ///# use omg::generation::attributes::transformer::TransformAttribute2dStep;
+    /// let mut map = Map2d::new(Size2d::unchecked(3, 2));
     /// map.create_attribute_from("input0", vec![  0,   1,  99, 100, 101, 255]);
     /// map.create_attribute_from("input1", vec![200, 199, 198, 197, 196, 195]);
     /// map.create_attribute("target", 10);
     /// let transformer = Transformer2d::new_overwrite_if_below(42, 100);
-    /// let step = TransformAttribute2d::new("name".to_string(), 0, 1, 2, transformer);
+    /// let step = TransformAttribute2dStep::new("name".to_string(), 0, 1, 2, transformer).unwrap();
     ///
     /// step.run(&mut map);
     ///

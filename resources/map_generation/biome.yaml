@@ -1,0 +1,102 @@
+---
+name: biome example
+size:
+  width: 400
+  height: 300
+steps:
+  - CreateAttribute:
+      attribute: elevation
+      default: 0
+  - CreateAttribute:
+      attribute: temperature
+      default: 0
+  - CreateAttribute:
+      attribute: rainfall
+      default: 0
+  - CreateAttribute:
+      attribute: biome
+      default: 0
+  - GeneratorAdd:
+      name: continent
+      attribute: elevation
+      generator:
+        ApplyToDistance:
+          generator:
+            Gradient:
+              value_start: 125
+              value_end: 0
+              start: 0
+              length: 150
+          center_x: 200
+          center_y: 150
+  - GeneratorAdd:
+      name: gradient y
+      attribute: temperature
+      generator:
+        ApplyToY:
+          AbsoluteGradient:
+            value_start: 255
+            value_end: 50
+            start: 150
+            length: 150
+  - ModifyWithAttribute:
+      source: elevation
+      target: temperature
+      percentage: -115
+      minimum: 76
+  - GeneratorAdd:
+      name: rainfall bands
+      attribute: rainfall
+      generator:
+        ApplyToX:
+          InterpolateVector:
+            vector:
+              - threshold: 0
+                value: 0
+              - threshold: 150
+                value: 50
+              - threshold: 300
+                value: 200
+              - threshold: 400
+                value: 220
+  - TransformAttribute2d:
+      name: select biomes
+      source0: rainfall
+      source1: temperature
+      target: biome
+      transformer:
+        Lookup2d:
+          size:
+            width: 3
+            height: 4
+          values:
+            - 0
+            - 0
+            - 0
+            - 3
+            - 3
+            - 3
+            - 6
+            - 7
+            - 7
+            - 9
+            - 10
+            - 11
+  - TransformAttribute2d:
+      name: overwrite oceans
+      source0: elevation
+      source1: biome
+      target: biome
+      transformer:
+        OverwriteIfBelow:
+          value: 12
+          threshold: 76
+  - TransformAttribute2d:
+      name: overwrite mountains
+      source0: elevation
+      source1: biome
+      target: biome
+      transformer:
+        OverwriteIfAbove:
+          value: 13
+          threshold: 160

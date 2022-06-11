@@ -1,22 +1,11 @@
-use crate::data::math::transformer::lookup2d::{LookupTable2d, LookupTable2dError};
+use crate::data::math::transformer::lookup2d::LookupTable2d;
 use crate::data::math::transformer::threshold::OverwriteWithThreshold;
 use Transformer2d::*;
 
-#[derive(Debug, Eq, PartialEq)]
-pub enum Transformer2dError {
-    Clusterer(LookupTable2dError),
-}
-
-impl From<LookupTable2dError> for Transformer2dError {
-    fn from(error: LookupTable2dError) -> Self {
-        Transformer2dError::Clusterer(error)
-    }
-}
-
 /// Transforms 2 inputs into an output.
-#[derive(Debug)]
+#[derive(Debug, PartialEq, Eq, Clone)]
 pub enum Transformer2d {
-    /// Uses both inputs to lookup av alue. E.g. biome from rainfall & temperature.
+    /// Uses both inputs to lookup a value. E.g. biome from rainfall & temperature.
     Lookup2d(LookupTable2d),
     /// Returns a const value.
     Const(u8),

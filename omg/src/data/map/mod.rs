@@ -1,5 +1,6 @@
 use crate::data::map::attribute::Attribute;
 use crate::data::math::size2d::Size2d;
+use anyhow::{bail, Context, Result};
 use std::collections::HashMap;
 
 pub mod attribute;
@@ -23,7 +24,7 @@ impl Map2d {
     /// ```
     ///# use omg::data::map::Map2d;
     ///# use omg::data::math::size2d::Size2d;
-    /// let size = Size2d::new(2, 3);
+    /// let size = Size2d::unchecked(2, 3);
     /// let mut map = Map2d::with_name("world", size);
     ///
     /// assert_eq!(map.name(), "world");
@@ -51,10 +52,10 @@ impl Map2d {
     /// ```
     ///# use omg::data::map::Map2d;
     ///# use omg::data::math::size2d::Size2d;
-    /// let mut map = Map2d::new(Size2d::new(2, 3));
+    /// let mut map = Map2d::new(Size2d::unchecked(2, 3));
     ///
-    /// assert_eq!(map.create_attribute("elevation", 42), Some(0));
-    /// assert_eq!(map.create_attribute("rainfall", 100), Some(1));
+    /// assert_eq!(map.create_attribute("elevation", 42).unwrap(), 0);
+    /// assert_eq!(map.create_attribute("rainfall", 100).unwrap(), 1);
     /// ```
     ///
     /// Fails if the map already contains an [`Attribute`] with the same name.
@@ -62,12 +63,12 @@ impl Map2d {
     /// ```
     ///# use omg::data::map::Map2d;
     ///# use omg::data::math::size2d::Size2d;
-    /// let mut map = Map2d::new(Size2d::new(2, 3));
+    /// let mut map = Map2d::new(Size2d::unchecked(2, 3));
     ///
-    /// assert_eq!(map.create_attribute("elevation", 42), Some(0));
-    /// assert_eq!(map.create_attribute("elevation", 100), None);
+    /// assert_eq!(map.create_attribute("elevation", 42).unwrap(), 0);
+    /// assert!(map.create_attribute("elevation", 100).is_err());
     /// ```
-    pub fn create_attribute<S: Into<String>>(&mut self, name: S, default: u8) -> Option<usize> {
+    pub fn create_attribute<S: Into<String>>(&mut self, name: S, default: u8) -> Result<usize> {
         self.add_attribute(Attribute::default_value(name, self.size, default))
     }
 
@@ -76,21 +77,27 @@ impl Map2d {
         &mut self,
         name: S,
         values: Vec<u8>,
-    ) -> Option<usize> {
+    ) -> Result<usize> {
         self.add_attribute(Attribute::new(name, self.size, values))
     }
 
-    fn add_attribute(&mut self, attribute: Attribute) -> Option<usize> {
-        let id = self.attributes.len();
+    fn add_attribute(&mut self, attribute: Result<Attribute>) -> Result<usize> {
+        let attribute = attribute
+            .with_context(|| format!("Failed to create attribute for map '{}'!", self.name))?;
 
         if self.attribute_lookup.contains_key(attribute.name()) {
-            return None;
+            bail!(
+                "Map '{}' already has an attribute '{}'!",
+                self.name,
+                attribute.name()
+            );
         }
 
+        let id = self.attributes.len();
         self.attribute_lookup
             .insert(attribute.name().to_string(), id);
         self.attributes.push(attribute);
-        Some(id)
+        Ok(id)
     }
 
     /// Returns the id of the [`Attribute`] with the matching name.
@@ -98,7 +105,7 @@ impl Map2d {
     /// ```
     ///# use omg::data::map::Map2d;
     ///# use omg::data::math::size2d::Size2d;
-    /// let mut map = Map2d::new(Size2d::new(2, 3));
+    /// let mut map = Map2d::new(Size2d::unchecked(2, 3));
     /// map.create_attribute("elevation", 42);
     /// map.create_attribute("rainfall", 100);
     ///
@@ -115,7 +122,7 @@ impl Map2d {
     /// ```
     ///# use omg::data::map::Map2d;
     ///# use omg::data::math::size2d::Size2d;
-    /// let mut map = Map2d::new(Size2d::new(2, 3));
+    /// let mut map = Map2d::new(Size2d::unchecked(2, 3));
     /// map.create_attribute("elevation", 42);
     /// map.create_attribute("rainfall", 100);
     ///
@@ -130,7 +137,7 @@ impl Map2d {
     /// ```should_panic
     ///# use omg::data::map::Map2d;
     ///# use omg::data::math::size2d::Size2d;
-    /// let mut map = Map2d::new(Size2d::new(2, 3));
+    /// let mut map = Map2d::new(Size2d::unchecked(2, 3));
     ///
     /// map.get_attribute(0);
     /// ```
@@ -144,7 +151,7 @@ impl Map2d {
     ///# use omg::data::map::attribute::Attribute;
     ///# use omg::data::map::Map2d;
     ///# use omg::data::math::size2d::Size2d;
-    /// let mut map = Map2d::new(Size2d::new(2, 3));
+    /// let mut map = Map2d::new(Size2d::unchecked(2, 3));
     /// map.create_attribute("elevation", 42);
     /// map.create_attribute("rainfall", 100);
     ///
@@ -159,7 +166,7 @@ impl Map2d {
     /// ```should_panic
     ///# use omg::data::map::Map2d;
     ///# use omg::data::math::size2d::Size2d;
-    /// let mut map = Map2d::new(Size2d::new(2, 3));
+    /// let mut map = Map2d::new(Size2d::unchecked(2, 3));
     ///
     /// map.get_attribute_mut(0);
     /// ```

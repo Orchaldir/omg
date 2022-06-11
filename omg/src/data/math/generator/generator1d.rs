@@ -4,6 +4,7 @@ use Generator1d::*;
 
 #[svgbobdoc::transform]
 /// Generates values for a 1d input.
+#[derive(Debug, PartialEq, Eq, Clone)]
 pub enum Generator1d {
     /// Generates a linear gradient between a center and both sides.
     ///
@@ -29,7 +30,7 @@ pub enum Generator1d {
     /// ```
     ///# use omg::data::math::generator::generator1d::Generator1d;
     ///# use omg::data::math::generator::gradient::Gradient;
-    /// let gradient = Gradient::new(100, 0, 80, 100);
+    /// let gradient = Gradient::new(80, 100, 100, 0).unwrap();
     /// let generator = Generator1d::AbsoluteGradient(gradient);
     ///
     /// assert_eq!(generator.generate(  0),  20);
@@ -68,7 +69,7 @@ pub enum Generator1d {
     ///```
     ///# use omg::data::math::generator::generator1d::Generator1d;
     ///# use omg::data::math::generator::gradient::Gradient;
-    /// let gradient = Gradient::new(100, 200, 1000, 100);
+    /// let gradient = Gradient::new(1000, 100, 100, 200).unwrap();
     /// let generator = Generator1d::Gradient(gradient);
     ///
     /// assert_eq!(generator.generate(   0), 100);
