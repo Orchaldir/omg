@@ -6,6 +6,7 @@ use std::collections::HashMap;
 pub mod attribute;
 
 /// Represents a 2d region or world map.
+#[derive(Clone, Debug, PartialEq)]
 pub struct Map2d {
     name: String,
     size: Size2d,
