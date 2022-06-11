@@ -29,7 +29,7 @@ impl MapGenerationSerde {
         let steps = steps?;
         let size = self.size.try_convert()?;
 
-        Ok(MapGeneration::new(self.name, size, steps))
+        MapGeneration::new(self.name, size, steps)
     }
 }
 
@@ -67,7 +67,7 @@ mod tests {
         let modify = ModifyWithAttributeStep::new(0, 1, 100, 10);
         let modify = GenerationStep::ModifyWithAttribute(modify);
         let steps = vec![create0, create1, modify];
-        let generation = MapGeneration::new("map", Size2d::unchecked(4, 5), steps);
+        let generation = MapGeneration::new("map", Size2d::unchecked(4, 5), steps).unwrap();
 
         let serde: MapGenerationSerde = (&generation).into();
 

@@ -11,6 +11,7 @@ use GenerationStep::*;
 #[derive(Debug, PartialEq, Eq, Clone)]
 pub enum GenerationStep {
     CreateAttribute(CreateAttributeStep),
+    Debug(String),
     DistortAlongX(Distortion1dStep),
     DistortAlongY(Distortion1dStep),
     Distortion2d(Distortion2dStep),
@@ -21,10 +22,14 @@ pub enum GenerationStep {
 }
 
 impl GenerationStep {
+    pub fn debug<S: Into<String>>(text: S) -> GenerationStep {
+        Debug(text.into())
+    }
     /// Runs the step.
     pub fn run(&self, map: &mut Map2d) {
         match self {
             CreateAttribute(step) => step.run(map),
+            Debug(text) => info!("Debug step: {}", text),
             DistortAlongX(step) => step.distort_along_x(map),
             DistortAlongY(step) => step.distort_along_y(map),
             Distortion2d(step) => step.run(map),

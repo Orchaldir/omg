@@ -33,6 +33,7 @@ pub fn assert_eq<R: FromStep<S> + Eq + Debug, S: ToStep<R>>(step: R, attributes:
 #[derive(new, Debug, Serialize, Deserialize)]
 pub enum GenerationStepSerde {
     CreateAttribute(CreateAttributeStepSerde),
+    Debug(String),
     DistortAlongX(Distortion1dStepSerde),
     DistortAlongY(Distortion1dStepSerde),
     Distortion2d(Distortion2dStepSerde),
@@ -49,6 +50,7 @@ impl ToStep<GenerationStep> for GenerationStepSerde {
     fn try_convert(self, attributes: &mut Vec<String>) -> Result<GenerationStep> {
         match self {
             S::CreateAttribute(step) => Ok(R::CreateAttribute(step.try_convert(attributes)?)),
+            S::Debug(text) => Ok(R::Debug(text)),
             S::DistortAlongX(step) => Ok(R::DistortAlongX(step.try_convert(attributes)?)),
             S::DistortAlongY(step) => Ok(R::DistortAlongY(step.try_convert(attributes)?)),
             S::Distortion2d(step) => Ok(R::Distortion2d(step.try_convert(attributes)?)),
@@ -68,6 +70,7 @@ impl FromStep<GenerationStepSerde> for GenerationStep {
     fn convert(&self, attributes: &mut Vec<String>) -> GenerationStepSerde {
         match self {
             R::CreateAttribute(data) => S::CreateAttribute(data.convert(attributes)),
+            R::Debug(text) => S::Debug(text.clone()),
             R::DistortAlongX(data) => S::DistortAlongX(data.convert(attributes)),
             R::DistortAlongY(data) => S::DistortAlongY(data.convert(attributes)),
             R::Distortion2d(data) => S::Distortion2d(data.convert(attributes)),
