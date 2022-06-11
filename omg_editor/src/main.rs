@@ -10,18 +10,25 @@ use omg_serde::interface::io::StoragePortWithSerde;
 use rocket::fs::NamedFile;
 use rocket::{routes, State};
 
-#[get("/")]
-async fn get_map(map: &State<Map2d>) -> Option<NamedFile> {
-    let attribute = map.get_attribute(0);
+fn get_map_path(attribute: usize) -> String {
+    format!("temp/map-{}.png", attribute)
+}
+
+#[get("/map/<attribute_id>")]
+async fn get_map(map: &State<Map2d>, attribute_id: usize) -> Option<NamedFile> {
+    let attribute = map.get_attribute(attribute_id);
+    let path = get_map_path(attribute_id);
+
     image::save_buffer(
-        "image.png",
+        path.clone(),
         attribute.get_all(),
         map.size().width(),
         map.size().height(),
         image::ColorType::L8,
     )
     .unwrap();
-    NamedFile::open("image.png").await.ok()
+
+    NamedFile::open(path).await.ok()
 }
 
 #[rocket::main]
