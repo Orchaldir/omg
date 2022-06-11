@@ -1,6 +1,6 @@
 use crate::data::math::generator::generator2d::Generator2dSerde;
 use crate::generation::step::{get_attribute_id, FromStep, ToStep};
-use anyhow::Result;
+use anyhow::{Context, Result};
 use omg::generation::attributes::generator::GeneratorStep;
 use serde::{Deserialize, Serialize};
 
@@ -11,11 +11,18 @@ pub struct GeneratorStepSerde {
     generator: Generator2dSerde,
 }
 
-impl ToStep<GeneratorStep> for GeneratorStepSerde {
-    fn try_convert(self, attributes: &[String]) -> Result<GeneratorStep> {
+impl GeneratorStepSerde {
+    fn inner_convert(self, attributes: &[String]) -> Result<GeneratorStep> {
         let id = get_attribute_id(&self.attribute, attributes)?;
         let generator = self.generator.try_convert()?;
         GeneratorStep::new(self.name, id, generator)
+    }
+}
+
+impl ToStep<GeneratorStep> for GeneratorStepSerde {
+    fn try_convert(self, attributes: &[String]) -> Result<GeneratorStep> {
+        self.inner_convert(attributes)
+            .context("Failed to convert to GeneratorStep!")
     }
 }
 

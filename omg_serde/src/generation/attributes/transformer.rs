@@ -1,6 +1,6 @@
 use crate::data::math::transformer::transformer2d::Transformer2dSerde;
 use crate::generation::step::{get_attribute_id, FromStep, ToStep};
-use anyhow::Result;
+use anyhow::{Context, Result};
 use omg::generation::attributes::transformer::TransformAttribute2dStep;
 use serde::{Deserialize, Serialize};
 
@@ -15,12 +15,19 @@ pub struct TransformAttribute2dStepSerde {
 
 impl ToStep<TransformAttribute2dStep> for TransformAttribute2dStepSerde {
     fn try_convert(self, attributes: &[String]) -> Result<TransformAttribute2dStep> {
-        let source_id0 = get_attribute_id(&self.source0, attributes)?;
-        let source_id1 = get_attribute_id(&self.source1, attributes)?;
-        let target_id = get_attribute_id(&self.target, attributes)?;
-        let transformer = self.transformer.try_convert()?;
+        let source_id0 = get_attribute_id(&self.source0, attributes)
+            .context("Failed to convert source0 of TransformAttribute2dStep!")?;
+        let source_id1 = get_attribute_id(&self.source1, attributes)
+            .context("Failed to convert source1 of TransformAttribute2dStep!")?;
+        let target_id = get_attribute_id(&self.target, attributes)
+            .context("Failed to convert target of TransformAttribute2dStep!")?;
+        let transformer = self
+            .transformer
+            .try_convert()
+            .context("Failed to convert transformer of TransformAttribute2dStep!")?;
 
         TransformAttribute2dStep::new(self.name, source_id0, source_id1, target_id, transformer)
+            .context("Failed to convert to TransformAttribute2dStep!")
     }
 }
 

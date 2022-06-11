@@ -1,6 +1,6 @@
 use crate::data::map::Map2d;
 use crate::data::name::validate_name;
-use anyhow::{Context, Result};
+use anyhow::Result;
 
 /// Create a new [`Attribute`] in the [`Map2d`].
 #[derive(Debug, PartialEq, Eq, Clone)]
@@ -17,8 +17,8 @@ impl CreateAttributeStep {
     /// assert!(CreateAttributeStep::new("", 9).is_err());
     /// assert!(CreateAttributeStep::new("   ", 42).is_err());
     /// ```
-    pub fn new<S: Into<String>>(name: S, default: u8) -> Result<CreateAttributeStep> {
-        let name = validate_name(name).context("Failed to create a CreateAttribute step!")?;
+    pub fn new<S: Into<String>>(attribute: S, default: u8) -> Result<CreateAttributeStep> {
+        let name = validate_name(attribute)?;
 
         Ok(CreateAttributeStep {
             attribute: name,

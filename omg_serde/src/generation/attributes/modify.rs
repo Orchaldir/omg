@@ -1,5 +1,5 @@
 use crate::generation::step::{get_attribute_id, FromStep, ToStep};
-use anyhow::Result;
+use anyhow::{Context, Result};
 use omg::generation::attributes::modify::ModifyWithAttributeStep;
 use serde::{Deserialize, Serialize};
 
@@ -13,8 +13,11 @@ pub struct ModifyWithAttributeStepSerde {
 
 impl ToStep<ModifyWithAttributeStep> for ModifyWithAttributeStepSerde {
     fn try_convert(self, attributes: &[String]) -> Result<ModifyWithAttributeStep> {
-        let source_id = get_attribute_id(&self.source, attributes)?;
-        let target_id = get_attribute_id(&self.target, attributes)?;
+        let source_id = get_attribute_id(&self.source, attributes)
+            .context("Failed to convert source of ModifyWithAttributeStep!")?;
+        let target_id = get_attribute_id(&self.target, attributes)
+            .context("Failed to convert target of ModifyWithAttributeStep!")?;
+
         Ok(ModifyWithAttributeStep::new(
             source_id,
             target_id,

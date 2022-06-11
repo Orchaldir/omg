@@ -1,6 +1,6 @@
 use crate::data::math::generator::generator1d::Generator1dSerde;
 use crate::generation::step::{get_attribute_id, FromStep, ToStep};
-use anyhow::Result;
+use anyhow::{Context, Result};
 use omg::generation::attributes::distortion1d::Distortion1dStep;
 use serde::{Deserialize, Serialize};
 
@@ -10,11 +10,18 @@ pub struct Distortion1dStepSerde {
     generator: Generator1dSerde,
 }
 
-impl ToStep<Distortion1dStep> for Distortion1dStepSerde {
-    fn try_convert(self, attributes: &[String]) -> Result<Distortion1dStep> {
+impl Distortion1dStepSerde {
+    fn inner_convert(self, attributes: &[String]) -> Result<Distortion1dStep> {
         let id = get_attribute_id(&self.attribute, attributes)?;
         let generator = self.generator.try_convert()?;
         Ok(Distortion1dStep::new(id, generator))
+    }
+}
+
+impl ToStep<Distortion1dStep> for Distortion1dStepSerde {
+    fn try_convert(self, attributes: &[String]) -> Result<Distortion1dStep> {
+        self.inner_convert(attributes)
+            .context("Failed to convert to Distortion1dStep!")
     }
 }
 

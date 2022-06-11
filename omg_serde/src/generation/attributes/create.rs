@@ -1,4 +1,4 @@
-use anyhow::Result;
+use anyhow::{Context, Result};
 use omg::generation::attributes::create::CreateAttributeStep;
 use serde::{Deserialize, Serialize};
 
@@ -11,6 +11,7 @@ pub struct CreateAttributeStepSerde {
 impl CreateAttributeStepSerde {
     pub fn try_convert(self) -> Result<CreateAttributeStep> {
         CreateAttributeStep::new(self.attribute, self.default)
+            .context("Failed to convert to CreateAttributeStep!")
     }
 }
 

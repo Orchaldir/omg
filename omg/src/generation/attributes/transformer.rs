@@ -24,10 +24,7 @@ impl TransformAttribute2dStep {
         let name = validate_name(name)?;
 
         if source_id0 == source_id1 {
-            bail!(
-                "TransformAttribute2dStep is invalid, because both source ids are {}!",
-                source_id0
-            );
+            bail!("Both source ids are {}!", source_id0);
         }
 
         Ok(TransformAttribute2dStep {
