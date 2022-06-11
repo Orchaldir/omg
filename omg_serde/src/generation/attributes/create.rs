@@ -1,3 +1,4 @@
+use crate::generation::step::{FromStep, ToStep};
 use anyhow::{Context, Result};
 use omg::generation::attributes::create::CreateAttributeStep;
 use serde::{Deserialize, Serialize};
@@ -8,18 +9,19 @@ pub struct CreateAttributeStepSerde {
     default: u8,
 }
 
-impl CreateAttributeStepSerde {
-    pub fn try_convert(self) -> Result<CreateAttributeStep> {
+impl ToStep<CreateAttributeStep> for CreateAttributeStepSerde {
+    fn try_convert(self, attributes: &mut Vec<String>) -> Result<CreateAttributeStep> {
+        attributes.push(self.attribute.clone());
         CreateAttributeStep::new(self.attribute, self.default)
             .context("Failed to convert to CreateAttributeStep!")
     }
 }
 
-impl From<&CreateAttributeStep> for CreateAttributeStepSerde {
-    fn from(step: &CreateAttributeStep) -> Self {
+impl FromStep<CreateAttributeStepSerde> for CreateAttributeStep {
+    fn convert(&self, _attributes: &[String]) -> CreateAttributeStepSerde {
         CreateAttributeStepSerde {
-            attribute: step.attribute().to_string(),
-            default: step.default(),
+            attribute: self.attribute().to_string(),
+            default: self.default(),
         }
     }
 }
@@ -27,12 +29,15 @@ impl From<&CreateAttributeStep> for CreateAttributeStepSerde {
 #[cfg(test)]
 mod tests {
     use super::*;
+    use crate::generation::step::assert_eq;
 
     #[test]
     fn test_conversion() {
-        let start = CreateAttributeStep::new("test", 66).unwrap();
-        let serde: CreateAttributeStepSerde = (&start).into();
+        let mut attributes = Vec::new();
+        let step = CreateAttributeStep::new("create", 66).unwrap();
 
-        assert_eq!(serde.try_convert().unwrap(), start)
+        assert_eq(step, &mut attributes);
+
+        assert_eq!(attributes, vec!["create".to_string()])
     }
 }

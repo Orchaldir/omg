@@ -27,7 +27,7 @@ impl ToStep<GeneratorStep> for GeneratorStepSerde {
 }
 
 impl FromStep<GeneratorStepSerde> for GeneratorStep {
-    fn convert(&self, attributes: &mut Vec<String>) -> GeneratorStepSerde {
+    fn convert(&self, attributes: &[String]) -> GeneratorStepSerde {
         let attribute = attributes[self.attribute_id()].clone();
         GeneratorStepSerde {
             name: self.name().to_string(),

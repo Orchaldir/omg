@@ -32,7 +32,7 @@ impl ToStep<TransformAttribute2dStep> for TransformAttribute2dStepSerde {
 }
 
 impl FromStep<TransformAttribute2dStepSerde> for TransformAttribute2dStep {
-    fn convert(&self, attributes: &mut Vec<String>) -> TransformAttribute2dStepSerde {
+    fn convert(&self, attributes: &[String]) -> TransformAttribute2dStepSerde {
         let source0 = attributes[self.source_id0()].clone();
         let source1 = attributes[self.source_id1()].clone();
         let target = attributes[self.target_id()].clone();

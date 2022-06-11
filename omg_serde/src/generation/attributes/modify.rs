@@ -28,7 +28,7 @@ impl ToStep<ModifyWithAttributeStep> for ModifyWithAttributeStepSerde {
 }
 
 impl FromStep<ModifyWithAttributeStepSerde> for ModifyWithAttributeStep {
-    fn convert(&self, attributes: &mut Vec<String>) -> ModifyWithAttributeStepSerde {
+    fn convert(&self, attributes: &[String]) -> ModifyWithAttributeStepSerde {
         let source = attributes[self.source_id()].clone();
         let target = attributes[self.target_id()].clone();
         ModifyWithAttributeStepSerde {

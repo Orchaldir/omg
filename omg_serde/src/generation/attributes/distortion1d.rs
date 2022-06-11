@@ -26,7 +26,7 @@ impl ToStep<Distortion1dStep> for Distortion1dStepSerde {
 }
 
 impl FromStep<Distortion1dStepSerde> for Distortion1dStep {
-    fn convert(&self, attributes: &mut Vec<String>) -> Distortion1dStepSerde {
+    fn convert(&self, attributes: &[String]) -> Distortion1dStepSerde {
         let attribute = attributes[self.attribute_id()].clone();
         Distortion1dStepSerde {
             attribute,
