@@ -1,4 +1,4 @@
-use crate::data::map::{get_attribute, Map2d};
+use crate::data::map::{get_attribute, get_attribute_mut, Map2d};
 use crate::data::math::transformer::transformer2d::Transformer2d;
 use crate::data::name::validate_name;
 use anyhow::{bail, Result};
@@ -87,7 +87,7 @@ impl TransformAttribute2dStep {
         );
 
         let biomes = self.transform(map);
-        let attribute = map.get_attribute_mut(self.target_id);
+        let attribute = get_attribute_mut(map, self.target_id);
 
         attribute.replace_all(biomes);
     }

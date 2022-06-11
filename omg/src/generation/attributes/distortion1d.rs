@@ -1,5 +1,5 @@
 use crate::data::map::attribute::Attribute;
-use crate::data::map::{get_attribute, Map2d};
+use crate::data::map::{get_attribute, get_attribute_mut, Map2d};
 use crate::data::math::generator::generator1d::Generator1d;
 
 /// Shifts each column or row of an [`Attribute`] based on a [`Generator1d`].
@@ -44,7 +44,7 @@ impl Distortion1dStep {
         );
 
         let values = self.distort_map_along_x(map);
-        let attribute = map.get_attribute_mut(self.attribute_id);
+        let attribute = get_attribute_mut(map, self.attribute_id);
 
         attribute.replace_all(values);
     }
@@ -75,7 +75,7 @@ impl Distortion1dStep {
         );
 
         let values = self.distort_map_along_y(map);
-        let attribute = map.get_attribute_mut(self.attribute_id);
+        let attribute = get_attribute_mut(map, self.attribute_id);
 
         attribute.replace_all(values);
     }

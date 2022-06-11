@@ -1,4 +1,4 @@
-use crate::data::map::{get_attribute, Map2d};
+use crate::data::map::{get_attribute, get_attribute_mut, Map2d};
 
 /// Modifies one [`Attribute`] with another transformed one.
 #[derive(new, Debug, PartialEq, Eq, Clone)]
@@ -38,7 +38,7 @@ impl ModifyWithAttributeStep {
         );
 
         let values = self.calculate_values(map, factor);
-        let attribute = map.get_attribute_mut(self.target_id);
+        let attribute = get_attribute_mut(map, self.target_id);
 
         attribute.replace_all(values);
     }

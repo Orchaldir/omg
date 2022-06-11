@@ -1,4 +1,4 @@
-use crate::data::map::{get_attribute, Map2d};
+use crate::data::map::{get_attribute, get_attribute_mut, Map2d};
 use crate::data::math::generator::generator2d::Generator2d;
 
 /// Distorts an [`Attribute`] along 2 dimensions.
@@ -31,7 +31,7 @@ impl Distortion2dStep {
         );
 
         let values = self.distort_map(map);
-        let attribute = map.get_attribute_mut(self.attribute_id);
+        let attribute = get_attribute_mut(map, self.attribute_id);
 
         attribute.replace_all(values);
     }
