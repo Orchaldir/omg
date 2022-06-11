@@ -15,7 +15,7 @@ impl ToStep<GeneratorStep> for GeneratorStepSerde {
     fn try_convert(self, attributes: &[String]) -> Result<GeneratorStep> {
         let id = get_attribute_id(&self.attribute, attributes)?;
         let generator = self.generator.try_convert()?;
-        Ok(GeneratorStep::new(self.name, id, generator))
+        GeneratorStep::new(self.name, id, generator)
     }
 }
 
@@ -41,7 +41,7 @@ mod tests {
     fn test_conversion() {
         let attributes = vec!["test".to_string()];
         let generator = Generator2d::IndexGenerator(Size2d::unchecked(1, 2));
-        let step = GeneratorStep::new("step", 0, generator);
+        let step = GeneratorStep::new("step", 0, generator).unwrap();
 
         assert_eq(step, &attributes);
     }
