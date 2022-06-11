@@ -3,13 +3,21 @@ use crate::data::map::Map2d;
 use crate::data::math::generator::generator1d::Generator1d;
 
 /// Shifts each column or row of an [`Attribute`] based on a [`Generator1d`].
-#[derive(new)]
+#[derive(new, Debug, PartialEq, Eq, Clone)]
 pub struct Distortion1d {
     attribute_id: usize,
     generator: Generator1d,
 }
 
 impl Distortion1d {
+    pub fn attribute_id(&self) -> usize {
+        self.attribute_id
+    }
+
+    pub fn generator(&self) -> &Generator1d {
+        &self.generator
+    }
+
     /// Shifts each each row along the x-axis based on a [`Generator1d`].
     ///
     /// ```
