@@ -1,6 +1,6 @@
 use crate::data::math::transformer::lookup2d::LookupTable2dSerde;
 use crate::data::math::transformer::threshold::OverwriteWithThresholdSerde;
-use anyhow::Result;
+use anyhow::{Context, Result};
 use omg::data::math::transformer::transformer2d::Transformer2d;
 use serde::{Deserialize, Serialize};
 
@@ -22,7 +22,12 @@ type R = Transformer2d;
 impl Transformer2dSerde {
     pub fn try_convert(self) -> Result<Transformer2d> {
         match self {
-            S::Lookup2d(lookup) => Ok(R::Lookup2d(lookup.try_convert()?)),
+            S::Lookup2d(lookup) => {
+                let lookup_table2d = lookup
+                    .try_convert()
+                    .context("Failed to convert to Transformer2d::Lookup2d!")?;
+                Ok(R::Lookup2d(lookup_table2d))
+            }
             S::Const(value) => Ok(R::Const(value)),
             S::OverwriteIfAbove(overwrite) => Ok(R::OverwriteIfAbove(overwrite.into())),
             S::OverwriteIfBelow(overwrite) => Ok(R::OverwriteIfBelow(overwrite.into())),

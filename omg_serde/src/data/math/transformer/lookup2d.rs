@@ -1,5 +1,5 @@
 use crate::data::math::size2d::Size2dSerde;
-use anyhow::Result;
+use anyhow::{Context, Result};
 use omg::data::math::transformer::lookup2d::LookupTable2d;
 use serde::{Deserialize, Serialize};
 
@@ -11,7 +11,11 @@ pub struct LookupTable2dSerde {
 
 impl LookupTable2dSerde {
     pub fn try_convert(self) -> Result<LookupTable2d> {
-        LookupTable2d::new(self.size.try_convert()?, self.values)
+        let size = self
+            .size
+            .try_convert()
+            .context("Failed to convert to LookupTable2d!")?;
+        LookupTable2d::new(size, self.values)
     }
 }
 
