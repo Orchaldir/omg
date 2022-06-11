@@ -21,7 +21,7 @@ pub trait ToStep<T> {
 }
 
 pub trait FromStep<T> {
-    fn convert(&self, attributes: &[String]) -> T;
+    fn convert(&self, attributes: &mut Vec<String>) -> T;
 }
 
 pub fn assert_eq<R: FromStep<S> + Eq + Debug, S: ToStep<R>>(step: R, attributes: &mut Vec<String>) {
@@ -30,7 +30,7 @@ pub fn assert_eq<R: FromStep<S> + Eq + Debug, S: ToStep<R>>(step: R, attributes:
     assert_eq!(serde.try_convert(attributes).unwrap(), step)
 }
 
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(new, Debug, Serialize, Deserialize)]
 pub enum GenerationStepSerde {
     CreateAttribute(CreateAttributeStepSerde),
     DistortAlongX(Distortion1dStepSerde),
@@ -65,7 +65,7 @@ impl ToStep<GenerationStep> for GenerationStepSerde {
 }
 
 impl FromStep<GenerationStepSerde> for GenerationStep {
-    fn convert(&self, attributes: &[String]) -> GenerationStepSerde {
+    fn convert(&self, attributes: &mut Vec<String>) -> GenerationStepSerde {
         match self {
             R::CreateAttribute(data) => S::CreateAttribute(data.convert(attributes)),
             R::DistortAlongX(data) => S::DistortAlongX(data.convert(attributes)),

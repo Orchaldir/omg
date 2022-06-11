@@ -3,7 +3,7 @@ use anyhow::{Context, Result};
 use omg::generation::attributes::modify::ModifyWithAttributeStep;
 use serde::{Deserialize, Serialize};
 
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(new, Debug, Serialize, Deserialize)]
 pub struct ModifyWithAttributeStepSerde {
     source: String,
     target: String,
@@ -28,7 +28,7 @@ impl ToStep<ModifyWithAttributeStep> for ModifyWithAttributeStepSerde {
 }
 
 impl FromStep<ModifyWithAttributeStepSerde> for ModifyWithAttributeStep {
-    fn convert(&self, attributes: &[String]) -> ModifyWithAttributeStepSerde {
+    fn convert(&self, attributes: &mut Vec<String>) -> ModifyWithAttributeStepSerde {
         let source = attributes[self.source_id()].clone();
         let target = attributes[self.target_id()].clone();
         ModifyWithAttributeStepSerde {

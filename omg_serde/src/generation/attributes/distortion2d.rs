@@ -29,7 +29,7 @@ impl ToStep<Distortion2dStep> for Distortion2dStepSerde {
 }
 
 impl FromStep<Distortion2dStepSerde> for Distortion2dStep {
-    fn convert(&self, attributes: &[String]) -> Distortion2dStepSerde {
+    fn convert(&self, attributes: &mut Vec<String>) -> Distortion2dStepSerde {
         let attribute = attributes[self.attribute_id()].clone();
         Distortion2dStepSerde {
             attribute,

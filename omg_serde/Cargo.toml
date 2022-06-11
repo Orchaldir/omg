@@ -8,6 +8,7 @@ edition = "2021"
 
 [dependencies]
 anyhow = "1.0"
+derive-new = "0.5"
 omg = { path = "../omg" }
 serde = { version = "1.0", features = ["derive"] }
 serde_yaml = "0.8"

@@ -2,7 +2,7 @@ use anyhow::Result;
 use omg::data::math::size2d::Size2d;
 use serde::{Deserialize, Serialize};
 
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(new, Debug, Serialize, Deserialize)]
 pub struct Size2dSerde {
     width: u32,
     height: u32,

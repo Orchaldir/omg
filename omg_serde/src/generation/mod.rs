@@ -7,7 +7,7 @@ use serde::{Deserialize, Serialize};
 pub mod attributes;
 pub mod step;
 
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(new, Debug, Serialize, Deserialize)]
 pub struct MapGenerationSerde {
     name: String,
     size: Size2dSerde,
@@ -23,7 +23,7 @@ impl MapGenerationSerde {
             .enumerate()
             .map(|(index, step)| {
                 step.try_convert(&mut attributes)
-                    .with_context(|| format!("Failed to convert the {}.step!", index))
+                    .with_context(|| format!("Failed to convert the {}.step!", index + 1))
             })
             .collect();
         let steps = steps?;
@@ -35,16 +35,54 @@ impl MapGenerationSerde {
 
 impl From<&MapGeneration> for MapGenerationSerde {
     fn from(map_generation: &MapGeneration) -> Self {
-        let attributes: Vec<String> = Vec::new();
+        let mut attributes: Vec<String> = Vec::new();
         let steps: Vec<GenerationStepSerde> = map_generation
             .steps()
             .iter()
-            .map(|data| data.convert(&attributes))
+            .map(|data| data.convert(&mut attributes))
             .collect();
         MapGenerationSerde {
             name: map_generation.name().to_string(),
             size: map_generation.size().into(),
             steps,
         }
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use crate::generation::attributes::modify::ModifyWithAttributeStepSerde;
+    use omg::data::math::size2d::Size2d;
+    use omg::generation::attributes::create::CreateAttributeStep;
+    use omg::generation::attributes::modify::ModifyWithAttributeStep;
+    use omg::generation::step::GenerationStep;
+
+    #[test]
+    fn test_conversion() {
+        let create0 =
+            GenerationStep::CreateAttribute(CreateAttributeStep::new("source", 0).unwrap());
+        let create1 =
+            GenerationStep::CreateAttribute(CreateAttributeStep::new("target", 0).unwrap());
+        let modify = ModifyWithAttributeStep::new(0, 1, 100, 10);
+        let modify = GenerationStep::ModifyWithAttribute(modify);
+        let steps = vec![create0, create1, modify];
+        let generation = MapGeneration::new("map", Size2d::unchecked(4, 5), steps);
+
+        let serde: MapGenerationSerde = (&generation).into();
+
+        assert_eq!(serde.try_convert().unwrap(), generation);
+    }
+
+    #[test]
+    fn test_conversion_missing_attribute() {
+        let modify =
+            ModifyWithAttributeStepSerde::new("source".to_string(), "target".to_string(), 100, 10);
+        let modify = GenerationStepSerde::ModifyWithAttribute(modify);
+        let size = Size2dSerde::new(4, 5);
+        let serde = MapGenerationSerde::new("map".to_string(), size, vec![modify]);
+        let result: Result<MapGeneration> = serde.try_convert();
+
+        assert!(result.is_err());
     }
 }

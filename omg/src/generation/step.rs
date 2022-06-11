@@ -8,6 +8,7 @@ use crate::generation::attributes::transformer::TransformAttribute2dStep;
 use GenerationStep::*;
 
 /// A step during [`MapGeneration`].
+#[derive(Debug, PartialEq, Eq, Clone)]
 pub enum GenerationStep {
     CreateAttribute(CreateAttributeStep),
     DistortAlongX(Distortion1dStep),
