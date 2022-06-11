@@ -19,14 +19,14 @@ impl Distortion1dStepSerde {
 }
 
 impl ToStep<Distortion1dStep> for Distortion1dStepSerde {
-    fn try_convert(self, attributes: &[String]) -> Result<Distortion1dStep> {
+    fn try_convert(self, attributes: &mut Vec<String>) -> Result<Distortion1dStep> {
         self.inner_convert(attributes)
             .context("Failed to convert to Distortion1dStep!")
     }
 }
 
 impl FromStep<Distortion1dStepSerde> for Distortion1dStep {
-    fn convert(&self, attributes: &[String]) -> Distortion1dStepSerde {
+    fn convert(&self, attributes: &mut Vec<String>) -> Distortion1dStepSerde {
         let attribute = attributes[self.attribute_id()].clone();
         Distortion1dStepSerde {
             attribute,
@@ -43,9 +43,9 @@ mod tests {
 
     #[test]
     fn test_conversion() {
-        let attributes = vec!["test".to_string()];
+        let mut attributes = vec!["test".to_string()];
         let step = Distortion1dStep::new(0, Generator1d::InputAsOutput);
 
-        assert_eq(step, &attributes);
+        assert_eq(step, &mut attributes);
     }
 }

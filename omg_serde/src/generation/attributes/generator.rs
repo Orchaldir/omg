@@ -20,14 +20,14 @@ impl GeneratorStepSerde {
 }
 
 impl ToStep<GeneratorStep> for GeneratorStepSerde {
-    fn try_convert(self, attributes: &[String]) -> Result<GeneratorStep> {
+    fn try_convert(self, attributes: &mut Vec<String>) -> Result<GeneratorStep> {
         self.inner_convert(attributes)
             .context("Failed to convert to GeneratorStep!")
     }
 }
 
 impl FromStep<GeneratorStepSerde> for GeneratorStep {
-    fn convert(&self, attributes: &[String]) -> GeneratorStepSerde {
+    fn convert(&self, attributes: &mut Vec<String>) -> GeneratorStepSerde {
         let attribute = attributes[self.attribute_id()].clone();
         GeneratorStepSerde {
             name: self.name().to_string(),
@@ -46,10 +46,10 @@ mod tests {
 
     #[test]
     fn test_conversion() {
-        let attributes = vec!["test".to_string()];
+        let mut attributes = vec!["test".to_string()];
         let generator = Generator2d::IndexGenerator(Size2d::unchecked(1, 2));
         let step = GeneratorStep::new("step", 0, generator).unwrap();
 
-        assert_eq(step, &attributes);
+        assert_eq(step, &mut attributes);
     }
 }

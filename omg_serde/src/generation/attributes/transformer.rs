@@ -4,7 +4,7 @@ use anyhow::{Context, Result};
 use omg::generation::attributes::transformer::TransformAttribute2dStep;
 use serde::{Deserialize, Serialize};
 
-#[derive(Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize)]
 pub struct TransformAttribute2dStepSerde {
     name: String,
     source0: String,
@@ -14,7 +14,7 @@ pub struct TransformAttribute2dStepSerde {
 }
 
 impl ToStep<TransformAttribute2dStep> for TransformAttribute2dStepSerde {
-    fn try_convert(self, attributes: &[String]) -> Result<TransformAttribute2dStep> {
+    fn try_convert(self, attributes: &mut Vec<String>) -> Result<TransformAttribute2dStep> {
         let source_id0 = get_attribute_id(&self.source0, attributes)
             .context("Failed to convert source0 of TransformAttribute2dStep!")?;
         let source_id1 = get_attribute_id(&self.source1, attributes)
@@ -32,7 +32,7 @@ impl ToStep<TransformAttribute2dStep> for TransformAttribute2dStepSerde {
 }
 
 impl FromStep<TransformAttribute2dStepSerde> for TransformAttribute2dStep {
-    fn convert(&self, attributes: &[String]) -> TransformAttribute2dStepSerde {
+    fn convert(&self, attributes: &mut Vec<String>) -> TransformAttribute2dStepSerde {
         let source0 = attributes[self.source_id0()].clone();
         let source1 = attributes[self.source_id1()].clone();
         let target = attributes[self.target_id()].clone();
@@ -54,10 +54,10 @@ mod tests {
 
     #[test]
     fn test_conversion() {
-        let attributes = vec!["s0".to_string(), "s1".to_string(), "t".to_string()];
+        let mut attributes = vec!["s0".to_string(), "s1".to_string(), "t".to_string()];
         let transformer = Transformer2d::Const(88);
         let step = TransformAttribute2dStep::new("step", 0, 1, 2, transformer).unwrap();
 
-        assert_eq(step, &attributes);
+        assert_eq(step, &mut attributes);
     }
 }

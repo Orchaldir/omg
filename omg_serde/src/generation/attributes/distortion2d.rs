@@ -12,7 +12,7 @@ pub struct Distortion2dStepSerde {
 }
 
 impl ToStep<Distortion2dStep> for Distortion2dStepSerde {
-    fn try_convert(self, attributes: &[String]) -> Result<Distortion2dStep> {
+    fn try_convert(self, attributes: &mut Vec<String>) -> Result<Distortion2dStep> {
         let id = get_attribute_id(&self.attribute, attributes)
             .context("Failed to convert attribute of Distortion2dStep!")?;
         let generator_x = self
@@ -29,7 +29,7 @@ impl ToStep<Distortion2dStep> for Distortion2dStepSerde {
 }
 
 impl FromStep<Distortion2dStepSerde> for Distortion2dStep {
-    fn convert(&self, attributes: &[String]) -> Distortion2dStepSerde {
+    fn convert(&self, attributes: &mut Vec<String>) -> Distortion2dStepSerde {
         let attribute = attributes[self.attribute_id()].clone();
         Distortion2dStepSerde {
             attribute,
@@ -48,11 +48,11 @@ mod tests {
 
     #[test]
     fn test_conversion() {
-        let attributes = vec!["test".to_string()];
+        let mut attributes = vec!["test".to_string()];
         let generator_x = IndexGenerator(Size2d::unchecked(1, 2));
         let generator_y = IndexGenerator(Size2d::unchecked(3, 4));
         let step = Distortion2dStep::new(0, generator_x, generator_y);
 
-        assert_eq(step, &attributes);
+        assert_eq(step, &mut attributes);
     }
 }

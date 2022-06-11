@@ -12,7 +12,7 @@ pub struct ModifyWithAttributeStepSerde {
 }
 
 impl ToStep<ModifyWithAttributeStep> for ModifyWithAttributeStepSerde {
-    fn try_convert(self, attributes: &[String]) -> Result<ModifyWithAttributeStep> {
+    fn try_convert(self, attributes: &mut Vec<String>) -> Result<ModifyWithAttributeStep> {
         let source_id = get_attribute_id(&self.source, attributes)
             .context("Failed to convert source of ModifyWithAttributeStep!")?;
         let target_id = get_attribute_id(&self.target, attributes)
@@ -28,7 +28,7 @@ impl ToStep<ModifyWithAttributeStep> for ModifyWithAttributeStepSerde {
 }
 
 impl FromStep<ModifyWithAttributeStepSerde> for ModifyWithAttributeStep {
-    fn convert(&self, attributes: &[String]) -> ModifyWithAttributeStepSerde {
+    fn convert(&self, attributes: &mut Vec<String>) -> ModifyWithAttributeStepSerde {
         let source = attributes[self.source_id()].clone();
         let target = attributes[self.target_id()].clone();
         ModifyWithAttributeStepSerde {
@@ -47,9 +47,9 @@ mod tests {
 
     #[test]
     fn test_conversion() {
-        let attributes = vec!["a".to_string(), "b".to_string()];
+        let mut attributes = vec!["a".to_string(), "b".to_string()];
         let step = ModifyWithAttributeStep::new(1, 0, 50, 10);
 
-        assert_eq(step, &attributes);
+        assert_eq(step, &mut attributes);
     }
 }
