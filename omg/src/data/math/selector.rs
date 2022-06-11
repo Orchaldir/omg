@@ -5,7 +5,7 @@ use anyhow::Result;
 use std::collections::HashMap;
 
 /// Selects a value based on the input.
-#[derive(Debug)]
+#[derive(Clone, Debug, PartialEq)]
 pub enum Selector<I: IntInput, V: Interpolate> {
     /// Returns a specific element.
     ///
