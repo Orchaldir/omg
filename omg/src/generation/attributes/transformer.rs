@@ -3,7 +3,7 @@ use crate::data::math::transformer::transformer2d::Transformer2d;
 
 /// Transforms 2 [`Attribute`]s and writes into another.
 #[derive(new)]
-pub struct TransformAttribute2d {
+pub struct TransformAttribute2dStep {
     name: String,
     source_id0: usize,
     source_id1: usize,
@@ -11,20 +11,20 @@ pub struct TransformAttribute2d {
     transformer: Transformer2d,
 }
 
-impl TransformAttribute2d {
+impl TransformAttribute2dStep {
     // Runs the step.
     ///
     /// ```
     ///# use omg::data::map::Map2d;
     ///# use omg::data::math::size2d::Size2d;
     ///# use omg::data::math::transformer::transformer2d::Transformer2d;
-    ///# use omg::generation::attributes::transformer::TransformAttribute2d;
+    ///# use omg::generation::attributes::transformer::TransformAttribute2dStep;
     /// let mut map = Map2d::new(Size2d::unchecked(3, 2));
     /// map.create_attribute_from("input0", vec![  0,   1,  99, 100, 101, 255]);
     /// map.create_attribute_from("input1", vec![200, 199, 198, 197, 196, 195]);
     /// map.create_attribute("target", 10);
     /// let transformer = Transformer2d::new_overwrite_if_below(42, 100);
-    /// let step = TransformAttribute2d::new("name".to_string(), 0, 1, 2, transformer);
+    /// let step = TransformAttribute2dStep::new("name".to_string(), 0, 1, 2, transformer);
     ///
     /// step.run(&mut map);
     ///

@@ -4,23 +4,23 @@ use anyhow::{Context, Result};
 
 /// Create a new [`Attribute`] in the [`Map2d`].
 #[derive(Debug, PartialEq, Eq, Clone)]
-pub struct CreateAttribute {
+pub struct CreateAttributeStep {
     attribute: String,
     default: u8,
 }
 
-impl CreateAttribute {
+impl CreateAttributeStep {
     /// Creates the step, but returns an error if the name is invalid:
     ///
     /// ```
-    ///# use omg::generation::attributes::create::CreateAttribute;
-    /// assert!(CreateAttribute::new("", 9).is_err());
-    /// assert!(CreateAttribute::new("   ", 42).is_err());
+    ///# use omg::generation::attributes::create::CreateAttributeStep;
+    /// assert!(CreateAttributeStep::new("", 9).is_err());
+    /// assert!(CreateAttributeStep::new("   ", 42).is_err());
     /// ```
-    pub fn new<S: Into<String>>(name: S, default: u8) -> Result<CreateAttribute> {
+    pub fn new<S: Into<String>>(name: S, default: u8) -> Result<CreateAttributeStep> {
         let name = validate_name(name).context("Failed to create a CreateAttribute step!")?;
 
-        Ok(CreateAttribute {
+        Ok(CreateAttributeStep {
             attribute: name,
             default,
         })
@@ -39,10 +39,10 @@ impl CreateAttribute {
     /// ```
     ///# use omg::data::map::Map2d;
     ///# use omg::data::math::size2d::Size2d;
-    ///# use omg::generation::attributes::create::CreateAttribute;
+    ///# use omg::generation::attributes::create::CreateAttributeStep;
     /// let size = Size2d::unchecked(2, 3);
     /// let mut map = Map2d::new(size);
-    /// let step = CreateAttribute::new("test0", 9).unwrap();
+    /// let step = CreateAttributeStep::new("test0", 9).unwrap();
     ///
     /// step.run(&mut map);
     ///

@@ -1,27 +1,27 @@
 use crate::data::math::generator::generator1d::Generator1dSerde;
 use crate::generation::step::{get_attribute_id, FromStep, ToStep};
 use anyhow::Result;
-use omg::generation::attributes::distortion1d::Distortion1d;
+use omg::generation::attributes::distortion1d::Distortion1dStep;
 use serde::{Deserialize, Serialize};
 
 #[derive(Debug, PartialEq, Eq, Clone, Serialize, Deserialize)]
-pub struct Distortion1dSerde {
+pub struct Distortion1dStepSerde {
     attribute: String,
     generator: Generator1dSerde,
 }
 
-impl ToStep<Distortion1d> for Distortion1dSerde {
-    fn try_convert(self, attributes: &[String]) -> Result<Distortion1d> {
+impl ToStep<Distortion1dStep> for Distortion1dStepSerde {
+    fn try_convert(self, attributes: &[String]) -> Result<Distortion1dStep> {
         let id = get_attribute_id(&self.attribute, attributes)?;
         let generator = self.generator.try_convert()?;
-        Ok(Distortion1d::new(id, generator))
+        Ok(Distortion1dStep::new(id, generator))
     }
 }
 
-impl FromStep<Distortion1dSerde> for Distortion1d {
-    fn convert(&self, attributes: &[String]) -> Distortion1dSerde {
+impl FromStep<Distortion1dStepSerde> for Distortion1dStep {
+    fn convert(&self, attributes: &[String]) -> Distortion1dStepSerde {
         let attribute = attributes[self.attribute_id()].clone();
-        Distortion1dSerde {
+        Distortion1dStepSerde {
             attribute,
             generator: self.generator().into(),
         }
@@ -37,7 +37,7 @@ mod tests {
     #[test]
     fn test_conversion() {
         let attributes = vec!["test".to_string()];
-        let step = Distortion1d::new(0, Generator1d::InputAsOutput);
+        let step = Distortion1dStep::new(0, Generator1d::InputAsOutput);
 
         assert_eq(step, &attributes);
     }

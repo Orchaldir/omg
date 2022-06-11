@@ -1,22 +1,22 @@
 use anyhow::Result;
-use omg::generation::attributes::create::CreateAttribute;
+use omg::generation::attributes::create::CreateAttributeStep;
 use serde::{Deserialize, Serialize};
 
 #[derive(Debug, PartialEq, Eq, Clone, Serialize, Deserialize)]
-pub struct CreateAttributeSerde {
+pub struct CreateAttributeStepSerde {
     attribute: String,
     default: u8,
 }
 
-impl CreateAttributeSerde {
-    pub fn try_convert(self) -> Result<CreateAttribute> {
-        CreateAttribute::new(self.attribute, self.default)
+impl CreateAttributeStepSerde {
+    pub fn try_convert(self) -> Result<CreateAttributeStep> {
+        CreateAttributeStep::new(self.attribute, self.default)
     }
 }
 
-impl From<&CreateAttribute> for CreateAttributeSerde {
-    fn from(step: &CreateAttribute) -> Self {
-        CreateAttributeSerde {
+impl From<&CreateAttributeStep> for CreateAttributeStepSerde {
+    fn from(step: &CreateAttributeStep) -> Self {
+        CreateAttributeStepSerde {
             attribute: step.attribute().to_string(),
             default: step.default(),
         }
@@ -29,8 +29,8 @@ mod tests {
 
     #[test]
     fn test_conversion() {
-        let start = CreateAttribute::new("test", 66).unwrap();
-        let serde: CreateAttributeSerde = (&start).into();
+        let start = CreateAttributeStep::new("test", 66).unwrap();
+        let serde: CreateAttributeStepSerde = (&start).into();
 
         assert_eq!(serde.try_convert().unwrap(), start)
     }

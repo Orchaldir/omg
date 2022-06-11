@@ -2,14 +2,14 @@ use crate::data::map::Map2d;
 
 /// Modifies one [`Attribute`] with another transformed one.
 #[derive(new, Debug, Clone)]
-pub struct ModifyWithAttribute {
+pub struct ModifyWithAttributeStep {
     source_id: usize,
     target_id: usize,
     factor: f32,
     minimum: u8,
 }
 
-impl ModifyWithAttribute {
+impl ModifyWithAttributeStep {
     // Runs the step.
     pub fn run(&self, map: &mut Map2d) {
         info!(
