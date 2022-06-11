@@ -1,3 +1,4 @@
+extern crate image;
 #[macro_use]
 extern crate rocket;
 
@@ -6,19 +7,21 @@ use omg::data::map::Map2d;
 use omg::interface::io::StoragePort;
 use omg::logging::init_logging;
 use omg_serde::interface::io::StoragePortWithSerde;
+use rocket::fs::NamedFile;
 use rocket::{routes, State};
-use std::sync::Mutex;
-
-struct EditorData {
-    map: Map2d,
-}
-
-type Data = State<Mutex<EditorData>>;
 
 #[get("/")]
-fn get_overview(data: &Data) -> String {
-    let data = data.lock().expect("lock shared data");
-    format!("{:?}", data.map)
+async fn get_map(map: &State<Map2d>) -> Option<NamedFile> {
+    let attribute = map.get_attribute(0);
+    image::save_buffer(
+        "image.png",
+        attribute.get_all(),
+        map.size().width(),
+        map.size().height(),
+        image::ColorType::L8,
+    )
+    .unwrap();
+    NamedFile::open("image.png").await.ok()
 }
 
 #[rocket::main]
@@ -32,11 +35,9 @@ async fn main() -> Result<()> {
     let map_generation = port.read("resources/map_generation/biome.yaml")?;
     let map = map_generation.generate();
 
-    let data = EditorData { map };
-
     if let Err(e) = rocket::build()
-        .manage(Mutex::new(data))
-        .mount("/", routes![get_overview])
+        .manage(map)
+        .mount("/", routes![get_map])
         .launch()
         .await
     {
