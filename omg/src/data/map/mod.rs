@@ -118,32 +118,19 @@ impl Map2d {
         self.attribute_lookup.get(name).copied()
     }
 
-    /// Returns an [`Attribute`] with the matching id.
+    /// Returns the [`Attribute`] with the matching id.
     ///
     /// ```
     ///# use omg::data::map::Map2d;
     ///# use omg::data::math::size2d::Size2d;
     /// let mut map = Map2d::new(Size2d::unchecked(2, 3));
     /// map.create_attribute("elevation", 42);
-    /// map.create_attribute("rainfall", 100);
     ///
-    /// assert_eq!(map.get_attribute(0).name(), "elevation");
-    /// assert_eq!(map.get_attribute(1).name(), "rainfall");
+    /// assert!(map.get_attribute(0).is_some());
+    /// assert!(map.get_attribute(1).is_none());
     /// ```
-    ///
-    /// # Panics
-    ///
-    /// Panics if there is no matching id.
-    ///
-    /// ```should_panic
-    ///# use omg::data::map::Map2d;
-    ///# use omg::data::math::size2d::Size2d;
-    /// let mut map = Map2d::new(Size2d::unchecked(2, 3));
-    ///
-    /// map.get_attribute(0);
-    /// ```
-    pub fn get_attribute(&self, id: usize) -> &Attribute {
-        unwrap!(self.attributes.get(id), "Unknown attribute id {}!", id)
+    pub fn get_attribute(&self, id: usize) -> Option<&Attribute> {
+        self.attributes.get(id)
     }
 
     /// Returns a mutable [`Attribute`] with the matching id.
@@ -174,4 +161,32 @@ impl Map2d {
     pub fn get_attribute_mut(&mut self, id: usize) -> &mut Attribute {
         unwrap!(self.attributes.get_mut(id), "Unknown attribute id {}!", id)
     }
+}
+
+/// Returns the [`Attribute`] with the matching id.
+///
+/// ```
+///# use omg::data::map::{get_attribute, Map2d};
+///# use omg::data::math::size2d::Size2d;
+/// let mut map = Map2d::new(Size2d::unchecked(2, 3));
+/// map.create_attribute("elevation", 42);
+/// map.create_attribute("rainfall", 100);
+///
+/// assert_eq!(get_attribute(&map, 0).name(), "elevation");
+/// assert_eq!(get_attribute(&map, 1).name(), "rainfall");
+/// ```
+///
+/// # Panics
+///
+/// Panics if there is no matching id.
+///
+/// ```should_panic
+///# use omg::data::map::{get_attribute, Map2d};
+///# use omg::data::math::size2d::Size2d;
+/// let mut map = Map2d::new(Size2d::unchecked(2, 3));
+///
+/// get_attribute(&map, 0);
+/// ```
+pub fn get_attribute(map: &Map2d, id: usize) -> &Attribute {
+    unwrap!(map.get_attribute(id), "Unknown attribute id {}!", id)
 }

@@ -1,4 +1,4 @@
-use crate::data::map::Map2d;
+use crate::data::map::{get_attribute, Map2d};
 use crate::data::math::transformer::transformer2d::Transformer2d;
 use crate::data::name::validate_name;
 use anyhow::{bail, Result};
@@ -59,7 +59,7 @@ impl TransformAttribute2dStep {
     // Runs the step.
     ///
     /// ```
-    ///# use omg::data::map::Map2d;
+    ///# use omg::data::map::{get_attribute, Map2d};
     ///# use omg::data::math::size2d::Size2d;
     ///# use omg::data::math::transformer::transformer2d::Transformer2d;
     ///# use omg::generation::attributes::transformer::TransformAttribute2dStep;
@@ -72,17 +72,17 @@ impl TransformAttribute2dStep {
     ///
     /// step.run(&mut map);
     ///
-    /// assert_eq!(map.get_attribute(0).get_all(), &vec![  0,   1,  99, 100, 101, 255]);
-    /// assert_eq!(map.get_attribute(1).get_all(), &vec![200, 199, 198, 197, 196, 195]);
-    /// assert_eq!(map.get_attribute(2).get_all(), &vec![ 42,  42,  42,  42, 196, 195]);
+    /// assert_eq!(get_attribute(&map, 0).get_all(), &vec![  0,   1,  99, 100, 101, 255]);
+    /// assert_eq!(get_attribute(&map, 1).get_all(), &vec![200, 199, 198, 197, 196, 195]);
+    /// assert_eq!(get_attribute(&map, 2).get_all(), &vec![ 42,  42,  42,  42, 196, 195]);
     /// ```
     pub fn run(&self, map: &mut Map2d) {
         info!(
             "Apply transformation '{}' using '{}' & '{}' to '{}' of map '{}'",
             self.name,
-            map.get_attribute(self.source_id0).name(),
-            map.get_attribute(self.source_id1).name(),
-            map.get_attribute(self.target_id).name(),
+            get_attribute(map, self.source_id0).name(),
+            get_attribute(map, self.source_id1).name(),
+            get_attribute(map, self.target_id).name(),
             map.name()
         );
 
@@ -94,8 +94,8 @@ impl TransformAttribute2dStep {
 
     fn transform(&self, map: &mut Map2d) -> Vec<u8> {
         let size = map.size();
-        let source_attribute0 = map.get_attribute(self.source_id0);
-        let source_attribute1 = map.get_attribute(self.source_id1);
+        let source_attribute0 = get_attribute(map, self.source_id0);
+        let source_attribute1 = get_attribute(map, self.source_id1);
         let mut biomes = Vec::with_capacity(size.get_area());
 
         for index in 0..size.get_area() {

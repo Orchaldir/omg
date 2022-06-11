@@ -1,4 +1,4 @@
-use crate::data::map::Map2d;
+use crate::data::map::{get_attribute, Map2d};
 use crate::data::math::generator::generator2d::Generator2d;
 use crate::data::name::validate_name;
 use anyhow::Result;
@@ -41,7 +41,7 @@ impl GeneratorStep {
     // Adds the values.
     ///
     /// ```
-    ///# use omg::data::map::Map2d;
+    ///# use omg::data::map::{get_attribute, Map2d};
     ///# use omg::data::math::generator::generator2d::Generator2d::IndexGenerator;
     ///# use omg::data::math::size2d::Size2d;
     ///# use omg::generation::attributes::generator::GeneratorStep;
@@ -54,14 +54,14 @@ impl GeneratorStep {
     ///
     /// step.add(&mut map);
     ///
-    /// let attribute = map.get_attribute(attribute_id);
+    /// let attribute = get_attribute(&map, attribute_id);
     /// assert_eq!(attribute.get_all(), &vec![40u8, 41, 42, 43, 44, 45]);
     /// ```
     pub fn add(&self, map: &mut Map2d) {
         info!(
             "Add '{}' to attribute '{}' of map '{}'",
             self.name,
-            map.get_attribute(self.attribute_id).name(),
+            get_attribute(map, self.attribute_id).name(),
             map.name()
         );
 
@@ -82,7 +82,7 @@ impl GeneratorStep {
     // Subtracts the values.
     ///
     /// ```
-    ///# use omg::data::map::Map2d;
+    ///# use omg::data::map::{get_attribute, Map2d};
     ///# use omg::data::math::generator::generator2d::Generator2d::IndexGenerator;
     ///# use omg::data::math::size2d::Size2d;
     ///# use omg::generation::attributes::generator::GeneratorStep;
@@ -95,14 +95,14 @@ impl GeneratorStep {
     ///
     /// step.sub(&mut map);
     ///
-    /// let attribute = map.get_attribute(attribute_id);
+    /// let attribute = get_attribute(&map, attribute_id);
     /// assert_eq!(attribute.get_all(), &vec![40u8, 39, 38, 37, 36, 35]);
     /// ```
     pub fn sub(&self, map: &mut Map2d) {
         info!(
             "Subtract '{}' from attribute '{}' of map '{}'",
             self.name,
-            map.get_attribute(self.attribute_id).name(),
+            get_attribute(map, self.attribute_id).name(),
             map.name()
         );
 

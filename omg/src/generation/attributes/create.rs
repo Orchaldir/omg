@@ -37,7 +37,7 @@ impl CreateAttributeStep {
     /// Runs the step.
     ///
     /// ```
-    ///# use omg::data::map::Map2d;
+    ///# use omg::data::map::{get_attribute, Map2d};
     ///# use omg::data::math::size2d::Size2d;
     ///# use omg::generation::attributes::create::CreateAttributeStep;
     /// let size = Size2d::unchecked(2, 3);
@@ -46,7 +46,7 @@ impl CreateAttributeStep {
     ///
     /// step.run(&mut map);
     ///
-    /// let attribute = map.get_attribute(0);
+    /// let attribute = get_attribute(&map, 0);
     /// assert_eq!(attribute.name(), "test0");
     /// assert_eq!(attribute.size(), &size);
     /// assert_eq!(attribute.get_all(), &vec![9u8, 9, 9, 9, 9, 9]);

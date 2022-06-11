@@ -16,19 +16,22 @@ fn get_map_path(attribute: usize) -> String {
 
 #[get("/map/<attribute_id>")]
 async fn get_map(map: &State<Map2d>, attribute_id: usize) -> Option<NamedFile> {
-    let attribute = map.get_attribute(attribute_id);
-    let path = get_map_path(attribute_id);
+    if let Some(attribute) = map.get_attribute(attribute_id) {
+        let path = get_map_path(attribute_id);
 
-    image::save_buffer(
-        path.clone(),
-        attribute.get_all(),
-        map.size().width(),
-        map.size().height(),
-        image::ColorType::L8,
-    )
-    .unwrap();
+        image::save_buffer(
+            path.clone(),
+            attribute.get_all(),
+            map.size().width(),
+            map.size().height(),
+            image::ColorType::L8,
+        )
+        .unwrap();
 
-    NamedFile::open(path).await.ok()
+        NamedFile::open(path).await.ok()
+    } else {
+        None
+    }
 }
 
 #[rocket::main]
