@@ -5,7 +5,7 @@ use anyhow::{Context, Result};
 /// Create a new [`Attribute`] in the [`Map2d`].
 #[derive(Debug, PartialEq, Eq, Clone)]
 pub struct CreateAttribute {
-    name: String,
+    attribute: String,
     default: u8,
 }
 
@@ -20,11 +20,18 @@ impl CreateAttribute {
     pub fn new<S: Into<String>>(name: S, default: u8) -> Result<CreateAttribute> {
         let name = validate_name(name).context("Failed to create a CreateAttribute step!")?;
 
-        Ok(CreateAttribute { name, default })
+        Ok(CreateAttribute {
+            attribute: name,
+            default,
+        })
     }
 
-    pub fn get_attribute(&self) -> &str {
-        &self.name
+    pub fn attribute(&self) -> &str {
+        &self.attribute
+    }
+
+    pub fn default(&self) -> u8 {
+        self.default
     }
 
     /// Runs the step.
@@ -45,9 +52,13 @@ impl CreateAttribute {
     /// assert_eq!(attribute.get_all(), &vec![9u8, 9, 9, 9, 9, 9]);
     /// ```
     pub fn run(&self, map: &mut Map2d) {
-        info!("Create attribute '{}' of map '{}'", self.name, map.name());
+        info!(
+            "Create attribute '{}' of map '{}'",
+            self.attribute,
+            map.name()
+        );
 
-        map.create_attribute(self.name.clone(), self.default)
+        map.create_attribute(self.attribute.clone(), self.default)
             .expect("Failed to create the attribute!");
     }
 }
