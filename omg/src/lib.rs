@@ -7,4 +7,5 @@ extern crate unwrap;
 
 pub mod data;
 pub mod generation;
+pub mod interface;
 pub mod logging;
