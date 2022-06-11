@@ -1,3 +1,5 @@
+use crate::data::math::interpolation::{lerp, Interpolate};
+
 /// Represents a color with the RGB color model.
 ///
 /// See [Wikipedia](https://en.wikipedia.org/wiki/RGB_color_model).
@@ -78,6 +80,27 @@ impl From<Color> for [f32; 3] {
             color.g() as f32 / 255.0,
             color.b() as f32 / 255.0,
         ]
+    }
+}
+
+impl Interpolate for Color {
+    /// Interpolates linearly with another color.
+    ///
+    /// ```
+    ///# use omg::data::color::Color;
+    ///# use omg::data::math::interpolation::Interpolate;
+    /// let color0 = Color::new(  0, 25, 120);
+    /// let color1 = Color::new(200, 75, 220);
+    /// let result = Color::new(100, 50, 170);
+    ///
+    /// assert_eq!(color0.lerp(&color1, 0.5), result);
+    /// ```
+    fn lerp(&self, other: &Color, factor: f32) -> Color {
+        Color {
+            r: lerp(self.r, other.r, factor),
+            g: lerp(self.g, other.g, factor),
+            b: lerp(self.b, other.b, factor),
+        }
     }
 }
 
