@@ -27,6 +27,18 @@ impl MapGeneration {
         }
     }
 
+    pub fn name(&self) -> &str {
+        &self.name
+    }
+
+    pub fn size(&self) -> &Size2d {
+        &self.size
+    }
+
+    pub fn steps(&self) -> &[GenerationStep] {
+        &self.steps
+    }
+
     /// Generates the map.
     pub fn generate(&self) -> Map2d {
         let start = std::time::Instant::now();
