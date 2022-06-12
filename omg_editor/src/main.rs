@@ -3,6 +3,8 @@ extern crate image;
 extern crate rocket;
 
 use anyhow::Result;
+use image::ColorType;
+use omg::data::map::attribute::Attribute;
 use omg::data::map::Map2d;
 use omg::data::math::selector::ColorSelector;
 use omg::interface::map::MapStorage;
@@ -12,10 +14,6 @@ use omg_serde::interface::map::MapStorageWithSerde;
 use omg_serde::interface::selector::SelectorStorageWithSerde;
 use rocket::fs::NamedFile;
 use rocket::{routes, State};
-
-fn get_map_path(attribute: usize) -> String {
-    format!("temp/map-{}.png", attribute)
-}
 
 struct EditorData {
     map: Map2d,
@@ -27,18 +25,7 @@ async fn get_map(data: &State<EditorData>, attribute_id: usize) -> Option<NamedF
     let map = &data.map;
 
     if let Some(attribute) = map.get_attribute(attribute_id) {
-        let path = get_map_path(attribute_id);
-
-        image::save_buffer(
-            path.clone(),
-            attribute.get_all(),
-            map.size().width(),
-            map.size().height(),
-            image::ColorType::L8,
-        )
-        .unwrap();
-
-        NamedFile::open(path).await.ok()
+        create_gray_map(attribute).await
     } else {
         None
     }
@@ -49,28 +36,7 @@ async fn get_color_map(data: &State<EditorData>, attribute_id: usize) -> Option<
     let map = &data.map;
 
     if let Some(attribute) = map.get_attribute(attribute_id) {
-        let path = get_map_path(attribute_id);
-
-        let buf: Vec<u8> = attribute
-            .get_all()
-            .iter()
-            .flat_map(|value| {
-                let color = data.selector.get(*value);
-                let array: [u8; 3] = color.into();
-                array
-            })
-            .collect();
-
-        image::save_buffer(
-            path.clone(),
-            &buf,
-            map.size().width(),
-            map.size().height(),
-            image::ColorType::Rgb8,
-        )
-        .unwrap();
-
-        NamedFile::open(path).await.ok()
+        create_color_map(attribute, &data.selector).await
     } else {
         None
     }
@@ -101,4 +67,35 @@ async fn main() -> Result<()> {
     };
 
     Ok(())
+}
+
+async fn create_gray_map(attribute: &Attribute) -> Option<NamedFile> {
+    create_map(attribute, attribute.get_all(), ColorType::L8).await
+}
+
+async fn create_color_map(attribute: &Attribute, selector: &ColorSelector) -> Option<NamedFile> {
+    let buf: Vec<u8> = attribute
+        .get_all()
+        .iter()
+        .flat_map(|value| {
+            let color = selector.get(*value);
+            let array: [u8; 3] = color.into();
+            array
+        })
+        .collect();
+
+    create_map(attribute, &buf, ColorType::Rgb8).await
+}
+
+async fn create_map(attribute: &Attribute, buf: &[u8], color_type: ColorType) -> Option<NamedFile> {
+    let path = get_map_path(attribute);
+    let size = attribute.size();
+
+    image::save_buffer(path.clone(), buf, size.width(), size.height(), color_type).unwrap();
+
+    NamedFile::open(path).await.ok()
+}
+
+fn get_map_path(attribute: &Attribute) -> String {
+    format!("temp/map-{}.png", attribute.name())
 }
