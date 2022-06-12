@@ -1,0 +1,16 @@
+---
+InterpolateVector:
+  - threshold: 0
+    value: "#000080"
+  - threshold: 76
+    value: "#00FFFF"
+  - threshold: 77
+    value: "#64FF64"
+  - threshold: 153
+    value: "#005000"
+  - threshold: 154
+    value: "#323232"
+  - threshold: 204
+    value: "#C8C8C8"
+  - threshold: 242
+    value: "#FFFFFF"

@@ -1,4 +1,4 @@
-use crate::data::map::Map2d;
+use crate::data::map::{get_attribute, get_attribute_mut, Map2d};
 
 /// Modifies one [`Attribute`] with another transformed one.
 #[derive(new, Debug, PartialEq, Eq, Clone)]
@@ -32,21 +32,21 @@ impl ModifyWithAttributeStep {
         info!(
             "{} attribute '{}' with attribute '{}' of map '{}'",
             if factor < 0.0 { "Decrease" } else { "Increase" },
-            map.get_attribute(self.target_id).name(),
-            map.get_attribute(self.source_id).name(),
+            get_attribute(map, self.target_id).name(),
+            get_attribute(map, self.source_id).name(),
             map.name()
         );
 
         let values = self.calculate_values(map, factor);
-        let attribute = map.get_attribute_mut(self.target_id);
+        let attribute = get_attribute_mut(map, self.target_id);
 
         attribute.replace_all(values);
     }
 
     fn calculate_values(&self, map: &mut Map2d, factor: f32) -> Vec<u8> {
         let length = map.size().get_area();
-        let source_attribute = map.get_attribute(self.source_id);
-        let target_attribute = map.get_attribute(self.target_id);
+        let source_attribute = get_attribute(map, self.source_id);
+        let target_attribute = get_attribute(map, self.target_id);
         let mut values = Vec::with_capacity(length);
 
         for index in 0..length {

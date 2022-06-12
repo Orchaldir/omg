@@ -1,5 +1,5 @@
 use crate::data::map::attribute::Attribute;
-use crate::data::map::Map2d;
+use crate::data::map::{get_attribute, get_attribute_mut, Map2d};
 use crate::data::math::generator::generator1d::Generator1d;
 
 /// Shifts each column or row of an [`Attribute`] based on a [`Generator1d`].
@@ -21,7 +21,7 @@ impl Distortion1dStep {
     /// Shifts each each row along the x-axis based on a [`Generator1d`].
     ///
     /// ```
-    ///# use omg::data::map::Map2d;
+    ///# use omg::data::map::{get_attribute, Map2d};
     ///# use omg::data::math::generator::generator1d::Generator1d::InputAsOutput;
     ///# use omg::data::math::size2d::Size2d;
     ///# use omg::generation::attributes::distortion1d::Distortion1dStep;
@@ -33,18 +33,18 @@ impl Distortion1dStep {
     ///
     /// step.distort_along_x(&mut map);
     ///
-    /// let attribute = map.get_attribute(attribute_id);
+    /// let attribute = get_attribute(&map, attribute_id);
     /// assert_eq!(attribute.get_all(), &vec![1u8, 2, 3, 4, 4, 5, 7, 7, 7]);
     /// ```
     pub fn distort_along_x(&self, map: &mut Map2d) {
         info!(
             "Distort attribute '{}' of map '{}' along the x-axis.",
-            map.get_attribute(self.attribute_id).name(),
+            get_attribute(map, self.attribute_id).name(),
             map.name()
         );
 
         let values = self.distort_map_along_x(map);
-        let attribute = map.get_attribute_mut(self.attribute_id);
+        let attribute = get_attribute_mut(map, self.attribute_id);
 
         attribute.replace_all(values);
     }
@@ -52,7 +52,7 @@ impl Distortion1dStep {
     /// Shifts each each column along the y-axis based on a [`Generator1d`].
     ///
     /// ```
-    ///# use omg::data::map::Map2d;
+    ///# use omg::data::map::{get_attribute, Map2d};
     ///# use omg::data::math::generator::generator1d::Generator1d::InputAsOutput;
     ///# use omg::data::math::size2d::Size2d;
     ///# use omg::generation::attributes::distortion1d::Distortion1dStep;
@@ -64,25 +64,25 @@ impl Distortion1dStep {
     ///
     /// step.distort_along_y(&mut map);
     ///
-    /// let attribute = map.get_attribute(attribute_id);
+    /// let attribute = get_attribute(&map, attribute_id);
     /// assert_eq!(attribute.get_all(), &vec![1u8, 2, 3, 4, 2, 3, 7, 5, 3]);
     /// ```
     pub fn distort_along_y(&self, map: &mut Map2d) {
         info!(
             "Distort attribute '{}' of map '{}' along the y-axis.",
-            map.get_attribute(self.attribute_id).name(),
+            get_attribute(map, self.attribute_id).name(),
             map.name()
         );
 
         let values = self.distort_map_along_y(map);
-        let attribute = map.get_attribute_mut(self.attribute_id);
+        let attribute = get_attribute_mut(map, self.attribute_id);
 
         attribute.replace_all(values);
     }
 
     fn distort_map_along_x(&self, map: &Map2d) -> Vec<u8> {
         let length = map.size().get_area();
-        let attribute = map.get_attribute(self.attribute_id);
+        let attribute = get_attribute(map, self.attribute_id);
         let mut values = Vec::with_capacity(length);
 
         for y in 0..map.size().height() {
@@ -95,7 +95,7 @@ impl Distortion1dStep {
 
     fn distort_map_along_y(&self, map: &Map2d) -> Vec<u8> {
         let length = map.size().get_area();
-        let attribute = map.get_attribute(self.attribute_id);
+        let attribute = get_attribute(map, self.attribute_id);
         let mut values = vec![0; length];
 
         for x in 0..map.size().width() {

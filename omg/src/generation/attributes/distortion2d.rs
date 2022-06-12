@@ -1,4 +1,4 @@
-use crate::data::map::Map2d;
+use crate::data::map::{get_attribute, get_attribute_mut, Map2d};
 use crate::data::math::generator::generator2d::Generator2d;
 
 /// Distorts an [`Attribute`] along 2 dimensions.
@@ -26,12 +26,12 @@ impl Distortion2dStep {
     pub fn run(&self, map: &mut Map2d) {
         info!(
             "Distort attribute '{}' of map '{}' in 2 dimensions.",
-            map.get_attribute(self.attribute_id).name(),
+            get_attribute(map, self.attribute_id).name(),
             map.name()
         );
 
         let values = self.distort_map(map);
-        let attribute = map.get_attribute_mut(self.attribute_id);
+        let attribute = get_attribute_mut(map, self.attribute_id);
 
         attribute.replace_all(values);
     }
@@ -39,7 +39,7 @@ impl Distortion2dStep {
     fn distort_map(&self, map: &Map2d) -> Vec<u8> {
         let size = map.size();
         let length = size.get_area();
-        let attribute = map.get_attribute(self.attribute_id);
+        let attribute = get_attribute(map, self.attribute_id);
         let mut values = Vec::with_capacity(length);
 
         for y in 0..size.height() {

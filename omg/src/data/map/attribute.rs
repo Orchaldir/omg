@@ -9,7 +9,7 @@ use std::ops::{Index, IndexMut};
 /// * elevation
 /// * rainfall
 /// * temperature
-#[derive(Debug)]
+#[derive(Clone, Debug, PartialEq)]
 pub struct Attribute {
     name: String,
     size: Size2d,

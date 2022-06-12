@@ -11,3 +11,6 @@ Cargo.lock
 
 # Ignore IntelliJ IDEA
 .idea
+
+# Ignore temporary files
+/temp/

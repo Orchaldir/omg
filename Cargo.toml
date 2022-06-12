@@ -3,4 +3,5 @@
 members = [
     "omg",
     "omg_serde",
+    "omg_editor",
 ]
