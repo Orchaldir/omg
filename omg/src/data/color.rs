@@ -1,4 +1,3 @@
-use crate::convert::TryConvert;
 use crate::data::math::interpolation::{lerp, Interpolate};
 use anyhow::{bail, Context};
 
@@ -101,26 +100,35 @@ impl From<Color> for String {
 /// Converts a hex color code to a color, if possible:
 ///
 /// ```
-///# use omg::convert::TryConvert;
 ///# use omg::data::color::{Color, ORANGE};
-/// assert_eq!("#FFA500".try_convert().unwrap(), ORANGE);
+/// assert_eq!(Color::try_from("#FFA500").unwrap(), ORANGE);
 /// ```
-impl TryConvert<Color> for &str {
-    fn try_convert(self) -> anyhow::Result<Color> {
-        if !self.starts_with('#') {
-            bail!("'{}' needs to start with # to be a color", self);
-        } else if self.len() != 7 {
-            bail!("'{}' needs to be 7 characters long to be a color", self);
+impl TryFrom<&str> for Color {
+    type Error = anyhow::Error;
+
+    fn try_from(hex_code: &str) -> anyhow::Result<Color> {
+        if !hex_code.starts_with('#') {
+            bail!("'{}' needs to start with # to be a color", hex_code);
+        } else if hex_code.len() != 7 {
+            bail!("'{}' needs to be 7 characters long to be a color", hex_code);
         }
 
-        let r: u8 = u8::from_str_radix(&self[1..3], 16)
-            .with_context(|| format!("Failed to parse the value of red from '{}'", self))?;
-        let g: u8 = u8::from_str_radix(&self[3..5], 16)
-            .with_context(|| format!("Failed to parse the value of green from '{}'", self))?;
-        let b: u8 = u8::from_str_radix(&self[5..7], 16)
-            .with_context(|| format!("Failed to parse the value of blue from '{}'", self))?;
+        let r: u8 = u8::from_str_radix(&hex_code[1..3], 16)
+            .with_context(|| format!("Failed to parse the value of red from '{}'", hex_code))?;
+        let g: u8 = u8::from_str_radix(&hex_code[3..5], 16)
+            .with_context(|| format!("Failed to parse the value of green from '{}'", hex_code))?;
+        let b: u8 = u8::from_str_radix(&hex_code[5..7], 16)
+            .with_context(|| format!("Failed to parse the value of blue from '{}'", hex_code))?;
 
         Ok(Color::new(r, g, b))
+    }
+}
+
+impl TryFrom<String> for Color {
+    type Error = anyhow::Error;
+
+    fn try_from(hex_code: String) -> anyhow::Result<Color> {
+        Color::try_from(hex_code.as_str())
     }
 }
 
@@ -162,25 +170,25 @@ mod tests {
 
     #[test]
     fn test_from_empty_string() {
-        assert!("".try_convert().is_err());
+        assert!(Color::try_from("").is_err());
     }
 
     #[test]
     fn test_from_string_invalid_start() {
-        assert!("FFA500".try_convert().is_err());
+        assert!(Color::try_from("FFA500").is_err());
     }
 
     #[test]
     fn test_from_string_part() {
-        assert!("#".try_convert().is_err());
-        assert!("#FF".try_convert().is_err());
-        assert!("#FFA5".try_convert().is_err());
-        assert!("#FFA50".try_convert().is_err());
+        assert!(Color::try_from("#").is_err());
+        assert!(Color::try_from("#FF").is_err());
+        assert!(Color::try_from("#FFA5").is_err());
+        assert!(Color::try_from("#FFA50").is_err());
     }
 
     #[test]
     fn test_from_string_ignore_case() {
-        assert_eq!("#FFA500".try_convert().unwrap(), ORANGE);
-        assert_eq!("#ffa500".try_convert().unwrap(), ORANGE);
+        assert_eq!(Color::try_from("#FFA500").unwrap(), ORANGE);
+        assert_eq!(Color::try_from("#ffa500").unwrap(), ORANGE);
     }
 }

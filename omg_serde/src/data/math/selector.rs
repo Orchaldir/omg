@@ -1,63 +1,84 @@
-use crate::data::color::ColorSerde;
-use crate::data::math::interpolation::vector::VectorInterpolatorSerde;
+use crate::data::math::interpolation::vector::EntrySerde;
 use anyhow::Result;
-use omg::data::input::IntInput;
-use omg::data::math::interpolation::Interpolate;
-use omg::data::math::selector::Selector;
+use omg::data::color::Color;
+use omg::data::math::selector::ColorSelector;
 use serde::{Deserialize, Serialize};
 use std::collections::HashMap;
 
-pub type ColorSelectorSerde = SelectorSerde<u8, ColorSerde>;
-
 #[derive(Debug, Serialize, Deserialize)]
-pub enum SelectorSerde<I: IntInput, V> {
-    Const(V),
-    InterpolatePair { first: V, second: V },
-    InterpolateVector(VectorInterpolatorSerde<I, V>),
-    Lookup { lookup: HashMap<I, V>, default: V },
+pub enum ColorSelectorSerde {
+    Const(String),
+    InterpolatePair {
+        first: String,
+        second: String,
+    },
+    InterpolateVector(Vec<EntrySerde<u8, String>>),
+    Lookup {
+        lookup: HashMap<u8, String>,
+        default: String,
+    },
 }
 
-type S<I, V> = SelectorSerde<I, V>;
-type R<I, U> = Selector<I, U>;
+type S = ColorSelectorSerde;
+type R = ColorSelector;
 
-impl<T: IntInput, V> SelectorSerde<T, V> {
-    pub fn try_convert<U: Interpolate + From<V>>(self) -> Result<Selector<T, U>> {
+impl ColorSelectorSerde {
+    pub fn try_convert(self) -> Result<ColorSelector> {
         match self {
-            S::Const(value) => Ok(R::Const(value.into())),
+            S::Const(value) => {
+                let color = Color::try_from(value)?;
+                Ok(R::Const(color))
+            }
             S::InterpolatePair { first, second } => {
-                Ok(R::new_interpolate_pair(first.into(), second.into()))
+                let first = Color::try_from(first)?;
+                let second = Color::try_from(second)?;
+                Ok(R::new_interpolate_pair(first, second))
             }
             S::InterpolateVector(interpolate) => {
-                Ok(R::InterpolateVector(interpolate.try_convert()?))
+                let vector: Result<Vec<(u8, Color)>> = interpolate
+                    .into_iter()
+                    .map(|e| e.value().clone().try_into().map(|c| (e.threshold(), c)))
+                    .collect();
+                Ok(R::new_interpolate_vector(vector?)?)
             }
             S::Lookup { lookup, default } => {
-                let hash_map = lookup
+                let result: Result<Vec<(u8, Color)>> = lookup
                     .into_iter()
-                    .map(|(input, value)| (input, value.into()))
+                    .map(|(input, value)| value.try_into().map(|c| (input, c)))
                     .collect();
-                Ok(R::new_lookup(hash_map, default.into()))
+                Ok(R::new_lookup(
+                    result?.into_iter().collect(),
+                    default.try_into()?,
+                ))
             }
         }
     }
 }
 
-impl<T: IntInput, V: From<U>, U: Interpolate> From<&Selector<T, U>> for SelectorSerde<T, V> {
-    fn from(interpolator: &Selector<T, U>) -> Self {
+impl From<&ColorSelector> for ColorSelectorSerde {
+    fn from(interpolator: &ColorSelector) -> Self {
         match interpolator {
-            R::Const(value) => S::Const(value.clone().into()),
+            R::Const(value) => S::Const((*value).into()),
             R::InterpolatePair { first, second } => S::InterpolatePair {
-                first: first.clone().into(),
-                second: second.clone().into(),
+                first: (*first).into(),
+                second: (*second).into(),
             },
-            R::InterpolateVector(interpolate) => S::InterpolateVector(interpolate.into()),
+            R::InterpolateVector(interpolate) => {
+                let vector: Vec<EntrySerde<u8, String>> = interpolate
+                    .get_all()
+                    .iter()
+                    .map(|e| EntrySerde::new(e.threshold(), String::from(e.value())))
+                    .collect();
+                S::InterpolateVector(vector)
+            }
             R::Lookup { lookup, default } => {
                 let lookup = lookup
                     .iter()
-                    .map(|(input, value)| (*input, value.clone().into()))
+                    .map(|(input, value)| (*input, (*value).into()))
                     .collect();
                 S::Lookup {
                     lookup,
-                    default: default.clone().into(),
+                    default: (*default).into(),
                 }
             }
         }
@@ -71,8 +92,8 @@ mod tests {
 
     #[test]
     fn test_conversion() {
-        let start = Selector::Const(123);
-        let serde: SelectorSerde<u32, u8> = (&start).into();
+        let start = ColorSelector::Const(RED);
+        let serde: ColorSelectorSerde = (&start).into();
 
         assert_eq!(serde.try_convert().unwrap(), start)
     }
@@ -80,7 +101,7 @@ mod tests {
     #[test]
     fn test_convert_color_selector() {
         let vector = vec![(0u8, RED), (200u8, BLUE)];
-        let start = Selector::new_interpolate_vector(vector).unwrap();
+        let start = ColorSelector::new_interpolate_vector(vector).unwrap();
         let serde: ColorSelectorSerde = (&start).into();
 
         assert_eq!(serde.try_convert().unwrap(), start)

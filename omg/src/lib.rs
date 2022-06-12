@@ -5,7 +5,6 @@ extern crate log;
 #[macro_use]
 extern crate unwrap;
 
-pub mod convert;
 pub mod data;
 pub mod generation;
 pub mod interface;

@@ -5,13 +5,21 @@ use omg::data::math::interpolation::Interpolate;
 
 use serde::{Deserialize, Serialize};
 
-#[derive(Debug, PartialEq, Eq, Clone, Deserialize, Serialize)]
-struct EntrySerde<T: Input, V> {
+#[derive(new, Debug, PartialEq, Eq, Clone, Deserialize, Serialize)]
+pub struct EntrySerde<T: Input, V> {
     threshold: T,
     value: V,
 }
 
 impl<T: Input, V> EntrySerde<T, V> {
+    pub fn threshold(&self) -> T {
+        self.threshold
+    }
+
+    pub fn value(&self) -> &V {
+        &self.value
+    }
+
     pub fn convert<U: Interpolate + From<V>>(self) -> (T, U) {
         (self.threshold, self.value.into())
     }
