@@ -4,9 +4,9 @@ extern crate rocket;
 
 use anyhow::Result;
 use omg::data::map::Map2d;
-use omg::interface::io::StoragePort;
+use omg::interface::map::MapStorage;
 use omg::logging::init_logging;
-use omg_serde::interface::io::StoragePortWithSerde;
+use omg_serde::interface::map::MapStorageWithSerde;
 use rocket::fs::NamedFile;
 use rocket::{routes, State};
 
@@ -40,7 +40,7 @@ async fn main() -> Result<()> {
 
     //info!("Starting Map Editor");
 
-    let port = StoragePortWithSerde {};
+    let port = MapStorageWithSerde {};
 
     let map_generation = port.read("resources/map_generation/biome.yaml")?;
     let map = map_generation.generate();

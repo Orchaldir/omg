@@ -1,9 +1,9 @@
-use omg::interface::io::StoragePort;
-use omg_serde::interface::io::StoragePortWithSerde;
+use omg::interface::map::MapStorage;
+use omg_serde::interface::map::MapStorageWithSerde;
 
 #[test]
 fn test_read() {
-    let port = StoragePortWithSerde {};
+    let port = MapStorageWithSerde {};
     port.read(&"../resources/map_generation/biome.yaml")
         .unwrap();
 }
