@@ -1,8 +1,11 @@
+use crate::data::color::Color;
 use crate::data::input::IntInput;
 use crate::data::math::interpolation::vector::VectorInterpolator;
 use crate::data::math::interpolation::Interpolate;
 use anyhow::Result;
 use std::collections::HashMap;
+
+pub type ColorSelector = Selector<u8, Color>;
 
 /// Selects a value based on the input.
 #[derive(Clone, Debug, PartialEq)]

@@ -6,8 +6,6 @@ use std::io::Write;
 use crate::data::color::ColorSerde;
 use crate::data::math::selector::SelectorSerde;
 
-pub type ColorSelectorSerde = SelectorSerde<u8,ColorSerde>;
-
 pub struct SelectorStorageWithSerde;
 
 impl SelectorStorageWithSerde {

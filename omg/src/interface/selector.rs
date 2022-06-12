@@ -1,8 +1,5 @@
-use crate::data::color::Color;
-use crate::data::math::selector::Selector;
+use crate::data::math::selector::ColorSelector;
 use anyhow::Result;
-
-pub type ColorSelector = Selector<u8, Color>;
 
 pub trait SelectorStorage {
     fn read(&self, path: &str) -> Result<ColorSelector>;
