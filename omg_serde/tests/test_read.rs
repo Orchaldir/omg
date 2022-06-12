@@ -16,7 +16,7 @@ fn test_map_storage() {
     let steps = vec![GenerationStep::debug("a"), GenerationStep::debug("b")];
     let map_generation = MapGeneration::new("test0", size, steps).unwrap();
 
-    let path = "../temp/map.yaml";
+    let path = "map.yaml";
 
     storage.write(&map_generation, path).unwrap();
 
@@ -39,7 +39,7 @@ fn test_color_selector_storage() {
     ])
     .unwrap();
 
-    let path = "../temp/color_selector.yaml";
+    let path = "color_selector.yaml";
 
     storage.write(&selector, path).unwrap();
 
