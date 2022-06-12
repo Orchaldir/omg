@@ -1,10 +1,10 @@
+use crate::data::math::selector::ColorSelectorSerde;
 use anyhow::{Context, Result};
-use omg::interface::selector::{ColorSelector, SelectorStorage};
+use omg::data::math::selector::ColorSelector;
+use omg::interface::selector::SelectorStorage;
 use std::fs;
 use std::fs::File;
 use std::io::Write;
-use crate::data::color::ColorSerde;
-use crate::data::math::selector::SelectorSerde;
 
 pub struct SelectorStorageWithSerde;
 
@@ -12,7 +12,7 @@ impl SelectorStorageWithSerde {
     pub fn inner_read(&self, path: &str) -> Result<ColorSelector> {
         let string = fs::read_to_string(path)?;
         let data: ColorSelectorSerde = serde_yaml::from_str(&string)?;
-        Ok(data.into())
+        data.try_convert()
     }
 
     pub fn inner_write(&self, selector: &ColorSelector, path: &str) -> Result<()> {
@@ -34,11 +34,7 @@ impl SelectorStorage for SelectorStorageWithSerde {
     }
 
     fn write(&self, selector: &ColorSelector, path: &str) -> Result<()> {
-        self.inner_write(selector, path).with_context(|| {
-            format!(
-                "Failed to write selector to '{}'",
-                path
-            )
-        })
+        self.inner_write(selector, path)
+            .with_context(|| format!("Failed to write selector to '{}'", path))
     }
 }
