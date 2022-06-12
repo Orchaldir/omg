@@ -14,10 +14,11 @@ use omg_serde::interface::map::MapStorageWithSerde;
 use omg_serde::interface::selector::SelectorStorageWithSerde;
 use rocket::fs::NamedFile;
 use rocket::{routes, State};
+use std::collections::HashMap;
 
 struct EditorData {
     map: Map2d,
-    selector: ColorSelector,
+    selectors: HashMap<usize, ColorSelector>,
 }
 
 #[get("/map/<attribute_id>")]
@@ -36,7 +37,11 @@ async fn get_color_map(data: &State<EditorData>, attribute_id: usize) -> Option<
     let map = &data.map;
 
     if let Some(attribute) = map.get_attribute(attribute_id) {
-        create_color_map(attribute, &data.selector).await
+        if let Some(selector) = data.selectors.get(&attribute_id) {
+            create_color_map(attribute, selector).await
+        } else {
+            create_gray_map(attribute).await
+        }
     } else {
         None
     }
@@ -54,10 +59,24 @@ async fn main() -> Result<()> {
     let map = map_generation.generate();
 
     let selector_storage = SelectorStorageWithSerde {};
-    let selector = selector_storage.read("resources/color_selector/elevation.yaml")?;
+
+    let selectors = map
+        .get_all()
+        .iter()
+        .enumerate()
+        .filter_map(|(i, attribute)| {
+            selector_storage
+                .read(&format!(
+                    "resources/color_selector/{}.yaml",
+                    attribute.name()
+                ))
+                .map(|s| (i, s))
+                .ok()
+        })
+        .collect();
 
     if let Err(e) = rocket::build()
-        .manage(EditorData { map, selector })
+        .manage(EditorData { map, selectors })
         .mount("/", routes![get_map, get_color_map])
         .launch()
         .await

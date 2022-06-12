@@ -48,6 +48,10 @@ impl Map2d {
         self.size
     }
 
+    pub fn get_all(&self) -> &[Attribute] {
+        &self.attributes
+    }
+
     /// Adds a new [`Attribute`] to the map and returns its id.
     ///
     /// ```
