@@ -1,4 +1,5 @@
 use crate::data::math::generator::gradient::GradientSerde;
+use crate::data::math::generator::noise::NoiseSerde;
 use crate::data::math::interpolation::vector::VectorInterpolatorSerde;
 use anyhow::{Context, Result};
 use omg::data::math::generator::generator1d::Generator1d;
@@ -10,6 +11,7 @@ pub enum Generator1dSerde {
     Gradient(GradientSerde),
     InputAsOutput,
     InterpolateVector(VectorInterpolatorSerde<u32, u8>),
+    Noise1d(NoiseSerde),
 }
 
 type S = Generator1dSerde;
@@ -37,6 +39,12 @@ impl Generator1dSerde {
                     .context("Failed to convert to Generator1d::InterpolateVector!")?;
                 Ok(R::InterpolateVector(interpolator))
             }
+            Generator1dSerde::Noise1d(noise) => {
+                let noise = noise
+                    .try_convert()
+                    .context("Failed to convert to Generator1d::Noise1d!")?;
+                Ok(R::Noise1d(noise))
+            }
         }
     }
 }
@@ -48,6 +56,7 @@ impl From<&Generator1d> for Generator1dSerde {
             R::Gradient(gradient) => S::Gradient(gradient.into()),
             R::InputAsOutput => S::InputAsOutput,
             R::InterpolateVector(interpolator) => S::InterpolateVector(interpolator.into()),
+            R::Noise1d(noise) => S::Noise1d(noise.into()),
         }
     }
 }

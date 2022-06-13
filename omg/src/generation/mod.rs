@@ -10,7 +10,7 @@ pub mod attributes;
 pub mod step;
 
 /// Generates a map based on a number of steps.
-#[derive(Debug, PartialEq, Eq, Clone)]
+#[derive(Debug, PartialEq, Clone)]
 pub struct MapGeneration {
     name: String,
     size: Size2d,
