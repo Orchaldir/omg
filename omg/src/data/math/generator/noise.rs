@@ -75,15 +75,19 @@ impl Noise {
     /// Generates noise for an input.
     pub fn generate1d(&self, input: u32) -> u8 {
         let input = input as f64 / self.scale_f64;
-        let positive_value = self.algo.get([input, 0.0]) + self.base;
-        (positive_value * self.factor) as u8
+        self.transform(self.algo.get([input, 0.0]))
     }
 
     /// Generates noise for a 2d point.
     pub fn generate2d(&self, x: u32, y: u32) -> u8 {
         let x = x as f64 / self.scale_f64;
         let y = y as f64 / self.scale_f64;
-        let positive_value = self.algo.get([x, y]) + self.base;
+        self.transform(self.algo.get([x, y]))
+    }
+
+    /// Transforms the generated value from [-1,+1] to [min_value,max_value].
+    fn transform(&self, value: f64) -> u8 {
+        let positive_value = value + self.base;
         (positive_value * self.factor) as u8
     }
 }
