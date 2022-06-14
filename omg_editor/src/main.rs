@@ -14,11 +14,24 @@ use omg_serde::interface::map::MapStorageWithSerde;
 use omg_serde::interface::selector::SelectorStorageWithSerde;
 use rocket::fs::NamedFile;
 use rocket::{routes, State};
+use rocket_dyn_templates::{context, Template};
 use std::collections::HashMap;
 
 struct EditorData {
     map: Map2d,
     selectors: HashMap<usize, ColorSelector>,
+}
+
+#[get("/")]
+fn index() -> Template {
+    Template::render(
+        "index",
+        context! {
+            title: "Hello",
+            name: Some("name"),
+            items: vec!["One", "Two", "Three"],
+        },
+    )
 }
 
 #[get("/map/<attribute_id>")]
@@ -77,7 +90,8 @@ async fn main() -> Result<()> {
 
     if let Err(e) = rocket::build()
         .manage(EditorData { map, selectors })
-        .mount("/", routes![get_map, get_color_map])
+        .mount("/", routes![index, get_map, get_color_map])
+        .attach(Template::fairing())
         .launch()
         .await
     {
