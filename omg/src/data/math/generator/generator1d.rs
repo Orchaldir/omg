@@ -1,10 +1,11 @@
 use crate::data::math::generator::gradient::Gradient;
+use crate::data::math::generator::noise::Noise;
 use crate::data::math::interpolation::vector::VectorInterpolator;
 use Generator1d::*;
 
 #[svgbobdoc::transform]
 /// Generates values for a 1d input.
-#[derive(Debug, PartialEq, Eq, Clone)]
+#[derive(Debug, PartialEq, Clone)]
 pub enum Generator1d {
     /// Generates a linear gradient between a center and both sides.
     ///
@@ -125,6 +126,8 @@ pub enum Generator1d {
     /// assert_eq!(generator.generate(125), 175);
     /// ```
     InterpolateVector(VectorInterpolator<u32, u8>),
+    /// Generates noise.
+    Noise1d(Noise),
 }
 
 impl Generator1d {
@@ -141,6 +144,7 @@ impl Generator1d {
                 input as u8
             }
             InterpolateVector(interpolator) => interpolator.interpolate(input),
+            Noise1d(noise) => noise.generate1d(input),
         }
     }
 }

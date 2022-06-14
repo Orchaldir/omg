@@ -1,12 +1,13 @@
 use crate::data::math::distance::calculate_distance;
 use crate::data::math::generator::generator1d::Generator1d;
+use crate::data::math::generator::noise::Noise;
 use crate::data::math::size2d::Size2d;
 use Generator2d::*;
 
 #[svgbobdoc::transform]
 /// Generate values for a 2d input.
 /// Used for the procedural generation of 2d maps.
-#[derive(Debug, PartialEq, Eq, Clone)]
+#[derive(Debug, PartialEq, Clone)]
 pub enum Generator2d {
     /// Feeds the x values to a [`Generator1d`].
     ///
@@ -77,6 +78,8 @@ pub enum Generator2d {
     /// assert_eq!(generator.generate(1, 2), 5);
     /// ```
     IndexGenerator(Size2d),
+    /// Generates 2d noise.
+    Noise2d(Noise),
 }
 
 impl Generator2d {
@@ -110,6 +113,7 @@ impl Generator2d {
                 generator.generate(distance)
             }
             IndexGenerator(size) => size.saturating_to_index(x, y) as u8,
+            Noise2d(noise) => noise.generate2d(x, y),
         }
     }
 }

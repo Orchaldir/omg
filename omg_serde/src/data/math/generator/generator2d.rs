@@ -1,4 +1,5 @@
 use crate::data::math::generator::generator1d::Generator1dSerde;
+use crate::data::math::generator::noise::NoiseSerde;
 use crate::data::math::size2d::Size2dSerde;
 use anyhow::{Context, Result};
 use omg::data::math::generator::generator1d::Generator1d;
@@ -15,6 +16,7 @@ pub enum Generator2dSerde {
         center_y: u32,
     },
     IndexGenerator(Size2dSerde),
+    Noise2d(NoiseSerde),
 }
 
 type S = Generator2dSerde;
@@ -53,6 +55,12 @@ impl Generator2dSerde {
                     .context("Failed to convert to Generator2d::IndexGenerator!")?;
                 Ok(R::IndexGenerator(size))
             }
+            S::Noise2d(noise) => {
+                let noise = noise
+                    .try_convert()
+                    .context("Failed to convert to Generator2d::Noise1d!")?;
+                Ok(R::Noise2d(noise))
+            }
         }
     }
 }
@@ -72,6 +80,7 @@ impl From<&Generator2d> for Generator2dSerde {
                 center_y: *center_y,
             },
             R::IndexGenerator(size) => S::IndexGenerator(size.into()),
+            R::Noise2d(noise) => S::Noise2d(noise.into()),
         }
     }
 }

@@ -24,7 +24,10 @@ pub trait FromStep<T> {
     fn convert(&self, attributes: &mut Vec<String>) -> T;
 }
 
-pub fn assert_eq<R: FromStep<S> + Eq + Debug, S: ToStep<R>>(step: R, attributes: &mut Vec<String>) {
+pub fn assert_eq<R: FromStep<S> + PartialEq + Debug, S: ToStep<R>>(
+    step: R,
+    attributes: &mut Vec<String>,
+) {
     let serde: S = (&step).convert(attributes);
 
     assert_eq!(serde.try_convert(attributes).unwrap(), step)

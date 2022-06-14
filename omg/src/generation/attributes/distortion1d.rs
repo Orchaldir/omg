@@ -3,7 +3,7 @@ use crate::data::map::{get_attribute, get_attribute_mut, Map2d};
 use crate::data::math::generator::generator1d::Generator1d;
 
 /// Shifts each column or row of an [`Attribute`] based on a [`Generator1d`].
-#[derive(new, Debug, PartialEq, Eq, Clone)]
+#[derive(new, Debug, PartialEq, Clone)]
 pub struct Distortion1dStep {
     attribute_id: usize,
     generator: Generator1d,
