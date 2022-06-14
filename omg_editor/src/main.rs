@@ -68,7 +68,7 @@ async fn main() -> Result<()> {
 
     let map_storage = MapStorageWithSerde {};
 
-    let map_generation = map_storage.read("resources/map_generation/biome.yaml")?;
+    let map_generation = map_storage.read("../resources/map_generation/biome.yaml")?;
     let map = map_generation.generate();
 
     let selector_storage = SelectorStorageWithSerde {};
@@ -80,7 +80,7 @@ async fn main() -> Result<()> {
         .filter_map(|(i, attribute)| {
             selector_storage
                 .read(&format!(
-                    "resources/color_selector/{}.yaml",
+                    "../resources/color_selector/{}.yaml",
                     attribute.name()
                 ))
                 .map(|s| (i, s))
