@@ -13,6 +13,7 @@ use omg::logging::init_logging;
 use omg_serde::interface::map::MapStorageWithSerde;
 use omg_serde::interface::selector::SelectorStorageWithSerde;
 use rocket::fs::NamedFile;
+use rocket::response::Redirect;
 use rocket::{routes, State};
 use rocket_dyn_templates::{context, Template};
 use std::collections::HashMap;
@@ -23,17 +24,32 @@ struct EditorData {
 }
 
 #[get("/")]
-fn index(data: &State<EditorData>) -> Template {
+fn home() -> Redirect {
+    Redirect::to(uri!(view_attribute(0)))
+}
+
+#[get("/view/<attribute_id>")]
+async fn view_attribute(data: &State<EditorData>, attribute_id: usize) -> Template {
+    let map_name = data.map.name();
+    let attribute_name = data
+        .map
+        .get_attribute(attribute_id)
+        .map(|a| a.name())
+        .unwrap_or("Unknown");
     let attributes: Vec<(usize, &str)> = data
         .map
         .get_all()
         .iter()
         .enumerate()
-        .map(|(i, a)| (i, a.name().cam))
+        .map(|(i, a)| (i, a.name()))
         .collect();
+
     Template::render(
         "index",
         context! {
+            map_name: map_name,
+            attribute_id: attribute_id,
+            attribute_name: attribute_name,
             attributes: attributes,
         },
     )
@@ -95,7 +111,7 @@ async fn main() -> Result<()> {
 
     if let Err(e) = rocket::build()
         .manage(EditorData { map, selectors })
-        .mount("/", routes![index, get_map, get_color_map])
+        .mount("/", routes![home, view_attribute, get_map, get_color_map])
         .attach(Template::fairing())
         .launch()
         .await

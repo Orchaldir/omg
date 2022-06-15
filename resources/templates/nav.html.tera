@@ -1,4 +1,3 @@
-<a href="/">Map</a>
 {% for a in attributes %}
-  <a href="/map/color/{{ a.0 }}">{{ a.1 }}</a>
+  <a href="/view/{{ a.0 }}">{{ a.1 }}</a>
 {% endfor %}
