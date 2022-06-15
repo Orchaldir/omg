@@ -1,6 +1,7 @@
 # Orchaldir's Map Generator
 
 ![CI](https://github.com/Orchaldir/omg/workflows/CI/badge.svg)
+[![Current Crates.io Version](https://img.shields.io/crates/v/omg_core)](https://crates.io/crates/omg_core)
 
 This project allows the user to create maps with a number of user-defined steps.
 Some example steps are :
