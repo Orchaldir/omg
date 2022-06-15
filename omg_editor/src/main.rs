@@ -130,5 +130,5 @@ async fn create_map(attribute: &Attribute, buf: &[u8], color_type: ColorType) ->
 }
 
 fn get_map_path(attribute: &Attribute) -> String {
-    format!("temp/map-{}.png", attribute.name())
+    format!("../temp/map-{}.png", attribute.name())
 }
