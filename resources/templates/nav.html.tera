@@ -1,0 +1,5 @@
+<a href="/">Map</a>
+{% for a in attributes %}
+  <a href="/view/{{ a.0 }}">{{ a.1 }}</a>
+{% endfor %}
+<a href="/view/0/1/2/3">Quad</a>

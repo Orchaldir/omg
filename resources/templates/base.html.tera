@@ -1,0 +1,12 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>OMG Editor</title>
+  </head>
+  <body>
+    {% include "nav" %}
+
+    {% block content %}{% endblock content %}
+  </body>
+</html>

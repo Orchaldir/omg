@@ -1,0 +1,6 @@
+{% extends "base" %}
+
+{% block content %}
+    <p><h1>Attribute {{ attribute_name }}</h1></p>
+    <img src="/map/color/{{ attribute_id }}" alt="{{ attribute_name }}">
+{% endblock content %}
