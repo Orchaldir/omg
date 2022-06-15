@@ -2,16 +2,17 @@ extern crate image;
 #[macro_use]
 extern crate rocket;
 
+pub mod init;
+
+use crate::init::init_selectors;
 use anyhow::Result;
 use image::ColorType;
 use omg::data::map::attribute::Attribute;
 use omg::data::map::Map2d;
 use omg::data::math::selector::ColorSelector;
 use omg::interface::map::MapStorage;
-use omg::interface::selector::SelectorStorage;
 use omg::logging::init_logging;
 use omg_serde::interface::map::MapStorageWithSerde;
-use omg_serde::interface::selector::SelectorStorageWithSerde;
 use rocket::fs::NamedFile;
 use rocket::{routes, State};
 use rocket_dyn_templates::{context, Template};
@@ -106,22 +107,7 @@ async fn main() -> Result<()> {
     let map_generation = map_storage.read("../resources/map_generation/biome.yaml")?;
     let map = map_generation.generate();
 
-    let selector_storage = SelectorStorageWithSerde {};
-
-    let selectors = map
-        .get_all()
-        .iter()
-        .enumerate()
-        .filter_map(|(i, attribute)| {
-            selector_storage
-                .read(&format!(
-                    "../resources/color_selector/{}.yaml",
-                    attribute.name()
-                ))
-                .map(|s| (i, s))
-                .ok()
-        })
-        .collect();
+    let selectors = init_selectors(&map);
 
     if let Err(e) = rocket::build()
         .manage(EditorData { map, selectors })
