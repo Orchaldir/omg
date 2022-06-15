@@ -1,7 +1,7 @@
 use crate::data::math::generator::generator2d::Generator2dSerde;
 use crate::generation::step::{get_attribute_id, FromStep, ToStep};
 use anyhow::{Context, Result};
-use omg::generation::attributes::generator::GeneratorStep;
+use omg_core::generation::attributes::generator::GeneratorStep;
 use serde::{Deserialize, Serialize};
 
 #[derive(Debug, Serialize, Deserialize)]
@@ -41,8 +41,8 @@ impl FromStep<GeneratorStepSerde> for GeneratorStep {
 mod tests {
     use super::*;
     use crate::generation::step::assert_eq;
-    use omg::data::math::generator::generator2d::Generator2d;
-    use omg::data::math::size2d::Size2d;
+    use omg_core::data::math::generator::generator2d::Generator2d;
+    use omg_core::data::math::size2d::Size2d;
 
     #[test]
     fn test_conversion() {

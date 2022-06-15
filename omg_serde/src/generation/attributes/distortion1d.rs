@@ -1,7 +1,7 @@
 use crate::data::math::generator::generator1d::Generator1dSerde;
 use crate::generation::step::{get_attribute_id, FromStep, ToStep};
 use anyhow::{Context, Result};
-use omg::generation::attributes::distortion1d::Distortion1dStep;
+use omg_core::generation::attributes::distortion1d::Distortion1dStep;
 use serde::{Deserialize, Serialize};
 
 #[derive(Debug, PartialEq, Eq, Clone, Serialize, Deserialize)]
@@ -39,7 +39,7 @@ impl FromStep<Distortion1dStepSerde> for Distortion1dStep {
 mod tests {
     use super::*;
     use crate::generation::step::assert_eq;
-    use omg::data::math::generator::generator1d::Generator1d;
+    use omg_core::data::math::generator::generator1d::Generator1d;
 
     #[test]
     fn test_conversion() {

@@ -1,6 +1,6 @@
 use crate::data::math::size2d::Size2dSerde;
 use anyhow::{Context, Result};
-use omg::data::math::transformer::lookup2d::LookupTable2d;
+use omg_core::data::math::transformer::lookup2d::LookupTable2d;
 use serde::{Deserialize, Serialize};
 
 #[derive(Debug, Serialize, Deserialize)]
@@ -31,7 +31,7 @@ impl From<&LookupTable2d> for LookupTable2dSerde {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use omg::data::math::size2d::Size2d;
+    use omg_core::data::math::size2d::Size2d;
 
     #[test]
     fn test_conversion() {

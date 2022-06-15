@@ -3,12 +3,18 @@ name = "omg_serde"
 version = "0.1.0"
 authors = ["Orchaldir <orchaldir@gmail.com>"]
 edition = "2021"
+license = "GPL-3.0"
+description = "Adds serde support to omg_core."
+homepage = "https://github.com/Orchaldir/omg/"
+repository = "https://github.com/Orchaldir/omg/"
+readme = "../README.md"
+keywords = ["generation", "map", "procedural", "serde"]
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
 anyhow = "1.0"
 derive-new = "0.5"
-omg = { path = "../omg" }
+omg_core = "0.1"
 serde = { version = "1.0", features = ["derive"] }
 serde_yaml = "0.8"

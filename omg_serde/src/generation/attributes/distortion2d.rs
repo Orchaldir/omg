@@ -1,7 +1,7 @@
 use crate::data::math::generator::generator2d::Generator2dSerde;
 use crate::generation::step::{get_attribute_id, FromStep, ToStep};
 use anyhow::{Context, Result};
-use omg::generation::attributes::distortion2d::Distortion2dStep;
+use omg_core::generation::attributes::distortion2d::Distortion2dStep;
 use serde::{Deserialize, Serialize};
 
 #[derive(Debug, Serialize, Deserialize)]
@@ -43,8 +43,8 @@ impl FromStep<Distortion2dStepSerde> for Distortion2dStep {
 mod tests {
     use super::*;
     use crate::generation::step::assert_eq;
-    use omg::data::math::generator::generator2d::Generator2d::IndexGenerator;
-    use omg::data::math::size2d::Size2d;
+    use omg_core::data::math::generator::generator2d::Generator2d::IndexGenerator;
+    use omg_core::data::math::size2d::Size2d;
 
     #[test]
     fn test_conversion() {

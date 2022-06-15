@@ -1,7 +1,7 @@
 use anyhow::Result;
-use omg::data::input::Input;
-use omg::data::math::interpolation::vector::VectorInterpolator;
-use omg::data::math::interpolation::Interpolate;
+use omg_core::data::input::Input;
+use omg_core::data::math::interpolation::vector::VectorInterpolator;
+use omg_core::data::math::interpolation::Interpolate;
 
 use serde::{Deserialize, Serialize};
 

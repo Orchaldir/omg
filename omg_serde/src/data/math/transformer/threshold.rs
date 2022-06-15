@@ -1,5 +1,5 @@
-use omg::data::input::IntInput;
-use omg::data::math::transformer::threshold::OverwriteWithThreshold;
+use omg_core::data::input::IntInput;
+use omg_core::data::math::transformer::threshold::OverwriteWithThreshold;
 use serde::{Deserialize, Serialize};
 
 #[derive(Debug, Serialize, Deserialize)]

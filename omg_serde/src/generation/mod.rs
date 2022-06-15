@@ -1,7 +1,7 @@
 use crate::data::math::size2d::Size2dSerde;
 use crate::generation::step::{FromStep, GenerationStepSerde, ToStep};
 use anyhow::{Context, Result};
-use omg::generation::MapGeneration;
+use omg_core::generation::MapGenerator;
 use serde::{Deserialize, Serialize};
 
 pub mod attributes;
@@ -15,7 +15,7 @@ pub struct MapGenerationSerde {
 }
 
 impl MapGenerationSerde {
-    pub fn try_convert(self) -> Result<MapGeneration> {
+    pub fn try_convert(self) -> Result<MapGenerator> {
         let mut attributes: Vec<String> = Vec::new();
         let steps: Result<Vec<_>> = self
             .steps
@@ -29,12 +29,12 @@ impl MapGenerationSerde {
         let steps = steps?;
         let size = self.size.try_convert()?;
 
-        MapGeneration::new(self.name, size, steps)
+        MapGenerator::new(self.name, size, steps)
     }
 }
 
-impl From<&MapGeneration> for MapGenerationSerde {
-    fn from(map_generation: &MapGeneration) -> Self {
+impl From<&MapGenerator> for MapGenerationSerde {
+    fn from(map_generation: &MapGenerator) -> Self {
         let mut attributes: Vec<String> = Vec::new();
         let steps: Vec<GenerationStepSerde> = map_generation
             .steps()
@@ -53,10 +53,10 @@ impl From<&MapGeneration> for MapGenerationSerde {
 mod tests {
     use super::*;
     use crate::generation::attributes::modify::ModifyWithAttributeStepSerde;
-    use omg::data::math::size2d::Size2d;
-    use omg::generation::attributes::create::CreateAttributeStep;
-    use omg::generation::attributes::modify::ModifyWithAttributeStep;
-    use omg::generation::step::GenerationStep;
+    use omg_core::data::math::size2d::Size2d;
+    use omg_core::generation::attributes::create::CreateAttributeStep;
+    use omg_core::generation::attributes::modify::ModifyWithAttributeStep;
+    use omg_core::generation::step::GenerationStep;
 
     #[test]
     fn test_conversion() {
@@ -67,7 +67,7 @@ mod tests {
         let modify = ModifyWithAttributeStep::new(0, 1, 100, 10);
         let modify = GenerationStep::ModifyWithAttribute(modify);
         let steps = vec![create0, create1, modify];
-        let generation = MapGeneration::new("map", Size2d::unchecked(4, 5), steps).unwrap();
+        let generation = MapGenerator::new("map", Size2d::unchecked(4, 5), steps).unwrap();
 
         let serde: MapGenerationSerde = (&generation).into();
 
@@ -81,7 +81,7 @@ mod tests {
         let modify = GenerationStepSerde::ModifyWithAttribute(modify);
         let size = Size2dSerde::new(4, 5);
         let serde = MapGenerationSerde::new("map".to_string(), size, vec![modify]);
-        let result: Result<MapGeneration> = serde.try_convert();
+        let result: Result<MapGenerator> = serde.try_convert();
 
         assert!(result.is_err());
     }

@@ -1,0 +1,24 @@
+[package]
+name = "omg_core"
+version = "0.1.0"
+authors = ["Orchaldir <orchaldir@gmail.com>"]
+edition = "2021"
+license = "GPL-3.0"
+description = "A library to generate maps with user-defined attributes like rainfall & temperature."
+homepage = "https://github.com/Orchaldir/omg/"
+repository = "https://github.com/Orchaldir/omg/"
+readme = "../README.md"
+keywords = ["generation", "map", "procedural"]
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+anyhow = "1.0"
+chrono = "0.4"
+derive-new = "0.5"
+env_logger = "0.8"
+log = "0.4"
+noise = "0.7"
+num-traits = "0.2"
+svgbobdoc = "0.2"
+unwrap = "1.2"

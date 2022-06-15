@@ -1,7 +1,7 @@
 use crate::data::math::selector::ColorSelectorSerde;
 use anyhow::{Context, Result};
-use omg::data::math::selector::ColorSelector;
-use omg::interface::selector::SelectorStorage;
+use omg_core::data::math::selector::ColorSelector;
+use omg_core::interface::selector::SelectorStorage;
 use std::fs;
 use std::fs::File;
 use std::io::Write;

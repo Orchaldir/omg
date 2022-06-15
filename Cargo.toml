@@ -1,7 +1,7 @@
 [workspace]
 
 members = [
-    "omg",
+    "omg_core",
     "omg_serde",
     "omg_editor",
 ]

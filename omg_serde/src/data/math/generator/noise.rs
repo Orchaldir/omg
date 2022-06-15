@@ -1,5 +1,5 @@
 use anyhow::Result;
-use omg::data::math::generator::noise::Noise;
+use omg_core::data::math::generator::noise::Noise;
 use serde::{Deserialize, Serialize};
 
 #[derive(Debug, PartialEq, Eq, Clone, Copy, Serialize, Deserialize)]
@@ -30,7 +30,7 @@ impl From<&Noise> for NoiseSerde {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use omg::data::math::generator::noise::Noise;
+    use omg_core::data::math::generator::noise::Noise;
 
     #[test]
     fn test_conversion() {

@@ -1,10 +1,10 @@
-use omg::data::color::*;
-use omg::data::math::selector::ColorSelector;
-use omg::data::math::size2d::Size2d;
-use omg::generation::step::GenerationStep;
-use omg::generation::MapGeneration;
-use omg::interface::map::MapStorage;
-use omg::interface::selector::SelectorStorage;
+use omg_core::data::color::*;
+use omg_core::data::math::selector::ColorSelector;
+use omg_core::data::math::size2d::Size2d;
+use omg_core::generation::step::GenerationStep;
+use omg_core::generation::MapGenerator;
+use omg_core::interface::map::MapStorage;
+use omg_core::interface::selector::SelectorStorage;
 use omg_serde::interface::map::MapStorageWithSerde;
 use omg_serde::interface::selector::SelectorStorageWithSerde;
 
@@ -14,7 +14,7 @@ fn test_map_storage() {
 
     let size = Size2d::unchecked(1, 2);
     let steps = vec![GenerationStep::debug("a"), GenerationStep::debug("b")];
-    let map_generation = MapGeneration::new("test0", size, steps).unwrap();
+    let map_generation = MapGenerator::new("test0", size, steps).unwrap();
 
     let path = "map.yaml";
 
