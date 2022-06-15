@@ -5,7 +5,7 @@ use crate::generation::attributes::generator::GeneratorStepSerde;
 use crate::generation::attributes::modify::ModifyWithAttributeStepSerde;
 use crate::generation::attributes::transformer::TransformAttribute2dStepSerde;
 use anyhow::{Context, Result};
-use omg::generation::step::GenerationStep;
+use omg_core::generation::step::GenerationStep;
 use serde::{Deserialize, Serialize};
 use std::fmt::Debug;
 

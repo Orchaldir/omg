@@ -59,10 +59,10 @@ impl TransformAttribute2dStep {
     // Runs the step.
     ///
     /// ```
-    ///# use omg::data::map::{get_attribute, Map2d};
-    ///# use omg::data::math::size2d::Size2d;
-    ///# use omg::data::math::transformer::transformer2d::Transformer2d;
-    ///# use omg::generation::attributes::transformer::TransformAttribute2dStep;
+    ///# use omg_core::data::map::{get_attribute, Map2d};
+    ///# use omg_core::data::math::size2d::Size2d;
+    ///# use omg_core::data::math::transformer::transformer2d::Transformer2d;
+    ///# use omg_core::generation::attributes::transformer::TransformAttribute2dStep;
     /// let mut map = Map2d::new(Size2d::unchecked(3, 2));
     /// map.create_attribute_from("input0", vec![  0,   1,  99, 100, 101, 255]);
     /// map.create_attribute_from("input1", vec![200, 199, 198, 197, 196, 195]);

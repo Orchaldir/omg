@@ -1,7 +1,7 @@
 use crate::generation::MapGenerationSerde;
 use anyhow::{Context, Result};
-use omg::generation::MapGeneration;
-use omg::interface::map::MapStorage;
+use omg_core::generation::MapGeneration;
+use omg_core::interface::map::MapStorage;
 use std::fs;
 use std::fs::File;
 use std::io::Write;

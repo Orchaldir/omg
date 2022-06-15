@@ -1,7 +1,7 @@
 use crate::data::math::transformer::threshold::OverwriteWithThresholdSerde;
 use anyhow::Result;
-use omg::data::input::IntInput;
-use omg::data::math::transformer::transformer1d::Transformer1d;
+use omg_core::data::input::IntInput;
+use omg_core::data::math::transformer::transformer1d::Transformer1d;
 use serde::{Deserialize, Serialize};
 use std::collections::HashMap;
 
@@ -38,7 +38,7 @@ impl<T: IntInput> From<&Transformer1d<T>> for Transformer1dSerde<T> {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use omg::data::math::transformer::threshold::OverwriteWithThreshold;
+    use omg_core::data::math::transformer::threshold::OverwriteWithThreshold;
 
     #[test]
     fn test_convert_overwrite() {

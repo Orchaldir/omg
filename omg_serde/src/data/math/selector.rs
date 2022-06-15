@@ -1,7 +1,7 @@
 use crate::data::math::interpolation::vector::EntrySerde;
 use anyhow::Result;
-use omg::data::color::Color;
-use omg::data::math::selector::ColorSelector;
+use omg_core::data::color::Color;
+use omg_core::data::math::selector::ColorSelector;
 use serde::{Deserialize, Serialize};
 use std::collections::HashMap;
 
@@ -88,7 +88,7 @@ impl From<&ColorSelector> for ColorSelectorSerde {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use omg::data::color::{BLUE, RED};
+    use omg_core::data::color::{BLUE, RED};
 
     #[test]
     fn test_conversion() {

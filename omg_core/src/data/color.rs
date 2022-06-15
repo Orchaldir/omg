@@ -20,7 +20,7 @@ impl Color {
     /// Returns a new gray color.
     ///
     /// ```
-    ///# use omg::data::color::Color;
+    ///# use omg_core::data::color::Color;
     /// assert_eq!(Color::gray(5), Color::new(5, 5, 5));
     /// ```
     pub const fn gray(value: u8) -> Color {
@@ -34,7 +34,7 @@ impl Color {
     /// Returns the red component.
     ///
     /// ```
-    ///# use omg::data::color::Color;
+    ///# use omg_core::data::color::Color;
     /// assert_eq!(Color::new(0, 1, 2).r(), 0);
     /// ```
     pub fn r(&self) -> u8 {
@@ -44,7 +44,7 @@ impl Color {
     /// Returns the green component.
     ///
     /// ```
-    ///# use omg::data::color::Color;
+    ///# use omg_core::data::color::Color;
     /// assert_eq!(Color::new(0, 1, 2).g(), 1);
     /// ```
     pub fn g(&self) -> u8 {
@@ -54,7 +54,7 @@ impl Color {
     /// Returns the blue component.
     ///
     /// ```
-    ///# use omg::data::color::Color;
+    ///# use omg_core::data::color::Color;
     /// assert_eq!(Color::new(0, 1, 2).b(), 2);
     /// ```
     pub fn b(&self) -> u8 {
@@ -87,7 +87,7 @@ impl From<Color> for [f32; 3] {
 /// Converts a color to a hex color code. See https://en.wikipedia.org/wiki/Web_colors.
 ///
 /// ```
-///# use omg::data::color::{Color, ORANGE};
+///# use omg_core::data::color::{Color, ORANGE};
 /// let code: String = ORANGE.into();
 /// assert_eq!(code, "#FFA500");
 /// ```
@@ -100,7 +100,7 @@ impl From<Color> for String {
 /// Converts a hex color code to a color, if possible:
 ///
 /// ```
-///# use omg::data::color::{Color, ORANGE};
+///# use omg_core::data::color::{Color, ORANGE};
 /// assert_eq!(Color::try_from("#FFA500").unwrap(), ORANGE);
 /// ```
 impl TryFrom<&str> for Color {
@@ -136,8 +136,8 @@ impl Interpolate for Color {
     /// Interpolates linearly with another color.
     ///
     /// ```
-    ///# use omg::data::color::Color;
-    ///# use omg::data::math::interpolation::Interpolate;
+    ///# use omg_core::data::color::Color;
+    ///# use omg_core::data::math::interpolation::Interpolate;
     /// let color0 = Color::new(  0, 25, 120);
     /// let color1 = Color::new(200, 75, 220);
     /// let result = Color::new(100, 50, 170);

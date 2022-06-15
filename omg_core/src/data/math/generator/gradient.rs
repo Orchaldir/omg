@@ -13,14 +13,14 @@ impl Gradient {
     /// Creates a gradient unless the length is 0:
     ///
     /// ```
-    ///# use omg::data::math::generator::gradient::Gradient;
+    ///# use omg_core::data::math::generator::gradient::Gradient;
     /// assert!(Gradient::new(1000, 0, 200, 100).is_err());
     /// ```
     ///
     /// The values must be ordered based in their threshold:
     ///
     /// ```
-    ///# use omg::data::math::generator::gradient::Gradient;
+    ///# use omg_core::data::math::generator::gradient::Gradient;
     /// assert!(Gradient::new(1000, 300, 200, 200).is_err());
     /// ```
     pub fn new(start: u32, length: u32, value_start: u8, value_end: u8) -> Result<Gradient> {

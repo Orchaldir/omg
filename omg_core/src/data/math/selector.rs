@@ -13,14 +13,14 @@ pub enum Selector<I: IntInput, V: Interpolate> {
     /// Returns a specific element.
     ///
     /// ```
-    ///# use omg::data::math::selector::Selector;
+    ///# use omg_core::data::math::selector::Selector;
     /// assert_eq!(Selector::Const(99).get(128), 99);
     /// ```
     Const(V),
     /// Interpolates 2 elements.
     ///
     /// ```
-    ///# use omg::data::math::selector::Selector;
+    ///# use omg_core::data::math::selector::Selector;
     /// let selector = Selector::new_interpolate_pair(100, 200);
     ///
     /// assert_eq!(selector.get(128), 150);
@@ -29,7 +29,7 @@ pub enum Selector<I: IntInput, V: Interpolate> {
     /// Interpolates multiple elements.
     ///
     /// ```
-    ///# use omg::data::math::selector::Selector;
+    ///# use omg_core::data::math::selector::Selector;
     /// let interpolator = Selector::new_interpolate_vector(vec![(100,150), (150,200), (200, 100)]).unwrap();
     ///
     /// assert_eq!(interpolator.get(125), 175);
@@ -38,7 +38,7 @@ pub enum Selector<I: IntInput, V: Interpolate> {
     /// Looks the input up in a hashmap or returns the default value.
     ///
     /// ```
-    ///# use omg::data::math::selector::Selector;
+    ///# use omg_core::data::math::selector::Selector;
     /// let lookup = vec![(1u8, 25u8), (3, 100)].into_iter().collect();
     /// let selector = Selector::new_lookup(lookup, 1);
     ///

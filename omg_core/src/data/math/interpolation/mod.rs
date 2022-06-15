@@ -10,7 +10,7 @@ impl Interpolate for u8 {
     /// Linear interpolation between 2 u8.
     ///
     /// ```
-    ///# use omg::data::math::interpolation::Interpolate;
+    ///# use omg_core::data::math::interpolation::Interpolate;
     ///
     /// assert_eq!(100.lerp(&200, 0.5), 150u8);
     /// ```
@@ -22,7 +22,7 @@ impl Interpolate for u8 {
 /// Interpolates between 2 u8 linearly.
 ///
 /// ```
-///# use omg::data::math::interpolation::lerp;
+///# use omg_core::data::math::interpolation::lerp;
 ///
 /// assert_eq!(lerp(100, 200, 0.0), 100);
 /// assert_eq!(lerp(100, 200, 0.5), 150);

@@ -2,8 +2,8 @@ use crate::data::math::generator::generator1d::Generator1dSerde;
 use crate::data::math::generator::noise::NoiseSerde;
 use crate::data::math::size2d::Size2dSerde;
 use anyhow::{Context, Result};
-use omg::data::math::generator::generator1d::Generator1d;
-use omg::data::math::generator::generator2d::Generator2d;
+use omg_core::data::math::generator::generator1d::Generator1d;
+use omg_core::data::math::generator::generator2d::Generator2d;
 use serde::{Deserialize, Serialize};
 
 #[derive(Debug, Serialize, Deserialize)]
@@ -88,7 +88,7 @@ impl From<&Generator2d> for Generator2dSerde {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use omg::data::math::size2d::Size2d;
+    use omg_core::data::math::size2d::Size2d;
 
     #[test]
     fn test_convert_apply_to_x() {

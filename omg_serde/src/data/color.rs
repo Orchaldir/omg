@@ -1,4 +1,4 @@
-use omg::data::color::Color;
+use omg_core::data::color::Color;
 use serde::{Deserialize, Serialize};
 
 #[derive(Clone, Serialize, Deserialize)]
@@ -27,7 +27,7 @@ impl From<Color> for ColorSerde {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use omg::data::color::ORANGE;
+    use omg_core::data::color::ORANGE;
 
     #[test]
     fn test_conversion() {

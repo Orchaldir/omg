@@ -41,11 +41,11 @@ impl GeneratorStep {
     // Adds the values.
     ///
     /// ```
-    ///# use omg::data::map::{get_attribute, Map2d};
-    ///# use omg::data::math::generator::generator2d::Generator2d::IndexGenerator;
-    ///# use omg::data::math::size2d::Size2d;
-    ///# use omg::generation::attributes::generator::GeneratorStep;
-    ///# use omg::generation::step::GenerationStep;
+    ///# use omg_core::data::map::{get_attribute, Map2d};
+    ///# use omg_core::data::math::generator::generator2d::Generator2d::IndexGenerator;
+    ///# use omg_core::data::math::size2d::Size2d;
+    ///# use omg_core::generation::attributes::generator::GeneratorStep;
+    ///# use omg_core::generation::step::GenerationStep;
     /// let size = Size2d::unchecked(2, 3);
     /// let mut map = Map2d::new(size);
     /// let attribute_id = map.create_attribute("elevation", 40).unwrap();
@@ -82,11 +82,11 @@ impl GeneratorStep {
     // Subtracts the values.
     ///
     /// ```
-    ///# use omg::data::map::{get_attribute, Map2d};
-    ///# use omg::data::math::generator::generator2d::Generator2d::IndexGenerator;
-    ///# use omg::data::math::size2d::Size2d;
-    ///# use omg::generation::attributes::generator::GeneratorStep;
-    ///# use omg::generation::step::GenerationStep;
+    ///# use omg_core::data::map::{get_attribute, Map2d};
+    ///# use omg_core::data::math::generator::generator2d::Generator2d::IndexGenerator;
+    ///# use omg_core::data::math::size2d::Size2d;
+    ///# use omg_core::generation::attributes::generator::GeneratorStep;
+    ///# use omg_core::generation::step::GenerationStep;
     /// let size = Size2d::unchecked(2, 3);
     /// let mut map = Map2d::new(size);
     /// let attribute_id = map.create_attribute("elevation", 40).unwrap();

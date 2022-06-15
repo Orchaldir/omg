@@ -1,7 +1,7 @@
 /// Returns distance between 2 points in 2d space.
 ///
 /// ```
-///# use omg::data::math::distance::calculate_distance;
+///# use omg_core::data::math::distance::calculate_distance;
 ///
 /// assert_eq!(calculate_distance(0, 0, 0, 0), 0);
 /// assert_eq!(calculate_distance(0, 0, 3, 4), 5);
@@ -13,7 +13,7 @@
 /// Panics if the distance is greater than the possible maximum.
 ///
 /// ```should_panic
-///# use omg::data::math::distance::calculate_distance;
+///# use omg_core::data::math::distance::calculate_distance;
 ///
 /// calculate_distance(0, 0, u32::MAX, u32::MAX);
 /// ```

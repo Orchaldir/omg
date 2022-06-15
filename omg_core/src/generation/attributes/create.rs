@@ -13,7 +13,7 @@ impl CreateAttributeStep {
     /// Creates the step, but returns an error if the name is invalid:
     ///
     /// ```
-    ///# use omg::generation::attributes::create::CreateAttributeStep;
+    ///# use omg_core::generation::attributes::create::CreateAttributeStep;
     /// assert!(CreateAttributeStep::new("", 9).is_err());
     /// assert!(CreateAttributeStep::new("   ", 42).is_err());
     /// ```
@@ -37,9 +37,9 @@ impl CreateAttributeStep {
     /// Runs the step.
     ///
     /// ```
-    ///# use omg::data::map::{get_attribute, Map2d};
-    ///# use omg::data::math::size2d::Size2d;
-    ///# use omg::generation::attributes::create::CreateAttributeStep;
+    ///# use omg_core::data::map::{get_attribute, Map2d};
+    ///# use omg_core::data::math::size2d::Size2d;
+    ///# use omg_core::generation::attributes::create::CreateAttributeStep;
     /// let size = Size2d::unchecked(2, 3);
     /// let mut map = Map2d::new(size);
     /// let step = CreateAttributeStep::new("test0", 9).unwrap();

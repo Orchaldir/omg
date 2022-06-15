@@ -2,7 +2,7 @@ use crate::data::math::generator::gradient::GradientSerde;
 use crate::data::math::generator::noise::NoiseSerde;
 use crate::data::math::interpolation::vector::VectorInterpolatorSerde;
 use anyhow::{Context, Result};
-use omg::data::math::generator::generator1d::Generator1d;
+use omg_core::data::math::generator::generator1d::Generator1d;
 use serde::{Deserialize, Serialize};
 
 #[derive(Debug, PartialEq, Eq, Clone, Serialize, Deserialize)]
@@ -64,8 +64,8 @@ impl From<&Generator1d> for Generator1dSerde {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use omg::data::math::generator::gradient::Gradient;
-    use omg::data::math::interpolation::vector::VectorInterpolator;
+    use omg_core::data::math::generator::gradient::Gradient;
+    use omg_core::data::math::interpolation::vector::VectorInterpolator;
 
     #[test]
     fn test_convert_gradient() {

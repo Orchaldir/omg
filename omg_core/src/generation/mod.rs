@@ -21,9 +21,9 @@ impl MapGeneration {
     /// Creates a map generation, unless the name is invalid:
     ///
     /// ```
-    ///# use omg::generation::MapGeneration;
-    ///# use omg::data::math::size2d::Size2d;
-    ///# use omg::generation::step::GenerationStep;
+    ///# use omg_core::generation::MapGeneration;
+    ///# use omg_core::data::math::size2d::Size2d;
+    ///# use omg_core::generation::step::GenerationStep;
     /// let size = Size2d::unchecked(1, 2);
     /// let steps = vec![GenerationStep::debug("a"), GenerationStep::debug("b")];
     ///
@@ -33,9 +33,9 @@ impl MapGeneration {
     /// Also invalid, if it has less than 2 steps:
     ///
     /// ```
-    ///# use omg::generation::MapGeneration;
-    ///# use omg::data::math::size2d::Size2d;
-    ///# use omg::generation::step::GenerationStep;
+    ///# use omg_core::generation::MapGeneration;
+    ///# use omg_core::data::math::size2d::Size2d;
+    ///# use omg_core::generation::step::GenerationStep;
     /// let size = Size2d::unchecked(1, 2);
     /// let steps = vec![GenerationStep::debug("a")];
     ///

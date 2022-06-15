@@ -13,7 +13,7 @@ pub enum Transformer1d<T: IntInput> {
     /// Overwrites the input, if the map containes a value for it.
     ///
     /// ```
-    ///# use omg::data::math::transformer::transformer1d::Transformer1d;
+    ///# use omg_core::data::math::transformer::transformer1d::Transformer1d;
     /// let hashmap = vec![(1u8, 25u8), (3, 100)].into_iter().collect();
     /// let selector = Transformer1d::OverwriteWithMap(hashmap);
     ///
@@ -39,7 +39,7 @@ impl<T: IntInput> Transformer1d<T> {
     ///
     /// ```
     ///# use std::collections::HashMap;
-    ///# use omg::data::math::transformer::transformer1d::Transformer1d;
+    ///# use omg_core::data::math::transformer::transformer1d::Transformer1d;
     /// assert!(Transformer1d::<u8>::with_map(HashMap::new()).is_err());
     /// ```
     pub fn with_map(hashmap: HashMap<T, T>) -> Result<Self> {

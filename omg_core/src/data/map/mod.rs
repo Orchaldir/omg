@@ -23,8 +23,8 @@ impl Map2d {
     /// Returns a map with a name.
     ///
     /// ```
-    ///# use omg::data::map::Map2d;
-    ///# use omg::data::math::size2d::Size2d;
+    ///# use omg_core::data::map::Map2d;
+    ///# use omg_core::data::math::size2d::Size2d;
     /// let size = Size2d::unchecked(2, 3);
     /// let mut map = Map2d::with_name("world", size);
     ///
@@ -55,8 +55,8 @@ impl Map2d {
     /// Adds a new [`Attribute`] to the map and returns its id.
     ///
     /// ```
-    ///# use omg::data::map::Map2d;
-    ///# use omg::data::math::size2d::Size2d;
+    ///# use omg_core::data::map::Map2d;
+    ///# use omg_core::data::math::size2d::Size2d;
     /// let mut map = Map2d::new(Size2d::unchecked(2, 3));
     ///
     /// assert_eq!(map.create_attribute("elevation", 42).unwrap(), 0);
@@ -66,8 +66,8 @@ impl Map2d {
     /// Fails if the map already contains an [`Attribute`] with the same name.
     ///
     /// ```
-    ///# use omg::data::map::Map2d;
-    ///# use omg::data::math::size2d::Size2d;
+    ///# use omg_core::data::map::Map2d;
+    ///# use omg_core::data::math::size2d::Size2d;
     /// let mut map = Map2d::new(Size2d::unchecked(2, 3));
     ///
     /// assert_eq!(map.create_attribute("elevation", 42).unwrap(), 0);
@@ -108,8 +108,8 @@ impl Map2d {
     /// Returns the id of the [`Attribute`] with the matching name.
     ///
     /// ```
-    ///# use omg::data::map::Map2d;
-    ///# use omg::data::math::size2d::Size2d;
+    ///# use omg_core::data::map::Map2d;
+    ///# use omg_core::data::math::size2d::Size2d;
     /// let mut map = Map2d::new(Size2d::unchecked(2, 3));
     /// map.create_attribute("elevation", 42);
     /// map.create_attribute("rainfall", 100);
@@ -125,8 +125,8 @@ impl Map2d {
     /// Returns the [`Attribute`] with the matching id.
     ///
     /// ```
-    ///# use omg::data::map::Map2d;
-    ///# use omg::data::math::size2d::Size2d;
+    ///# use omg_core::data::map::Map2d;
+    ///# use omg_core::data::math::size2d::Size2d;
     /// let mut map = Map2d::new(Size2d::unchecked(2, 3));
     /// map.create_attribute("elevation", 42);
     ///
@@ -140,9 +140,9 @@ impl Map2d {
     /// Returns a mutable [`Attribute`] with the matching id.
     ///
     /// ```
-    ///# use omg::data::map::attribute::Attribute;
-    ///# use omg::data::map::Map2d;
-    ///# use omg::data::math::size2d::Size2d;
+    ///# use omg_core::data::map::attribute::Attribute;
+    ///# use omg_core::data::map::Map2d;
+    ///# use omg_core::data::math::size2d::Size2d;
     /// let mut map = Map2d::new(Size2d::unchecked(2, 3));
     /// map.create_attribute("elevation", 42);
     ///
@@ -157,8 +157,8 @@ impl Map2d {
 /// Returns the [`Attribute`] with the matching id.
 ///
 /// ```
-///# use omg::data::map::{get_attribute, Map2d};
-///# use omg::data::math::size2d::Size2d;
+///# use omg_core::data::map::{get_attribute, Map2d};
+///# use omg_core::data::math::size2d::Size2d;
 /// let mut map = Map2d::new(Size2d::unchecked(2, 3));
 /// map.create_attribute("elevation", 42);
 /// map.create_attribute("rainfall", 100);
@@ -172,8 +172,8 @@ impl Map2d {
 /// Panics if there is no matching id.
 ///
 /// ```should_panic
-///# use omg::data::map::{get_attribute, Map2d};
-///# use omg::data::math::size2d::Size2d;
+///# use omg_core::data::map::{get_attribute, Map2d};
+///# use omg_core::data::math::size2d::Size2d;
 /// let mut map = Map2d::new(Size2d::unchecked(2, 3));
 ///
 /// get_attribute(&map, 0);
@@ -185,9 +185,9 @@ pub fn get_attribute(map: &Map2d, id: usize) -> &Attribute {
 /// Returns a mutable [`Attribute`] with the matching id.
 ///
 /// ```
-///# use omg::data::map::attribute::Attribute;
-///# use omg::data::map::{get_attribute_mut, Map2d};
-///# use omg::data::math::size2d::Size2d;
+///# use omg_core::data::map::attribute::Attribute;
+///# use omg_core::data::map::{get_attribute_mut, Map2d};
+///# use omg_core::data::math::size2d::Size2d;
 /// let mut map = Map2d::new(Size2d::unchecked(2, 3));
 /// map.create_attribute("elevation", 42);
 /// map.create_attribute("rainfall", 100);
@@ -201,8 +201,8 @@ pub fn get_attribute(map: &Map2d, id: usize) -> &Attribute {
 /// Panics if there is no matching id.
 ///
 /// ```should_panic
-///# use omg::data::map::{get_attribute_mut, Map2d};
-///# use omg::data::math::size2d::Size2d;
+///# use omg_core::data::map::{get_attribute_mut, Map2d};
+///# use omg_core::data::math::size2d::Size2d;
 /// let mut map = Map2d::new(Size2d::unchecked(2, 3));
 ///
 /// get_attribute_mut(&mut map, 0);

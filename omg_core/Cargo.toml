@@ -1,5 +1,5 @@
 [package]
-name = "omg"
+name = "omg_core"
 version = "0.1.0"
 authors = ["Orchaldir <orchaldir@gmail.com>"]
 edition = "2021"

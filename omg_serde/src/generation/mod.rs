@@ -1,7 +1,7 @@
 use crate::data::math::size2d::Size2dSerde;
 use crate::generation::step::{FromStep, GenerationStepSerde, ToStep};
 use anyhow::{Context, Result};
-use omg::generation::MapGeneration;
+use omg_core::generation::MapGeneration;
 use serde::{Deserialize, Serialize};
 
 pub mod attributes;
@@ -53,10 +53,10 @@ impl From<&MapGeneration> for MapGenerationSerde {
 mod tests {
     use super::*;
     use crate::generation::attributes::modify::ModifyWithAttributeStepSerde;
-    use omg::data::math::size2d::Size2d;
-    use omg::generation::attributes::create::CreateAttributeStep;
-    use omg::generation::attributes::modify::ModifyWithAttributeStep;
-    use omg::generation::step::GenerationStep;
+    use omg_core::data::math::size2d::Size2d;
+    use omg_core::generation::attributes::create::CreateAttributeStep;
+    use omg_core::generation::attributes::modify::ModifyWithAttributeStep;
+    use omg_core::generation::step::GenerationStep;
 
     #[test]
     fn test_conversion() {

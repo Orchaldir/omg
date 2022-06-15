@@ -21,10 +21,10 @@ impl Distortion1dStep {
     /// Shifts each each row along the x-axis based on a [`Generator1d`].
     ///
     /// ```
-    ///# use omg::data::map::{get_attribute, Map2d};
-    ///# use omg::data::math::generator::generator1d::Generator1d::InputAsOutput;
-    ///# use omg::data::math::size2d::Size2d;
-    ///# use omg::generation::attributes::distortion1d::Distortion1dStep;
+    ///# use omg_core::data::map::{get_attribute, Map2d};
+    ///# use omg_core::data::math::generator::generator1d::Generator1d::InputAsOutput;
+    ///# use omg_core::data::math::size2d::Size2d;
+    ///# use omg_core::generation::attributes::distortion1d::Distortion1dStep;
     /// let size = Size2d::unchecked(3, 3);
     /// let mut map = Map2d::new(size);
     /// let values = vec![1, 2, 3, 4, 5, 6, 7, 8, 9];
@@ -52,10 +52,10 @@ impl Distortion1dStep {
     /// Shifts each each column along the y-axis based on a [`Generator1d`].
     ///
     /// ```
-    ///# use omg::data::map::{get_attribute, Map2d};
-    ///# use omg::data::math::generator::generator1d::Generator1d::InputAsOutput;
-    ///# use omg::data::math::size2d::Size2d;
-    ///# use omg::generation::attributes::distortion1d::Distortion1dStep;
+    ///# use omg_core::data::map::{get_attribute, Map2d};
+    ///# use omg_core::data::math::generator::generator1d::Generator1d::InputAsOutput;
+    ///# use omg_core::data::math::size2d::Size2d;
+    ///# use omg_core::generation::attributes::distortion1d::Distortion1dStep;
     /// let size = Size2d::unchecked(3, 3);
     /// let mut map = Map2d::new(size);
     /// let values = vec![1, 2, 3, 4, 5, 6, 7, 8, 9];

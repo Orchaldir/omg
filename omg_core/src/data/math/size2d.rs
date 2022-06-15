@@ -33,7 +33,7 @@ impl Size2d {
     /// Returns a valid size or an error.
     ///
     /// ```
-    ///# use omg::data::math::size2d::Size2d;
+    ///# use omg_core::data::math::size2d::Size2d;
     /// assert_eq!(Size2d::new(2, 3).unwrap(), Size2d::unchecked(2, 3));
     /// assert!(Size2d::new(0, 3).is_err());
     /// assert!(Size2d::new(2, 0).is_err());
@@ -57,7 +57,7 @@ impl Size2d {
     /// Returns the area covered by this size.
     ///
     /// ```
-    ///# use omg::data::math::size2d::Size2d;
+    ///# use omg_core::data::math::size2d::Size2d;
     /// let size = Size2d::unchecked(2, 3);
     /// assert_eq!(size.get_area(), 6);
     /// ```
@@ -68,7 +68,7 @@ impl Size2d {
     /// Returns the size along the x-axis.
     ///
     /// ```
-    ///# use omg::data::math::size2d::Size2d;
+    ///# use omg_core::data::math::size2d::Size2d;
     /// let size = Size2d::unchecked(2, 3);
     /// assert_eq!(size.width(), 2);
     /// ```
@@ -79,7 +79,7 @@ impl Size2d {
     /// Returns the size along the y-axis.
     ///
     /// ```
-    ///# use omg::data::math::size2d::Size2d;
+    ///# use omg_core::data::math::size2d::Size2d;
     /// let size = Size2d::unchecked(2, 3);
     /// assert_eq!(size.height(), 3);
     /// ```
@@ -90,7 +90,7 @@ impl Size2d {
     /// Is the a point inside the area covered by this size?
     ///
     /// ```
-    ///# use omg::data::math::size2d::Size2d;
+    ///# use omg_core::data::math::size2d::Size2d;
     /// let size = Size2d::unchecked(2, 3);
     /// assert!(size.is_inside(0, 0));
     /// assert!(size.is_inside(1, 0));
@@ -107,7 +107,7 @@ impl Size2d {
     /// Converts an index to the x-coordinate of the equivalent point.
     ///
     /// ```
-    ///# use omg::data::math::size2d::Size2d;
+    ///# use omg_core::data::math::size2d::Size2d;
     /// let size = Size2d::unchecked(2, 3);
     /// assert_eq!(size.to_x(5), 1);
     /// ```
@@ -118,7 +118,7 @@ impl Size2d {
     /// Converts an index to the y-coordinate of the equivalent point.
     ///
     /// ```
-    ///# use omg::data::math::size2d::Size2d;
+    ///# use omg_core::data::math::size2d::Size2d;
     /// let size = Size2d::unchecked(2, 3);
     /// assert_eq!(size.to_y(5), 2);
     /// ```
@@ -129,7 +129,7 @@ impl Size2d {
     /// Converts an index to the equivalent point.
     ///
     /// ```
-    ///# use omg::data::math::size2d::Size2d;
+    ///# use omg_core::data::math::size2d::Size2d;
     /// let size = Size2d::unchecked(2, 3);
     /// assert_eq!(size.to_x_and_y(5), [1,2]);
     /// ```
@@ -140,7 +140,7 @@ impl Size2d {
     /// Converts a point to the equivalent index, if the point is inside.
     ///
     /// ```
-    ///# use omg::data::math::size2d::Size2d;
+    ///# use omg_core::data::math::size2d::Size2d;
     /// let size = Size2d::unchecked(2, 3);
     /// assert_eq!(size.to_index(1, 2), Some(5));
     /// assert_eq!(size.to_index(2, 0), None);
@@ -158,7 +158,7 @@ impl Size2d {
     /// Converts a point to the equivalent index fast, but returns a wrong result outside.
     ///
     /// ```
-    ///# use omg::data::math::size2d::Size2d;
+    ///# use omg_core::data::math::size2d::Size2d;
     /// let size = Size2d::unchecked(2, 3);
     /// assert_eq!(size.to_index_risky(1, 2), 5);
     /// ```
@@ -169,7 +169,7 @@ impl Size2d {
     /// Converts a point to the equivalent index.
     ///
     /// ```
-    ///# use omg::data::math::size2d::Size2d;
+    ///# use omg_core::data::math::size2d::Size2d;
     /// let size = Size2d::unchecked(2, 3);
     /// assert_eq!(size.saturating_to_index(1, 2), 5);
     /// ```
@@ -177,7 +177,7 @@ impl Size2d {
     /// Coordinates outside the map are limited to its width & height.
     ///
     /// ```
-    ///# use omg::data::math::size2d::Size2d;
+    ///# use omg_core::data::math::size2d::Size2d;
     /// let size = Size2d::unchecked(2, 3);
     ///
     /// assert_eq!(size.saturating_to_index(2, 2), 5);
@@ -195,7 +195,7 @@ impl Size2d {
 /// Adds 2 sizes.
 ///
 /// ```
-///# use omg::data::math::size2d::Size2d;
+///# use omg_core::data::math::size2d::Size2d;
 /// let a = Size2d::unchecked(2, 3);
 /// let b = Size2d::unchecked(10, 40);
 /// assert_eq!(a + b, Size2d::unchecked(12, 43));
@@ -214,7 +214,7 @@ impl Add for Size2d {
 /// Multiplies 2 sizes.
 ///
 /// ```
-///# use omg::data::math::size2d::Size2d;
+///# use omg_core::data::math::size2d::Size2d;
 /// let a = Size2d::unchecked(2, 3);
 /// let b = Size2d::unchecked(10, 40);
 /// assert_eq!(a * b, Size2d::unchecked(20, 120));

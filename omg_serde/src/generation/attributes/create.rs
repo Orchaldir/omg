@@ -1,6 +1,6 @@
 use crate::generation::step::{FromStep, ToStep};
 use anyhow::{Context, Result};
-use omg::generation::attributes::create::CreateAttributeStep;
+use omg_core::generation::attributes::create::CreateAttributeStep;
 use serde::{Deserialize, Serialize};
 
 #[derive(Debug, PartialEq, Eq, Clone, Serialize, Deserialize)]

@@ -30,14 +30,14 @@ impl<T: Input, V: Interpolate> VectorInterpolator<T, V> {
     /// Creates an interpolator, if the vector is valid. It needs 2 or more values:
     ///
     /// ```
-    ///# use omg::data::math::interpolation::vector::VectorInterpolator;
+    ///# use omg_core::data::math::interpolation::vector::VectorInterpolator;
     /// assert!(VectorInterpolator::new(vec![(0u32,50)]).is_err());
     /// ```
     ///
     /// The values must be ordered based in their threshold:
     ///
     /// ```
-    ///# use omg::data::math::interpolation::vector::VectorInterpolator;
+    ///# use omg_core::data::math::interpolation::vector::VectorInterpolator;
     /// assert!(VectorInterpolator::new(vec![(50u32,50),(0,200)]).is_err());
     /// ```
     pub fn new(vector: Vec<(T, V)>) -> Result<VectorInterpolator<T, V>> {
@@ -72,7 +72,7 @@ impl<T: Input, V: Interpolate> VectorInterpolator<T, V> {
     /// Interpolates the values based on the input.
     ///
     /// ```
-    ///# use omg::data::math::interpolation::vector::VectorInterpolator;
+    ///# use omg_core::data::math::interpolation::vector::VectorInterpolator;
     /// let interpolator = VectorInterpolator::new(vec![(100u32,150), (150,200)]).unwrap();
     ///
     /// assert_eq!(interpolator.interpolate(100), 150);

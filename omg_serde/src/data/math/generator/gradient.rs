@@ -1,5 +1,5 @@
 use anyhow::Result;
-use omg::data::math::generator::gradient::Gradient;
+use omg_core::data::math::generator::gradient::Gradient;
 use serde::{Deserialize, Serialize};
 
 #[derive(Debug, PartialEq, Eq, Clone, Copy, Serialize, Deserialize)]
@@ -30,7 +30,7 @@ impl From<&Gradient> for GradientSerde {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use omg::data::math::generator::gradient::Gradient;
+    use omg_core::data::math::generator::gradient::Gradient;
 
     #[test]
     fn test_conversion() {

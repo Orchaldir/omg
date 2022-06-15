@@ -12,8 +12,8 @@ pub enum Generator2d {
     /// Feeds the x values to a [`Generator1d`].
     ///
     /// ```
-    ///# use omg::data::math::generator::generator1d::Generator1d;
-    ///# use omg::data::math::generator::generator2d::Generator2d;
+    ///# use omg_core::data::math::generator::generator1d::Generator1d;
+    ///# use omg_core::data::math::generator::generator2d::Generator2d;
     /// let generator = Generator2d::new_apply_to_x(Generator1d::InputAsOutput);
     ///
     /// assert_eq!(generator.generate(0, 0), 0);
@@ -30,8 +30,8 @@ pub enum Generator2d {
     /// Feeds the y values to a [`Generator1d`].
     ///
     /// ```
-    ///# use omg::data::math::generator::generator1d::Generator1d;
-    ///# use omg::data::math::generator::generator2d::Generator2d;
+    ///# use omg_core::data::math::generator::generator1d::Generator1d;
+    ///# use omg_core::data::math::generator::generator2d::Generator2d;
     /// let generator = Generator2d::new_apply_to_y(Generator1d::InputAsOutput);
     ///
     /// assert_eq!(generator.generate(0, 0), 0);
@@ -48,8 +48,8 @@ pub enum Generator2d {
     /// Feeds the distance from a point to a [`Generator1d`].
     ///
     /// ```
-    ///# use omg::data::math::generator::generator1d::Generator1d;
-    ///# use omg::data::math::generator::generator2d::Generator2d;
+    ///# use omg_core::data::math::generator::generator1d::Generator1d;
+    ///# use omg_core::data::math::generator::generator2d::Generator2d;
     /// let generator = Generator2d::new_apply_to_distance(Generator1d::InputAsOutput, 10, 5);
     ///
     /// assert_eq!(generator.generate(10,  5), 0);
@@ -66,8 +66,8 @@ pub enum Generator2d {
     /// Generates the index of each 2d point.
     ///
     /// ```
-    ///# use omg::data::math::generator::generator2d::Generator2d::IndexGenerator;
-    ///# use omg::data::math::size2d::Size2d;
+    ///# use omg_core::data::math::generator::generator2d::Generator2d::IndexGenerator;
+    ///# use omg_core::data::math::size2d::Size2d;
     /// let generator = IndexGenerator(Size2d::unchecked(2, 3));
     ///
     /// assert_eq!(generator.generate(0, 0), 0);

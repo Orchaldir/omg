@@ -1,7 +1,7 @@
 use crate::data::math::transformer::transformer2d::Transformer2dSerde;
 use crate::generation::step::{get_attribute_id, FromStep, ToStep};
 use anyhow::{Context, Result};
-use omg::generation::attributes::transformer::TransformAttribute2dStep;
+use omg_core::generation::attributes::transformer::TransformAttribute2dStep;
 use serde::{Deserialize, Serialize};
 
 #[derive(Debug, Serialize, Deserialize)]
@@ -50,7 +50,7 @@ impl FromStep<TransformAttribute2dStepSerde> for TransformAttribute2dStep {
 mod tests {
     use super::*;
     use crate::generation::step::assert_eq;
-    use omg::data::math::transformer::transformer2d::Transformer2d;
+    use omg_core::data::math::transformer::transformer2d::Transformer2d;
 
     #[test]
     fn test_conversion() {

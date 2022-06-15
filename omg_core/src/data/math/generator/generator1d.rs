@@ -29,8 +29,8 @@ pub enum Generator1d {
     /// # Example
     ///
     /// ```
-    ///# use omg::data::math::generator::generator1d::Generator1d;
-    ///# use omg::data::math::generator::gradient::Gradient;
+    ///# use omg_core::data::math::generator::generator1d::Generator1d;
+    ///# use omg_core::data::math::generator::gradient::Gradient;
     /// let gradient = Gradient::new(80, 100, 100, 0).unwrap();
     /// let generator = Generator1d::AbsoluteGradient(gradient);
     ///
@@ -68,8 +68,8 @@ pub enum Generator1d {
     /// # Example
     ///
     ///```
-    ///# use omg::data::math::generator::generator1d::Generator1d;
-    ///# use omg::data::math::generator::gradient::Gradient;
+    ///# use omg_core::data::math::generator::generator1d::Generator1d;
+    ///# use omg_core::data::math::generator::gradient::Gradient;
     /// let gradient = Gradient::new(1000, 100, 100, 200).unwrap();
     /// let generator = Generator1d::Gradient(gradient);
     ///
@@ -89,7 +89,7 @@ pub enum Generator1d {
     /// # Example
     ///
     ///```
-    ///# use omg::data::math::generator::generator1d::Generator1d::InputAsOutput;
+    ///# use omg_core::data::math::generator::generator1d::Generator1d::InputAsOutput;
     ///
     /// assert_eq!(InputAsOutput.generate(0), 0);
     /// assert_eq!(InputAsOutput.generate(1), 1);
@@ -118,8 +118,8 @@ pub enum Generator1d {
     /// # Example
     ///
     /// ```
-    ///# use omg::data::math::generator::generator1d::Generator1d::InterpolateVector;
-    ///# use omg::data::math::interpolation::vector::VectorInterpolator;
+    ///# use omg_core::data::math::generator::generator1d::Generator1d::InterpolateVector;
+    ///# use omg_core::data::math::interpolation::vector::VectorInterpolator;
     /// let interpolator = VectorInterpolator::new(vec![(100u32,150), (150,200), (200, 100)]). unwrap();
     /// let generator = InterpolateVector(interpolator);
     ///

@@ -27,16 +27,16 @@ impl Attribute {
     /// Creates an attribute from the supplied values, if their number matches the map size.
     ///
     /// ```
-    ///# use omg::data::map::attribute::Attribute;
-    ///# use omg::data::math::size2d::Size2d;
+    ///# use omg_core::data::map::attribute::Attribute;
+    ///# use omg_core::data::math::size2d::Size2d;
     /// assert!(Attribute::new("test", Size2d::unchecked(2, 3), vec![0u8, 50]).is_err());
     /// ```
     ///
     /// Also returns an error, if the name is invalid:
     ///
     /// ```
-    ///# use omg::data::map::attribute::Attribute;
-    ///# use omg::data::math::size2d::Size2d;
+    ///# use omg_core::data::map::attribute::Attribute;
+    ///# use omg_core::data::math::size2d::Size2d;
     /// let size = Size2d::unchecked(1, 2);
     /// assert!(Attribute::new("", size, vec![0u8, 50]).is_err());
     /// assert!(Attribute::new(" ", size, vec![0u8, 50]).is_err());
@@ -58,8 +58,8 @@ impl Attribute {
     /// Returns the name of the attribute.
     ///
     /// ```
-    ///# use omg::data::map::attribute::Attribute;
-    ///# use omg::data::math::size2d::Size2d;
+    ///# use omg_core::data::map::attribute::Attribute;
+    ///# use omg_core::data::math::size2d::Size2d;
     /// let attribute = Attribute::default_value("elevation", Size2d::unchecked(2, 3), 42).unwrap();
     ///
     /// assert_eq!(attribute.name(), "elevation");
@@ -71,8 +71,8 @@ impl Attribute {
     /// Returns the size of the map.
     ///
     /// ```
-    ///# use omg::data::map::attribute::Attribute;
-    ///# use omg::data::math::size2d::Size2d;
+    ///# use omg_core::data::map::attribute::Attribute;
+    ///# use omg_core::data::math::size2d::Size2d;
     /// let size = Size2d::unchecked(2, 3);
     /// let attribute = Attribute::default_value("elevation", size, 42).unwrap();
     ///
@@ -85,8 +85,8 @@ impl Attribute {
     /// Returns a reference to the values.
     ///
     /// ```
-    ///# use omg::data::map::attribute::Attribute;
-    ///# use omg::data::math::size2d::Size2d;
+    ///# use omg_core::data::map::attribute::Attribute;
+    ///# use omg_core::data::math::size2d::Size2d;
     /// let attribute = Attribute::new("elevation", Size2d::unchecked(1, 2), vec![10, 15]).unwrap();
     ///
     ///  assert_eq!(attribute.get_all(), &vec![10u8, 15u8]);
@@ -98,8 +98,8 @@ impl Attribute {
     /// Replaces all of the attribute's values.
     ///
     /// ```
-    ///# use omg::data::map::attribute::Attribute;
-    ///# use omg::data::math::size2d::Size2d;
+    ///# use omg_core::data::map::attribute::Attribute;
+    ///# use omg_core::data::math::size2d::Size2d;
     /// let mut attribute = Attribute::default_value("elevation", Size2d::unchecked(1, 2), 42).unwrap();
     ///
     /// attribute.replace_all(vec![3, 4]);
@@ -112,8 +112,8 @@ impl Attribute {
     /// Panics if the number of new values is wrong.
     ///
     /// ```should_panic
-    ///# use omg::data::map::attribute::Attribute;
-    ///# use omg::data::math::size2d::Size2d;
+    ///# use omg_core::data::map::attribute::Attribute;
+    ///# use omg_core::data::math::size2d::Size2d;
     /// let mut attribute = Attribute::default_value("elevation", Size2d::unchecked(1, 2), 42).unwrap();
     ///
     /// attribute.replace_all(vec![3, 4, 5]);
@@ -130,8 +130,8 @@ impl Attribute {
     /// Replaces some of the attribute's values.
     ///
     /// ```
-    ///# use omg::data::map::attribute::Attribute;
-    ///# use omg::data::math::size2d::Size2d;
+    ///# use omg_core::data::map::attribute::Attribute;
+    ///# use omg_core::data::math::size2d::Size2d;
     /// let mut attribute = Attribute::default_value("elevation", Size2d::unchecked(1, 3), 42).unwrap();
     ///
     /// attribute.replace_some(vec![0, 2], 5);
@@ -144,8 +144,8 @@ impl Attribute {
     /// Panics if an index is outside th map.
     ///
     /// ```should_panic
-    ///# use omg::data::map::attribute::Attribute;
-    ///# use omg::data::math::size2d::Size2d;
+    ///# use omg_core::data::map::attribute::Attribute;
+    ///# use omg_core::data::math::size2d::Size2d;
     /// let mut attribute = Attribute::default_value("elevation", Size2d::unchecked(1, 2), 42).unwrap();
     ///
     /// attribute.replace_some(vec![5], 9);
@@ -160,8 +160,8 @@ impl Attribute {
 /// Returns the value at the index.
 ///
 /// ```
-///# use omg::data::map::attribute::Attribute;
-///# use omg::data::math::size2d::Size2d;
+///# use omg_core::data::map::attribute::Attribute;
+///# use omg_core::data::math::size2d::Size2d;
 /// let attribute = Attribute::new("elevation", Size2d::unchecked(1, 2), vec![6, 7]).unwrap();
 ///
 /// assert_eq!(attribute[0], 6);
@@ -173,8 +173,8 @@ impl Attribute {
 /// Panics if the index is outside the map.
 ///
 /// ```should_panic
-///# use omg::data::map::attribute::Attribute;
-///# use omg::data::math::size2d::Size2d;
+///# use omg_core::data::map::attribute::Attribute;
+///# use omg_core::data::math::size2d::Size2d;
 /// let attribute = Attribute::default_value("elevation", Size2d::unchecked(1, 2), 42).unwrap();
 ///
 /// attribute[2];
@@ -190,8 +190,8 @@ impl Index<usize> for Attribute {
 /// Returns the mutable value at the index.
 ///
 /// ```
-///# use omg::data::map::attribute::Attribute;
-///# use omg::data::math::size2d::Size2d;
+///# use omg_core::data::map::attribute::Attribute;
+///# use omg_core::data::math::size2d::Size2d;
 /// let mut attribute = Attribute::default_value("elevation", Size2d::unchecked(1, 2), 42).unwrap();
 ///
 /// attribute[0] += 4;
@@ -204,8 +204,8 @@ impl Index<usize> for Attribute {
 /// Panics if the index is outside the .
 ///
 /// ```should_panic
-///# use omg::data::map::attribute::Attribute;
-///# use omg::data::math::size2d::Size2d;
+///# use omg_core::data::map::attribute::Attribute;
+///# use omg_core::data::math::size2d::Size2d;
 /// let mut attribute = Attribute::default_value("elevation", Size2d::unchecked(1, 2), 42).unwrap();
 ///
 /// attribute[2] = 99;

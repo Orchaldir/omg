@@ -1,6 +1,6 @@
-use omg::data::map::Map2d;
-use omg::data::math::selector::ColorSelector;
-use omg::interface::selector::SelectorStorage;
+use omg_core::data::map::Map2d;
+use omg_core::data::math::selector::ColorSelector;
+use omg_core::interface::selector::SelectorStorage;
 use omg_serde::interface::selector::SelectorStorageWithSerde;
 use std::collections::HashMap;
 

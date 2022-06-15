@@ -28,13 +28,13 @@ impl Noise {
     /// Fails if scale is negative:
     ///
     ///```
-    ///# use omg::data::math::generator::noise::Noise;
+    ///# use omg_core::data::math::generator::noise::Noise;
     /// assert!(Noise::new(0, 0, 0, 255).is_err())
     ///```
     /// Also fails if min_value >= max_value:
     ///
     ///```
-    ///# use omg::data::math::generator::noise::Noise;
+    ///# use omg_core::data::math::generator::noise::Noise;
     /// assert!(Noise::new(0, 5, 200, 105).is_err())
     ///```
     ///

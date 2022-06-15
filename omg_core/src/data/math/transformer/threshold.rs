@@ -19,7 +19,7 @@ impl<T: IntInput> OverwriteWithThreshold<T> {
     /// Overwrites the input if equal or above a threshold.
     ///
     /// ```
-    ///# use omg::data::math::transformer::threshold::OverwriteWithThreshold;
+    ///# use omg_core::data::math::transformer::threshold::OverwriteWithThreshold;
     /// let overwrite = OverwriteWithThreshold::new(42, 100);
     ///
     /// assert_eq!(overwrite.overwrite_if_above(  0),  0);
@@ -39,7 +39,7 @@ impl<T: IntInput> OverwriteWithThreshold<T> {
     /// Overwrites the output, if the input is equal or above a threshold.
     ///
     /// ```
-    ///# use omg::data::math::transformer::threshold::OverwriteWithThreshold;
+    ///# use omg_core::data::math::transformer::threshold::OverwriteWithThreshold;
     /// let overwrite = OverwriteWithThreshold::new(42, 100);
     ///
     /// assert_eq!(overwrite.overwrite_output_if_above(  0, 200), 200);
@@ -59,7 +59,7 @@ impl<T: IntInput> OverwriteWithThreshold<T> {
     /// Overwrites the input if equal or above a threshold.
     ///
     /// ```
-    ///# use omg::data::math::transformer::threshold::OverwriteWithThreshold;
+    ///# use omg_core::data::math::transformer::threshold::OverwriteWithThreshold;
     /// let overwrite = OverwriteWithThreshold::new(42, 100);
     ///
     /// assert_eq!(overwrite.overwrite_if_below(  0),  42);
@@ -79,7 +79,7 @@ impl<T: IntInput> OverwriteWithThreshold<T> {
     /// Overwrites the output, if the input is equal or above a threshold.
     ///
     /// ```
-    ///# use omg::data::math::transformer::threshold::OverwriteWithThreshold;
+    ///# use omg_core::data::math::transformer::threshold::OverwriteWithThreshold;
     /// let overwrite = OverwriteWithThreshold::new(42, 100);
     ///
     /// assert_eq!(overwrite.overwrite_output_if_below(  0, 200),  42);

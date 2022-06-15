@@ -31,8 +31,8 @@ impl LookupTable2d {
     /// Returns a the lookup table, if valid:
     ///
     /// ```
-    ///# use omg::data::math::size2d::Size2d;
-    ///# use omg::data::math::transformer::lookup2d::LookupTable2d;
+    ///# use omg_core::data::math::size2d::Size2d;
+    ///# use omg_core::data::math::transformer::lookup2d::LookupTable2d;
     /// assert!(LookupTable2d::new(Size2d::unchecked(2,  2), vec![10, 20]).is_err());
     /// assert!(LookupTable2d::new(Size2d::unchecked(0,  0), vec![10, 20]).is_err());
     /// assert!(LookupTable2d::new(Size2d::unchecked(0,  0), vec![]).is_err());
@@ -69,8 +69,8 @@ impl LookupTable2d {
     /// Returns the value of the cell for the input values.
     ///
     /// ```
-    ///# use omg::data::math::size2d::Size2d;
-    ///# use omg::data::math::transformer::lookup2d::LookupTable2d;
+    ///# use omg_core::data::math::size2d::Size2d;
+    ///# use omg_core::data::math::transformer::lookup2d::LookupTable2d;
     /// let table = LookupTable2d::new(Size2d::unchecked(3, 2), vec![10, 20, 30, 40, 50, 60]).unwrap();
     ///
     /// assert_eq!(table.lookup(  0,   0), 10);

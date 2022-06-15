@@ -1,5 +1,5 @@
 use anyhow::Result;
-use omg::data::math::size2d::Size2d;
+use omg_core::data::math::size2d::Size2d;
 use serde::{Deserialize, Serialize};
 
 #[derive(new, Debug, Serialize, Deserialize)]
@@ -26,7 +26,7 @@ impl From<&Size2d> for Size2dSerde {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use omg::data::math::size2d::Size2d;
+    use omg_core::data::math::size2d::Size2d;
 
     #[test]
     fn test_conversion() {

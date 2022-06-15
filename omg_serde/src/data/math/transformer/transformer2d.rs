@@ -1,7 +1,7 @@
 use crate::data::math::transformer::lookup2d::LookupTable2dSerde;
 use crate::data::math::transformer::threshold::OverwriteWithThresholdSerde;
 use anyhow::{Context, Result};
-use omg::data::math::transformer::transformer2d::Transformer2d;
+use omg_core::data::math::transformer::transformer2d::Transformer2d;
 use serde::{Deserialize, Serialize};
 
 #[derive(Debug, Serialize, Deserialize)]
@@ -49,7 +49,7 @@ impl From<&Transformer2d> for Transformer2dSerde {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use omg::data::math::transformer::threshold::OverwriteWithThreshold;
+    use omg_core::data::math::transformer::threshold::OverwriteWithThreshold;
 
     #[test]
     fn test_convert_overwrite() {
