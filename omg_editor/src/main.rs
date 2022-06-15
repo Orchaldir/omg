@@ -23,13 +23,18 @@ struct EditorData {
 }
 
 #[get("/")]
-fn index() -> Template {
+fn index(data: &State<EditorData>) -> Template {
+    let attributes: Vec<(usize, &str)> = data
+        .map
+        .get_all()
+        .iter()
+        .enumerate()
+        .map(|(i, a)| (i, a.name().cam))
+        .collect();
     Template::render(
         "index",
         context! {
-            title: "Hello",
-            name: Some("name"),
-            items: vec!["One", "Two", "Three"],
+            attributes: attributes,
         },
     )
 }
