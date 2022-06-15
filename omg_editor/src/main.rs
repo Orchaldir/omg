@@ -13,7 +13,6 @@ use omg::logging::init_logging;
 use omg_serde::interface::map::MapStorageWithSerde;
 use omg_serde::interface::selector::SelectorStorageWithSerde;
 use rocket::fs::NamedFile;
-use rocket::response::Redirect;
 use rocket::{routes, State};
 use rocket_dyn_templates::{context, Template};
 use std::collections::HashMap;
@@ -24,35 +23,28 @@ struct EditorData {
 }
 
 #[get("/")]
-fn home() -> Redirect {
-    Redirect::to(uri!(view_attribute(0)))
+fn home(data: &State<EditorData>) -> Template {
+    let map_name = data.map.name();
+
+    Template::render(
+        "home",
+        context! {
+            map_name: map_name,
+            width: data.map.size().width(),
+            height: data.map.size().height(),
+            attributes: get_attributes(&data.map),
+        },
+    )
 }
 
 #[get("/view/<attribute_id>")]
 async fn view_attribute(data: &State<EditorData>, attribute_id: usize) -> Template {
-    let map_name = data.map.name();
-    let attribute_name = data
-        .map
-        .get_attribute(attribute_id)
-        .map(|a| a.name())
-        .unwrap_or("Unknown");
-    let attributes: Vec<(usize, &str)> = data
-        .map
-        .get_all()
-        .iter()
-        .enumerate()
-        .map(|(i, a)| (i, a.name()))
-        .collect();
-
     Template::render(
-        "index",
+        "view_attribute",
         context! {
-            map_name: map_name,
             attribute_id: attribute_id,
-            width: data.map.size().width(),
-            height: data.map.size().height(),
-            attribute_name: attribute_name,
-            attributes: attributes,
+            attribute_name: get_attribute_name(&data.map, attribute_id),
+            attributes: get_attributes(&data.map),
         },
     )
 }
@@ -154,4 +146,18 @@ async fn create_map(attribute: &Attribute, buf: &[u8], color_type: ColorType) ->
 
 fn get_map_path(attribute: &Attribute) -> String {
     format!("../temp/map-{}.png", attribute.name())
+}
+
+fn get_attributes(map: &Map2d) -> Vec<(usize, &str)> {
+    map.get_all()
+        .iter()
+        .enumerate()
+        .map(|(i, a)| (i, a.name()))
+        .collect()
+}
+
+fn get_attribute_name(map: &Map2d, attribute_id: usize) -> &str {
+    map.get_attribute(attribute_id)
+        .map(|a| a.name())
+        .unwrap_or("Unknown")
 }
