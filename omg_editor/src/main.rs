@@ -49,6 +49,26 @@ async fn view_attribute(data: &State<EditorData>, attribute_id: usize) -> Templa
     )
 }
 
+#[get("/view/<id0>/<id1>/<id2>/<id3>")]
+async fn view_quad(
+    data: &State<EditorData>,
+    id0: usize,
+    id1: usize,
+    id2: usize,
+    id3: usize,
+) -> Template {
+    Template::render(
+        "view_quad",
+        context! {
+            attribute0: (id0, get_attribute_name(&data.map, id0)),
+            attribute1: (id1, get_attribute_name(&data.map, id1)),
+            attribute2: (id2, get_attribute_name(&data.map, id2)),
+            attribute3: (id3, get_attribute_name(&data.map, id3)),
+            attributes: get_attributes(&data.map),
+        },
+    )
+}
+
 #[get("/map/<attribute_id>")]
 async fn get_map(data: &State<EditorData>, attribute_id: usize) -> Option<NamedFile> {
     let map = &data.map;
@@ -105,7 +125,10 @@ async fn main() -> Result<()> {
 
     if let Err(e) = rocket::build()
         .manage(EditorData { map, selectors })
-        .mount("/", routes![home, view_attribute, get_map, get_color_map])
+        .mount(
+            "/",
+            routes![home, view_attribute, view_quad, get_map, get_color_map],
+        )
         .attach(Template::fairing())
         .launch()
         .await

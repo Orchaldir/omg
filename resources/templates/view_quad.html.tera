@@ -1,0 +1,14 @@
+{% extends "base" %}
+
+{% block content %}
+    <table>
+      <tr>
+        <td><img src="/map/color/{{ attribute0.0 }}" alt="{{ attribute0.1 }}"></td>
+        <td><img src="/map/color/{{ attribute1.0 }}" alt="{{ attribute1.1 }}"></td>
+      </tr>
+      <tr>
+        <td><img src="/map/color/{{ attribute2.0 }}" alt="{{ attribute2.1 }}"></td>
+        <td><img src="/map/color/{{ attribute3.0 }}" alt="{{ attribute3.1 }}"></td>
+      </tr>
+    </table>
+{% endblock content %}
