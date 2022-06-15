@@ -3,6 +3,8 @@
 {% block content %}
     <p><h1>Map</h1></p>
     <p><b>Name:</b> {{ map_name }}</p>
+    <p><b>Width:</b> {{ width }}</p>
+    <p><b>Height:</b> {{ height }}</p>
     <p><h1>Attribute {{ attribute_name }}</h1></p>
     <img src="/map/color/{{ attribute_id }}" alt="{{ attribute_name }}">
 {% endblock content %}

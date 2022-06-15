@@ -49,6 +49,8 @@ async fn view_attribute(data: &State<EditorData>, attribute_id: usize) -> Templa
         context! {
             map_name: map_name,
             attribute_id: attribute_id,
+            width: data.map.size().width(),
+            height: data.map.size().height(),
             attribute_name: attribute_name,
             attributes: attributes,
         },
