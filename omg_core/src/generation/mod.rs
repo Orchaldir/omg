@@ -11,48 +11,48 @@ pub mod step;
 
 /// Generates a map based on a number of steps.
 #[derive(Debug, PartialEq, Clone)]
-pub struct MapGeneration {
+pub struct MapGenerator {
     name: String,
     size: Size2d,
     steps: Vec<GenerationStep>,
 }
 
-impl MapGeneration {
-    /// Creates a map generation, unless the name is invalid:
+impl MapGenerator {
+    /// Creates a map generator, unless the name is invalid:
     ///
     /// ```
-    ///# use omg_core::generation::MapGeneration;
+    ///# use omg_core::generation::MapGenerator;
     ///# use omg_core::data::math::size2d::Size2d;
     ///# use omg_core::generation::step::GenerationStep;
     /// let size = Size2d::unchecked(1, 2);
     /// let steps = vec![GenerationStep::debug("a"), GenerationStep::debug("b")];
     ///
-    /// assert!(MapGeneration::new("", size, steps).is_err());
+    /// assert!(MapGenerator::new("", size, steps).is_err());
     /// ```
     ///
     /// Also invalid, if it has less than 2 steps:
     ///
     /// ```
-    ///# use omg_core::generation::MapGeneration;
+    ///# use omg_core::generation::MapGenerator;
     ///# use omg_core::data::math::size2d::Size2d;
     ///# use omg_core::generation::step::GenerationStep;
     /// let size = Size2d::unchecked(1, 2);
     /// let steps = vec![GenerationStep::debug("a")];
     ///
-    /// assert!(MapGeneration::new("map0", size, steps).is_err());
+    /// assert!(MapGenerator::new("map0", size, steps).is_err());
     /// ```
     pub fn new<S: Into<String>>(
         name: S,
         size: Size2d,
         steps: Vec<GenerationStep>,
-    ) -> Result<MapGeneration> {
+    ) -> Result<MapGenerator> {
         let name = validate_name(name)?;
 
         if steps.len() < 2 {
             bail!("Map generator '{}' has too few steps!", name);
         }
 
-        Ok(MapGeneration { name, size, steps })
+        Ok(MapGenerator { name, size, steps })
     }
 
     pub fn name(&self) -> &str {
