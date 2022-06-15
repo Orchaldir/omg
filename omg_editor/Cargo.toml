@@ -8,7 +8,7 @@ edition = "2021"
 [dependencies]
 anyhow = "1.0"
 image = "0.24"
-omg_core = { path = "../omg_core" }
+omg_core = "0.1"
 omg_serde = { path = "../omg_serde" }
 rocket = "0.5.0-rc.2"
 
