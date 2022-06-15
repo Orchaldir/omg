@@ -2,7 +2,7 @@ use crate::data::map::Map2d;
 use crate::data::name::validate_name;
 use anyhow::Result;
 
-/// Create a new [`Attribute`] in the [`Map2d`].
+/// Create a new [`Attribute`](crate::data::map::attribute::Attribute) in the [`Map2d`].
 #[derive(Debug, PartialEq, Eq, Clone)]
 pub struct CreateAttributeStep {
     attribute: String,

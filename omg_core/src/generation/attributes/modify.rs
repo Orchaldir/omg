@@ -1,6 +1,6 @@
 use crate::data::map::{get_attribute, get_attribute_mut, Map2d};
 
-/// Modifies one [`Attribute`] with another transformed one.
+/// Modifies one [`Attribute`](crate::data::map::attribute::Attribute) with another transformed one.
 #[derive(new, Debug, PartialEq, Eq, Clone)]
 pub struct ModifyWithAttributeStep {
     source_id: usize,

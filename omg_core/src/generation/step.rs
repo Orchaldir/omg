@@ -7,7 +7,7 @@ use crate::generation::attributes::modify::ModifyWithAttributeStep;
 use crate::generation::attributes::transformer::TransformAttribute2dStep;
 use GenerationStep::*;
 
-/// A step during [`MapGeneration`].
+/// A step during [`MapGeneration`](crate::generation::MapGeneration).
 #[derive(Debug, PartialEq, Clone)]
 pub enum GenerationStep {
     CreateAttribute(CreateAttributeStep),

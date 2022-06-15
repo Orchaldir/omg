@@ -3,7 +3,7 @@ use crate::data::math::transformer::transformer2d::Transformer2d;
 use crate::data::name::validate_name;
 use anyhow::{bail, Result};
 
-/// Transforms 2 [`Attribute`]s and writes into another.
+/// Transforms 2 [`Attribute`](crate::data::map::attribute::Attribute)s and writes into another.
 #[derive(Debug, PartialEq, Eq, Clone)]
 pub struct TransformAttribute2dStep {
     name: String,

@@ -84,7 +84,7 @@ impl From<Color> for [f32; 3] {
     }
 }
 
-/// Converts a color to a hex color code. See https://en.wikipedia.org/wiki/Web_colors.
+/// Converts a color to a hex color code. See <https://en.wikipedia.org/wiki/Web_colors>.
 ///
 /// ```
 ///# use omg_core::data::color::{Color, ORANGE};

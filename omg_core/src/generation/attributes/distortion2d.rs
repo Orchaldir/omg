@@ -1,7 +1,7 @@
 use crate::data::map::{get_attribute, get_attribute_mut, Map2d};
 use crate::data::math::generator::generator2d::Generator2d;
 
-/// Distorts an [`Attribute`] along 2 dimensions.
+/// Distorts an [`Attribute`](crate::data::map::attribute::Attribute) along 2 dimensions.
 #[derive(new, Debug, PartialEq, Clone)]
 pub struct Distortion2dStep {
     attribute_id: usize,

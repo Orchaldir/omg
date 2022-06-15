@@ -25,4 +25,4 @@ With cargo:
 
 For Intellij set the `working directory` of the `run configuration` to `omg_editor`.
 
-Afterwards you need to open the displayed link in a browser.
+Afterwards you need to open the displayed link (e.g. http://127.0.0.1:8000) in a browser.
